@@ -259,6 +259,8 @@ Result: Usage: java -jar platon-jcli-jar-with-dependencies.jar delegate_new [opt
 > ​ |-------- query：链相关的基本信息查询模块，此目录下存放所有此模块的命令
 >
 > ​ |-------- hedge：锁仓模块，此目录下存放所有此模块的命令
+> 
+> src/main/test：存放测试代码
 
 为了能让程序自动加载命令和模块，后续只需要以打补丁的方式进行发版。
 
