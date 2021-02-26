@@ -35,12 +35,12 @@ platoncli-java使用的依赖库主要包括两大部分，分别为外部依赖
 - 日志内容格式
 
   > {timestamp} {logLevel}  
-  > Command: {cmd}
+  > Command: {cmd}  
   > Result: {msg}
 
 如：
 
-  ```shell
+  ```log
 2021-02-26 15:35:14 INFO  
 Command: java -jar platon-jcli-jar-with-dependencies.jar delegate_getDelegateReward -p
 param/delegate_getDelegateReward.json  
@@ -82,7 +82,7 @@ java -jar platoncli-java-jar-with-dependencies.jar --help/-help
 
 --help/-help为帮助命令，显示cli的子模块名和命令名，以及对应的帮助说明，如下：
 
-```shell
+```log
 Command: java -jar platoncli-java-jar-with-dependencies.jar -help
 Result: Usage: java -jar platoncli-java-jar-with-dependencies.jar [options] [command] 
       [command options]
@@ -117,7 +117,7 @@ java -jar platoncli-java-jar-with-dependencies.jar --version/-v
 
 --version/-v为当前工具的版本，包括版本号，commitid和发布工具的时间戳；从发版的version文件读取，如下：
 
-```shell
+```log
 2021-02-26 15:48:53 INFO  
 Command: java -jar platoncli-java-jar-with-dependencies.jar -v
 Result: version: 0.1.0
@@ -186,7 +186,7 @@ tx_transfer|发送交易
 > java -jar platoncli-java-jar-with-dependencies.jar [command] --help
 > ```
 例如：
-```shell
+```log
 2021-02-26 16:01:37 INFO  
 Command: java -jar platoncli-java-jar-with-dependencies.jar delegate_new -help
 Result: Usage: java -jar platon-jcli-jar-with-dependencies.jar delegate_new [options]
