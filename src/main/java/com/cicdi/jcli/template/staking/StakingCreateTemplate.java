@@ -1,8 +1,5 @@
 package com.cicdi.jcli.template.staking;
 
-import com.beust.jcommander.Parameter;
-import com.cicdi.jcli.validator.AddressValidator;
-import com.cicdi.jcli.validator.TypeValidator;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -24,9 +21,7 @@ import java.math.BigInteger;
  */
 @Data
 public class StakingCreateTemplate {
-    @Parameter(names = "type", description = "0: 自由金额，1: 锁仓金额", validateValueWith = TypeValidator.class, required = true)
     private BigInteger type;
-    @Parameter(names = "benefitAddress", description = "收益账户,用于接受出块奖励和质押奖励的收益账户", validateValueWith = AddressValidator.class)
     private String benefitAddress;
     private String nodeId;
     private String externalId;
