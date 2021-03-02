@@ -11,7 +11,6 @@ import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.JsonUtil;
 import com.cicdi.jcli.util.StringUtil;
-import org.junit.Assert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +41,6 @@ public class GetCandidateInfoSubmodule extends AbstractSimpleSubmodule {
                     }
                 }
         ).collect(Collectors.toList());
-//        Assert.assertTrue(result.size() >= 1);
         return JsonUtil.toPrettyJsonString(result);
     }
 
