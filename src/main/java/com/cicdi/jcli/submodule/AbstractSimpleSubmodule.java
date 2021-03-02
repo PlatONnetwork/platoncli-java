@@ -63,14 +63,6 @@ public abstract class AbstractSimpleSubmodule implements ISubmodule {
         return Common.FAIL_STR + ":" + callResponse.getErrMsg();
     }
 
-    public static <T> String processCallResponse(CallResponse<T> callResponse) {
-        if (callResponse.isStatusOk()) {
-            return JsonUtil.toPrettyJsonString(callResponse.getData());
-        } else {
-            return genFailString(callResponse);
-        }
-    }
-
     protected static TransactionResponse getResponseFromTransactionReceipt(TransactionReceipt transactionReceipt) throws TransactionException {
         List<Log> logs = transactionReceipt.getLogs();
         if (logs == null || logs.isEmpty()) {
@@ -126,14 +118,6 @@ public abstract class AbstractSimpleSubmodule implements ISubmodule {
      */
     public String getQrCodeImagePrefix() {
         return this.getClass().getAnnotation(Parameters.class).commandNames()[0];
-    }
-
-    public String save2QrImage(
-            Function function, NodeConfigModel nodeConfigModel, String address,
-            BigInteger gasLimit, BigInteger gasPrice, Boolean fast) throws IOException, WriterException {
-        Web3j web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
-        BaseTemplate4Serialize baseTemplate4Serialize = convert2BaseTemplate4Serialize(function, nodeConfigModel, web3j, address, gasLimit, gasPrice, fast);
-        return QrUtil.save2QrCodeImage(getQrCodeImagePrefix(), baseTemplate4Serialize);
     }
 
     /**
