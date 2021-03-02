@@ -29,31 +29,4 @@ public class DeclareVersionSubmodule extends AbstractComplexSubmodule<DeclareVer
         return "类型        必填性         参数名称          参数解释\n" +
                 "String     must          activeNode       声明的节点id，只能是验证人/候选人。若为空，则默认使用config配置的节点的id\n";
     }
-
-//    @Override
-//    public String run(JCommander jc, String... argv) throws Exception {
-//        NodeConfigModel nodeConfigModel = readNodeConfig();
-//        Web3j web3j = createWeb3j(nodeConfigModel);
-//        String nodeId = Web3jUtil.getNodeInfo(nodeConfigModel.getRpcAddress()).send().getNodeInfo().getId();
-//
-//        if (isOnline()) {
-//            String password = StringUtil.readPassword();
-//            Credentials credentials = WalletUtils.loadCredentials(password, address);
-//            ProposalContractX pcx = ProposalContractX.load(web3j, credentials, nodeConfigModel.getChainId(), nodeConfigModel.getHrp());
-//
-//            RemoteCall<TransactionResponse> remoteCall = pcx.declareVersion(
-//                    web3j.getProgramVersion().send().getAdminProgramVersion(),
-//                    nodeId,
-//                    Common.genGasProvider(gasPrice, gasLimit)
-//            );
-//            TransactionResponse response = remoteCall.send();
-//            log.info(response.toString());
-//            return response.isStatusOk() ? Common.SUCCESS_STR : Common.FAIL_STR;
-//        } else {
-//            AdminProgramVersion adminProgramVersion = web3j.getProgramVersion().send();
-//            Function function = ProposalContractX.createDeclareVersionFunction(adminProgramVersion.getAdminProgramVersion(), nodeId);
-//            BaseTemplate4Serialize baseTemplate4Serialize = convert2BaseTemplate4Serialize(function, nodeConfigModel, web3j, address, gasLimit, gasPrice, fast);
-//            return QrUtil.save2QrCodeImage(getQrCodeImagePrefix(), baseTemplate4Serialize);
-//        }
-//    }
 }
