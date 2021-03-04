@@ -115,7 +115,7 @@ Result: Usage: java -jar platoncli-java-jar-with-dependencies.jar [options] [com
 java -jar platoncli-java-jar-with-dependencies.jar --version/-v
 ```
 
---version/-v为当前工具的版本，包括版本号，commitid和发布工具的时间戳；从发版的version文件读取，如下：
+--version/-v为当前工具的版本，包括版本号，commitId和发布工具的时间戳；从发版的version文件读取，如下：
 
 ```log
 2021-02-26 15:48:53 INFO  
@@ -161,16 +161,19 @@ government_reportDoubleSign|举报双签
 government_submitProposal|提交参数/升级/取消提案
 government_vote|提案投票
 
-
-**查询模块**
-
+**质押模块**
 命令名称| 功能描述
-:---:|:---:
-query_blockNumber|查询当前最高块高查询当前最高块高
-query_getAvgPackTime|查询打包区块的平均时间
-query_getBlockByHash|根据区块hash查询区块信息
-query_getBlockByNumber|根据区块块高查询区块信息
-query_getPackageReward|查询当前结算周期的区块奖励
+---|---
+staking_create|创建验证人
+staking_update|修改质押信息
+staking_increase|增持质押
+staking_unStaking|退出验证人
+staking_getValidatorList|查询当前共识周期的验证人列表
+staking_getVerifierList|查询当前结算周期的验证人列表
+staking_getCandidateList|查询所有实时候选人列表
+staking_getCandidateInfo|根据nodeId查询节点质押信息
+staking_getStakingReward|查询当前结算周期的质押奖励
+
 
 **交易模块**
 
