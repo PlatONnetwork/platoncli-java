@@ -10,6 +10,14 @@ import org.junit.Test;
  * @date 2021/2/18
  */
 public class GetDelegateRewardTest {
+    @Test
+    public void testHelp() {
+        String[] argv = {"delegate_getDelegateReward",
+                "-help"
+        };
+        Main.main(argv);
+    }
+
     /**
      * 模板测试
      */

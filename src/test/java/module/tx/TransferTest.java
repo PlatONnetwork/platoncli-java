@@ -41,7 +41,7 @@ public class TransferTest {
     @Test
     public void testTransferFast2() {
         String para = "param/transfer2.json";
-        String config = "{\"rpcAddress\":\"https://openapi.alaya.network/rpc\",\"hrp\":\"atp\",\"chainId\":201018}".replaceAll("\"","");
+        String config = "{\"rpcAddress\":\"https://openapi.alaya.network/rpc\",\"hrp\":\"atp\",\"chainId\":201018}";
         String config2 = "{\n" +
                 "  \"rpcAddress\": \"https://openapi.alaya.network/rpc\",\n" +
                 "  \"hrp\": \"atp\",\n" +

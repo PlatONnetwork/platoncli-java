@@ -18,6 +18,15 @@ public class DelegateNewTest {
     }
 
     @Test
+    public void testTemplate() {
+        String[] argv = {"delegate_new",
+                "-t"
+        };
+        Main.main(argv);
+    }
+
+
+    @Test
     public void testDelegateNewOffline() {
         String[] argv = {"delegate_new",
                 "-d", "atp1zhe8zecq7evp897azxssudk4t9z0a7emp8fulx",

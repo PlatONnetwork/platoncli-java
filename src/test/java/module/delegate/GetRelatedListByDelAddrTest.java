@@ -11,6 +11,14 @@ import org.junit.Test;
  */
 public class GetRelatedListByDelAddrTest {
     @Test
+    public void testHelp() {
+        String[] argv = {"delegate_getRelatedListByDelAddr",
+                "-help"
+        };
+        Main.main(argv);
+    }
+
+    @Test
     public void testGetDelegateReward() {
         String[] argv = {"delegate_getRelatedListByDelAddr", "-d",
                 "atp1zhe8zecq7evp897azxssudk4t9z0a7emp8fulx"
