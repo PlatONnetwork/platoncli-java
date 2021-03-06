@@ -118,7 +118,7 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
         }
 
         Function function = ProposalContractX.createSubmitProposalFunction(proposal);
-        GasProvider gasProvider = Common.getDefaultGasProvider(function, web3j, nodeConfigModel.getHrp());
+        GasProvider gasProvider = Common.getDefaultGasProvider(function);
         if (isOnline()) {
             String password = StringUtil.readPassword();
             Credentials credentials = WalletUtils.loadCredentials(password, address);

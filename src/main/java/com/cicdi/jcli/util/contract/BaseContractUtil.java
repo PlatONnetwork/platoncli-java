@@ -2,19 +2,19 @@ package com.cicdi.jcli.util.contract;
 
 
 import com.alaya.contracts.ppos.abi.Function;
+import com.alaya.contracts.ppos.exception.NoSupportFunctionType;
 import com.alaya.contracts.ppos.utils.EncoderUtils;
-import com.alaya.contracts.ppos.utils.EstimateGasUtil;
 import com.alaya.crypto.CipherException;
 import com.alaya.crypto.Credentials;
 import com.alaya.crypto.WalletUtils;
 import com.alaya.protocol.Web3j;
+import com.alaya.protocol.exceptions.TransactionException;
 import com.alaya.tx.RawTransactionManager;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.util.*;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -32,7 +32,7 @@ public abstract class BaseContractUtil<T> {
     protected T t;
 
     public BaseContractUtil(boolean isOnline, String address, String config, String param, Class<T> clazz) throws IOException, CipherException {
-        this.nodeConfigModel =ConfigUtil.readConfig(config);
+        this.nodeConfigModel = ConfigUtil.readConfig(config);
         this.t = ParamUtil.readParam(param, clazz);
         web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
         if (isOnline) {
@@ -62,14 +62,15 @@ public abstract class BaseContractUtil<T> {
      * 发送合约交易
      *
      * @return 交易hash
-     * @throws Exception 会抛出一些异常
+     * @throws IOException          会抛出一些异常
+     * @throws TransactionException 交易异常
      */
-    public String sendTransaction(BigInteger gasLimit, BigInteger gasPrice) throws Exception {
+    public String sendTransaction(BigInteger gasLimit, BigInteger gasPrice) throws IOException, TransactionException {
         FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
         Web3j web3j = Web3j.build(fastHttpService);
         Function function = createFunction();
 
-        BigInteger estimateGasLimit = EstimateGasUtil.getGasLimit(function);
+        BigInteger estimateGasLimit = Common.getDefaultGasProvider(function).getGasLimit();
         gasLimit = MathUtil.max(gasLimit, estimateGasLimit);
 
         String data = EncoderUtils.functionEncoder(function);
@@ -91,16 +92,16 @@ public abstract class BaseContractUtil<T> {
     /**
      * 快速发送合约交易
      *
-     * @throws Exception 会抛出一些异常
+     * @throws IOException 会抛出一些异常
      */
-    public void fastSendTransaction(BigInteger gasLimit, BigInteger gasPrice) throws Exception {
+    public void fastSendTransaction(BigInteger gasLimit, BigInteger gasPrice) throws IOException, NoSupportFunctionType {
         FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
         Web3j web3j = Web3j.build(fastHttpService);
         Function function = createFunction();
         String data = EncoderUtils.functionEncoder(function);
         BigInteger nonce = NonceUtil.getNonce(web3j, credentials.getAddress(), nodeConfigModel.getHrp());
 
-        BigInteger estimateGasLimit = EstimateGasUtil.getGasLimit(function);
+        BigInteger estimateGasLimit = Common.getDefaultGasProvider(function).getGasLimit();
         gasLimit = MathUtil.max(gasLimit, estimateGasLimit);
 
         SendUtil.fastSend(

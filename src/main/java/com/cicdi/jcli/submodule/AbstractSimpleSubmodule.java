@@ -14,7 +14,6 @@ import com.alaya.rlp.solidity.RlpString;
 import com.alaya.rlp.solidity.RlpType;
 import com.alaya.tx.response.PollingTransactionReceiptProcessor;
 import com.alaya.tx.response.TransactionReceiptProcessor;
-import com.alaya.utils.JSONUtil;
 import com.alaya.utils.Numeric;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -23,9 +22,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
-import com.google.zxing.WriterException;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collections;
@@ -86,11 +83,26 @@ public abstract class AbstractSimpleSubmodule implements ISubmodule {
         return transactionResponse;
     }
 
+    /**
+     * @return 读取web3j
+     * @throws IOException io异常
+     */
     public Web3j createWeb3j() throws IOException {
         return Web3j.build(new FastHttpService(ConfigUtil.readConfig(config).getRpcAddress()));
     }
 
 
+    /**
+     * @param function        合约方法
+     * @param nodeConfigModel 节点配置
+     * @param web3j           web3j对象
+     * @param address         源地址
+     * @param gasLimit        gas限制
+     * @param gasPrice        gas价格
+     * @param fast            是否快速发送
+     * @return 合约交易的持久化对象
+     * @throws IOException io异常
+     */
     public final BaseTemplate4Serialize convert2BaseTemplate4Serialize(
             Function function, NodeConfigModel nodeConfigModel, Web3j web3j, String address,
             BigInteger gasLimit, BigInteger gasPrice, Boolean fast) throws IOException {

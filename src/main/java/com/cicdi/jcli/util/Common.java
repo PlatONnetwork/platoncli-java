@@ -3,15 +3,10 @@ package com.cicdi.jcli.util;
 import com.alaya.contracts.ppos.abi.Function;
 import com.alaya.contracts.ppos.dto.common.FunctionType;
 import com.alaya.contracts.ppos.exception.NoSupportFunctionType;
-import com.alaya.contracts.ppos.utils.EncoderUtils;
 import com.alaya.contracts.ppos.utils.EstimateGasUtil;
 import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.methods.request.Transaction;
-import com.alaya.tx.ReadonlyTransactionManager;
-import com.alaya.tx.TransactionManager;
 import com.alaya.tx.gas.ContractGasProvider;
 import com.alaya.tx.gas.GasProvider;
-import com.alaya.utils.Numeric;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -30,6 +25,7 @@ import static com.alaya.protocol.core.JsonRpc2_0Web3j.DEFAULT_BLOCK_TIME;
  */
 public class Common {
     public static final int TWO = 2;
+    public static final String LETTER_Y = "y";
     /**
      * 合法地址的长度
      */
@@ -92,22 +88,24 @@ public class Common {
      * 获得默认的gas提供器
      *
      * @param function 合约方法
-     * @param web3j    web3j对象
-     * @param hrp      hrp值
      * @return gas提供器
-     * @throws IOException           io异常
      * @throws NoSupportFunctionType 不支持的方法
      */
-    public static GasProvider getDefaultGasProvider(Function function, Web3j web3j, String hrp) throws IOException, NoSupportFunctionType {
+    public static GasProvider getDefaultGasProvider(Function function) throws NoSupportFunctionType {
         if (EstimateGasUtil.isSupportLocal(function.getType())) {
             return getDefaultGasProviderLocal(function);
         } else {
-            String contractAddress = NetworkParametersUtil.getPposContractAddressOfProposal(hrp);
-            TransactionManager transactionManager = new ReadonlyTransactionManager(web3j, contractAddress);
-            Transaction transaction = Transaction.createEthCallTransaction(transactionManager.getFromAddress(), contractAddress, EncoderUtils.functionEncoder(function));
-            BigInteger gasLimit = Numeric.decodeQuantity(web3j.platonEstimateGas(transaction).send().getResult());
-            BigInteger gasPrice = getDefaultGasPrice(function.getType(), web3j);
-            return new ContractGasProvider(gasPrice, gasLimit);
+            return new GasProvider() {
+                @Override
+                public BigInteger getGasPrice() {
+                    return MID_GAS_PRICE;
+                }
+
+                @Override
+                public BigInteger getGasLimit() {
+                    return MID_GAS_LIMIT;
+                }
+            };
         }
     }
 

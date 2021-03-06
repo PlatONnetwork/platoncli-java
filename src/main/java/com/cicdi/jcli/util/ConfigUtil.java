@@ -9,9 +9,6 @@ import java.io.File;
  * @date 2021/2/25
  */
 public class ConfigUtil {
-    public static NodeConfigModel readConfig(NodeConfigModel config) {
-        return config;
-    }
 
     /**
      * 根据config读取节点配置
