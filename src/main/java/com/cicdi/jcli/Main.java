@@ -45,13 +45,14 @@ public class Main extends AbstractSimpleSubmodule {
 
     public static void main(String... argv) {
         try {
-            jc = parseArgs(argv);
-            result = main.parse(jc, argv);
             StringBuilder argStr = new StringBuilder();
             for (String s : argv) {
                 argStr.append(" ").append(s);
             }
-            log.info("\r\nCommand: java -jar platoncli-java-jar-with-dependencies.jar{}\r\nResult: {}", argStr.toString(), result);
+            log.info("\r\nCommand: java -jar platoncli-java-jar-with-dependencies.jar{}", argStr.toString());
+            jc = parseArgs(argv);
+            result = main.parse(jc, argv);
+            log.info("Result: {}", result);
         } catch (Exception exception) {
             if (exception instanceof MissingCommandException) {
                 log.error("command not found", exception);
