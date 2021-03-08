@@ -70,9 +70,6 @@ public abstract class BaseContractUtil<T> {
         Web3j web3j = Web3j.build(fastHttpService);
         Function function = createFunction();
 
-        BigInteger estimateGasLimit = Common.getDefaultGasProvider(function).getGasLimit();
-        gasLimit = MathUtil.max(gasLimit, estimateGasLimit);
-
         String data = EncoderUtils.functionEncoder(function);
         return SendUtil.send(
                 nodeConfigModel.getHrp(),
@@ -80,7 +77,6 @@ public abstract class BaseContractUtil<T> {
                 data,
                 //合约调用一般不发送币
                 BigDecimal.ZERO,
-                //一般合约调用的参数里没有gas设置，此处采用默认的配置文件里的gas设置
                 gasPrice,
                 gasLimit,
                 web3j,
@@ -100,9 +96,6 @@ public abstract class BaseContractUtil<T> {
         Function function = createFunction();
         String data = EncoderUtils.functionEncoder(function);
         BigInteger nonce = NonceUtil.getNonce(web3j, credentials.getAddress(), nodeConfigModel.getHrp());
-
-        BigInteger estimateGasLimit = Common.getDefaultGasProvider(function).getGasLimit();
-        gasLimit = MathUtil.max(gasLimit, estimateGasLimit);
 
         SendUtil.fastSend(
                 new FastHttpService(nodeConfigModel.getRpcAddress()),
