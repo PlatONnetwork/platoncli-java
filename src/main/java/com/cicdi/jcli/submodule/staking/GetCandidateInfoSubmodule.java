@@ -9,6 +9,7 @@ import com.cicdi.jcli.contractx.NodeContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
+import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.JsonUtil;
 import com.cicdi.jcli.util.StringUtil;
 
@@ -28,7 +29,7 @@ public class GetCandidateInfoSubmodule extends AbstractSimpleSubmodule {
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        NodeConfigModel nodeConfigModel = JsonUtil.readFile(config, NodeConfigModel.class);
+        NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
         Web3j web3j = Web3j.build(fastHttpService);
         List<Node> validatorList = NodeContractX.load(web3j, nodeConfigModel.getHrp()).getCandidateList().send().getData();

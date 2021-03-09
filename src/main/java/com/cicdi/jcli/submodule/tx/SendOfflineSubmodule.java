@@ -4,8 +4,8 @@ import com.alaya.crypto.Credentials;
 import com.alaya.crypto.RawTransaction;
 import com.alaya.crypto.WalletUtils;
 import com.alaya.protocol.core.methods.response.TransactionReceipt;
-import com.alaya.utils.JSONUtil;
 import com.alaya.utils.Numeric;
+import com.alibaba.fastjson.JSON;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -13,10 +13,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
-import com.cicdi.jcli.util.Common;
-import com.cicdi.jcli.util.JsonUtil;
-import com.cicdi.jcli.util.QrUtil;
-import com.cicdi.jcli.util.SendUtil;
+import com.cicdi.jcli.util.*;
 import com.google.zxing.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -53,7 +50,7 @@ public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
     public String run(JCommander jc, String... argv) throws Exception {
         Assert.assertTrue(new File(address).isFile());
 
-        NodeConfigModel nodeConfigModel = JsonUtil.readFile(config, NodeConfigModel.class);
+        NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
         System.out.println("需要用户输入密码:");
         Scanner scanner = new Scanner(System.in);
@@ -64,9 +61,9 @@ public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
         List<String> hexValueList = new ArrayList<>();
         if (file.isFile()) {
             Result result = QrUtil.readQrCodeImage(file);
-            fastTransferTemplate = JsonUtil.parseObject(result.toString(), BaseTemplate4Serialize.class);
+            fastTransferTemplate = JSON.parseObject(result.toString(), BaseTemplate4Serialize.class);
         } else {
-            fastTransferTemplate = JsonUtil.parseObject(data, BaseTemplate4Serialize.class);
+            fastTransferTemplate = JSON.parseObject(data, BaseTemplate4Serialize.class);
         }
 
         long flag = 0;
@@ -92,7 +89,7 @@ public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
 
                 Assert.assertNotNull(hash);
 
-                TransactionReceipt receipt =waitForTransactionReceipt(nodeConfigModel,hash);
+                TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, hash);
                 log.info("operation: sendOffline, mode: normal, from: {}, nodeRpcAddress: {},receipt: {}",
                         credentials.getAddress(),
                         nodeConfigModel.getRpcAddress(),

@@ -8,6 +8,7 @@ import com.cicdi.jcli.contractx.StakingContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
+import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.ConvertUtil;
 import com.cicdi.jcli.util.JsonUtil;
 
@@ -26,7 +27,7 @@ public class GetStakingRewardSubmodule extends AbstractSimpleSubmodule {
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        NodeConfigModel nodeConfigModel = JsonUtil.readFile(config, NodeConfigModel.class);
+        NodeConfigModel nodeConfigModel =  ConfigUtil.readConfig(config);
         FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
         Web3j web3j = Web3j.build(fastHttpService);
         BigInteger reward = StakingContractX.load(web3j, nodeConfigModel.getHrp()).getStakingReward().send().getData();

@@ -8,6 +8,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
+import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.JsonUtil;
 
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class GetTransactionReceiptSubmodule extends AbstractSimpleSubmodule {
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        NodeConfigModel nodeConfigModel = JsonUtil.readFile(config, NodeConfigModel.class);
+        NodeConfigModel nodeConfigModel =  ConfigUtil.readConfig(config);
         Web3j web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
         Optional<TransactionReceipt> optional = web3j.platonGetTransactionReceipt(hash).send().getTransactionReceipt();
         if (optional.isPresent()) {

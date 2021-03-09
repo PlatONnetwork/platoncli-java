@@ -9,6 +9,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.submodule.ISubmodule;
+import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.JsonUtil;
 
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class GetTransactionSubmodule extends AbstractSimpleSubmodule implements 
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        NodeConfigModel nodeConfigModel = JsonUtil.readFile(config, NodeConfigModel.class);
+        NodeConfigModel nodeConfigModel =  ConfigUtil.readConfig(config);
         FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
         Web3j web3j = Web3j.build(fastHttpService);
 
