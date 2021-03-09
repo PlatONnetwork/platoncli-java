@@ -3,6 +3,7 @@ package com.cicdi.jcli.util;
 import com.alaya.crypto.Address;
 import com.alaya.crypto.WalletFile;
 import com.alaya.utils.Files;
+import com.alibaba.fastjson.JSON;
 import com.cicdi.jcli.model.OldWalletFile;
 
 import java.io.File;
@@ -36,12 +37,12 @@ public class ParamUtil {
             WalletFile walletFile;
             Matcher matcher = OLD_ADDRESS_PATTERN.matcher(fileContent);
             if (!matcher.find()) {
-                walletFile = JsonUtil.readFile(fileContent, WalletFile.class);
+                walletFile = JsonUtil.readFile(file, WalletFile.class);
                 Address addressObject = walletFile.getAddress();
                 String mainNet = addressObject.getMainnet();
                 return mainNet.startsWith(hrp) ? mainNet : addressObject.getTestnet();
             } else {
-                OldWalletFile oldWalletFile = JsonUtil.parseObject(fileContent, OldWalletFile.class);
+                OldWalletFile oldWalletFile = JSON.parseObject(fileContent, OldWalletFile.class);
                 return ConvertUtil.formatHrpAddress(oldWalletFile.getAddress(), hrp);
             }
         } else {
@@ -61,10 +62,10 @@ public class ParamUtil {
         File f = new File(param);
         try {
             if (f.exists() && f.isFile()) {
-                return JsonUtil.readFile(param, clazz);
+                return JsonUtil.readFile(f, clazz);
 
             } else {
-                return JsonUtil.parseObject(param, clazz);
+                return JSON.parseObject(param, clazz);
             }
         } catch (Exception e) {
             throw new RuntimeException("Param file is not correct.");

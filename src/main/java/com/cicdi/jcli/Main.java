@@ -66,9 +66,7 @@ public class Main extends AbstractSimpleSubmodule {
                 return;
             }
             log.error(exception.getMessage(), exception);
-
         }
-
     }
 
     @Override

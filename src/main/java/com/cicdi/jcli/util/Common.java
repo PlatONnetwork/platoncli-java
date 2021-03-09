@@ -70,7 +70,17 @@ public class Common {
     public final static BigInteger MID_GAS_PRICE = BigInteger.valueOf(1000000000L);
     public final static BigInteger MID_GAS_LIMIT = BigInteger.valueOf(100000L);
     public final static BigInteger TX_GAS_LIMIT = BigInteger.valueOf(21000L);
+    public static final GasProvider MID_GAS_PROVIDER = new GasProvider() {
+        @Override
+        public BigInteger getGasPrice() {
+            return ConvertUtil.hrp2Von("0.0001");
+        }
 
+        @Override
+        public BigInteger getGasLimit() {
+            return BigInteger.valueOf(100000L);
+        }
+    };
     /**
      * 并发池
      */

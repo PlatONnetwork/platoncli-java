@@ -15,14 +15,15 @@ import java.io.IOException;
  * @date 2020/12/25
  */
 public class JsonUtil {
-    public static <T> T readFile(String src, Class<T> type) throws IOException {
-        return readFile(new File(src), type);
-    }
-
-    public static <T> T parseObject(String text, Class<T> clazz) {
-        return JSON.parseObject(text, clazz);
-    }
-
+    /**
+     * 从文件读取json
+     *
+     * @param file json文件
+     * @param type json类
+     * @param <T>  json类型
+     * @return json对象
+     * @throws IOException io异常
+     */
     public static <T> T readFile(File file, Class<T> type) throws IOException {
         @Cleanup JSONReader jsonReader = new JSONReader(
                 new FileReader(file),

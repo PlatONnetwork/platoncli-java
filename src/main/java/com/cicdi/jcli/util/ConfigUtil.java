@@ -1,5 +1,6 @@
 package com.cicdi.jcli.util;
 
+import com.alibaba.fastjson.JSON;
 import com.cicdi.jcli.model.NodeConfigModel;
 
 import java.io.File;
@@ -9,7 +10,6 @@ import java.io.File;
  * @date 2021/2/25
  */
 public class ConfigUtil {
-
     /**
      * 根据config读取节点配置
      *
@@ -20,9 +20,9 @@ public class ConfigUtil {
         try {
             File file = new File(config);
             if (file.exists() && file.isFile()) {
-                return JsonUtil.readFile(config, NodeConfigModel.class);
+                return JsonUtil.readFile(file, NodeConfigModel.class);
             } else {
-                return JsonUtil.parseObject(config, NodeConfigModel.class);
+                return JSON.parseObject(config, NodeConfigModel.class);
             }
         } catch (Exception e) {
             System.out.println("无法读取配置文件。默认配置文件路径为config/node_config.json\nconfig模板如下：\n" +

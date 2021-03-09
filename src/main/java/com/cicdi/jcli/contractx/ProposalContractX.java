@@ -18,6 +18,7 @@ import com.alaya.protocol.Web3j;
 import com.alaya.protocol.core.RemoteCall;
 import com.alaya.protocol.core.methods.response.bean.ProgramVersion;
 import com.alaya.tx.TransactionManager;
+import com.alaya.tx.gas.GasProvider;
 import com.alaya.utils.Numeric;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.util.NetworkParametersUtil;
@@ -163,7 +164,10 @@ public class ProposalContractX extends BaseContract {
         Function function = createSubmitProposalFunction(proposal);
         return executeRemoteCallTransaction(function);
     }
-
+    public RemoteCall<TransactionResponse> submitProposal(Proposal proposal, GasProvider gasProvider) {
+        Function function = createSubmitProposalFunction(proposal);
+        return executeRemoteCallTransaction(function,gasProvider);
+    }
     /**
      * 查询已生效的版本
      *
