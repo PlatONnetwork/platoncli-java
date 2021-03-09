@@ -7,4 +7,5 @@ package module;
 public class TestCommon {
     public static String rewardWalletDir = "E:/codes/IdeaProjects/block_chain_git/trunk/alaya-util-springboot/keystore_core/reward.json";
     public static String stakingWalletDir = "E:/codes/IdeaProjects/block_chain_git/trunk/alaya-util-springboot/keystore_core/staking.json";
+    public static String myBetWalletDir = "E:/codes/IdeaProjects/block_chain_git/trunk/alaya-util-springboot/keystore_core/mybest.json";
 }
