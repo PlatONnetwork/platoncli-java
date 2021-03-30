@@ -1,6 +1,6 @@
 package com.cicdi.jcli.model;
 
-import com.alaya.protocol.core.Response;
+import com.platon.protocol.core.Response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

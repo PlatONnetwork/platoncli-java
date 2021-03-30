@@ -10,7 +10,7 @@ import org.junit.Test;
 public class GetGovernParamValueTest {
     @Test
     public void testGetGovernParamValue() {
-        String[] args = "government_getGovernParamValue -p ../getGovernParamValue.json".split(" ");
+        String[] args = "government_getGovernParamValue -p param/getGovernParamValue.json".split(" ");
         Main.main(args);
     }
 }

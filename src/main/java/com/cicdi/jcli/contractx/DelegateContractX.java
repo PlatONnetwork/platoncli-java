@@ -1,26 +1,27 @@
 package com.cicdi.jcli.contractx;
 
-import com.alaya.abi.solidity.datatypes.BytesType;
-import com.alaya.abi.solidity.datatypes.generated.Uint16;
-import com.alaya.abi.solidity.datatypes.generated.Uint256;
-import com.alaya.abi.solidity.datatypes.generated.Uint64;
-import com.alaya.bech32.Bech32;
-import com.alaya.contracts.ppos.BaseContract;
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.contracts.ppos.dto.common.FunctionType;
-import com.alaya.contracts.ppos.dto.enums.StakingAmountType;
-import com.alaya.contracts.ppos.dto.resp.DelegationIdInfo;
-import com.alaya.crypto.Credentials;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.RemoteCall;
-import com.alaya.tx.TransactionManager;
-import com.alaya.tx.gas.GasProvider;
-import com.alaya.utils.Numeric;
 import com.cicdi.jcli.template.delegate.DelegateNewTemplate;
 import com.cicdi.jcli.util.ConvertUtil;
 import com.cicdi.jcli.util.NetworkParametersUtil;
+import com.platon.abi.solidity.datatypes.BytesType;
+import com.platon.abi.solidity.datatypes.generated.Uint16;
+import com.platon.abi.solidity.datatypes.generated.Uint256;
+import com.platon.abi.solidity.datatypes.generated.Uint64;
+import com.platon.bech32.Bech32;
+import com.platon.contracts.ppos.BaseContract;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.contracts.ppos.dto.TransactionResponse;
+import com.platon.contracts.ppos.dto.common.FunctionType;
+import com.platon.contracts.ppos.dto.enums.StakingAmountType;
+import com.platon.contracts.ppos.dto.resp.Delegation;
+import com.platon.contracts.ppos.dto.resp.DelegationIdInfo;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.RemoteCall;
+import com.platon.tx.TransactionManager;
+import com.platon.tx.gas.GasProvider;
+import com.platon.utils.Numeric;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -31,6 +32,7 @@ import java.util.List;
  * @author haypo
  * @date 2021/1/8
  */
+@SuppressWarnings("unused")
 public class DelegateContractX extends BaseContract {
 
     private DelegateContractX(String contractAddress, Web3j web3j) {
@@ -38,7 +40,7 @@ public class DelegateContractX extends BaseContract {
     }
 
     private DelegateContractX(String contractAddress, long chainId, Web3j web3j, Credentials credentials) {
-        super(contractAddress, chainId, web3j, credentials);
+        super(contractAddress, web3j, credentials);
     }
 
     private DelegateContractX(String contractAddress, Web3j web3j, TransactionManager transactionManager) {
@@ -132,6 +134,24 @@ public class DelegateContractX extends BaseContract {
                 parseStakingAmountType(template.getType()),
                 ConvertUtil.hrp2Von(template.getAmount()),
                 gasProvider);
+    }
+
+    /**
+     * 查询当前单个委托信息
+     *
+     * @param nodeId          验证人的节点Id
+     * @param delAddr         委托人账户地址
+     * @param stakingBlockNum 发起质押时的区块高度
+     * @return 单个委托信息
+     */
+    public RemoteCall<CallResponse<Delegation>> getDelegateInfo(String nodeId, String delAddr, BigInteger stakingBlockNum) {
+
+        Function function = new Function(FunctionType.GET_DELEGATEINFO_FUNC_TYPE,
+                Arrays.asList(new Uint64(stakingBlockNum)
+                        , new BytesType(Bech32.addressDecode(delAddr))
+                        , new BytesType(Numeric.hexStringToByteArray(nodeId))));
+
+        return executeRemoteCallObjectValueReturn(function, Delegation.class);
     }
 
     /**

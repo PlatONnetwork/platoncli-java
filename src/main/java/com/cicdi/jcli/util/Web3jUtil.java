@@ -1,12 +1,15 @@
 package com.cicdi.jcli.util;
 
-import com.alaya.protocol.Web3jService;
-import com.alaya.protocol.core.Request;
+import com.cicdi.jcli.contractx.ProposalContractX;
 import com.cicdi.jcli.model.Peers;
 import com.cicdi.jcli.model.PlatonNodeInfo;
 import com.cicdi.jcli.service.FastHttpService;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.Web3jService;
+import com.platon.protocol.core.Request;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Collections;
 
 /**
@@ -74,5 +77,13 @@ public class Web3jUtil {
 
     public static String getNodeId(String rpcAddress) throws IOException {
         return getNodeInfo(rpcAddress).send().getNodeInfo().getId();
+    }
+
+    /**
+     * 委托用户每次委托或赎回委托的最低hrp数
+     */
+    public static BigInteger getStakingOperatingThreshold(Web3j web3j, String hrp) throws Exception {
+        String data = ProposalContractX.load(web3j, hrp).getGovernParamValue("staking", "operatingThreshold").send().getData();
+        return new BigInteger(data);
     }
 }

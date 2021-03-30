@@ -1,7 +1,7 @@
 package com.cicdi.jcli.util.contract.staking;
 
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.crypto.CipherException;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.crypto.CipherException;
 import com.cicdi.jcli.contractx.StakingContractX;
 import com.cicdi.jcli.template.staking.StakingUnStakingTemplate;
 import com.cicdi.jcli.util.NetworkParametersUtil;

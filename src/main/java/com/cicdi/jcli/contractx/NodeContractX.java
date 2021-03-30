@@ -1,13 +1,13 @@
 package com.cicdi.jcli.contractx;
 
-import com.alaya.contracts.ppos.BaseContract;
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.contracts.ppos.dto.common.FunctionType;
-import com.alaya.contracts.ppos.dto.resp.Node;
-import com.alaya.crypto.Credentials;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.RemoteCall;
+import com.platon.contracts.ppos.BaseContract;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.contracts.ppos.dto.common.FunctionType;
+import com.platon.contracts.ppos.dto.resp.Node;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.RemoteCall;
 import com.cicdi.jcli.util.NetworkParametersUtil;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class NodeContractX extends BaseContract {
     }
 
     private NodeContractX(String contractAddress, long chainId, Web3j web3j, Credentials credentials) {
-        super(contractAddress, chainId, web3j, credentials);
+        super(contractAddress, web3j, credentials);
     }
 
     /**

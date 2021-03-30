@@ -1,6 +1,5 @@
 package com.cicdi.jcli.submodule.staking;
 
-import com.alaya.protocol.Web3j;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.contractx.NodeContractX;
@@ -10,7 +9,7 @@ import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.ConvertUtil;
-import com.cicdi.jcli.util.JsonUtil;
+import com.platon.protocol.Web3j;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

@@ -1,23 +1,24 @@
 package com.cicdi.jcli.contractx;
 
-import com.alaya.abi.solidity.datatypes.BytesType;
-import com.alaya.bech32.Bech32;
-import com.alaya.contracts.ppos.BaseContract;
-import com.alaya.contracts.ppos.abi.CustomStaticArray;
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.contracts.ppos.dto.RestrictingPlan;
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.contracts.ppos.dto.common.FunctionType;
-import com.alaya.contracts.ppos.dto.resp.RestrictingItem;
-import com.alaya.contracts.ppos.exception.EstimateGasException;
-import com.alaya.contracts.ppos.exception.NoSupportFunctionType;
-import com.alaya.crypto.Credentials;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.RemoteCall;
-import com.alaya.protocol.core.methods.response.PlatonSendTransaction;
-import com.alaya.tx.TransactionManager;
-import com.alaya.tx.gas.GasProvider;
+import com.platon.abi.solidity.datatypes.BytesType;
+import com.platon.bech32.Bech32;
+import com.platon.contracts.ppos.BaseContract;
+import com.platon.contracts.ppos.abi.CustomStaticArray;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.contracts.ppos.dto.RestrictingPlan;
+import com.platon.contracts.ppos.dto.TransactionResponse;
+import com.platon.contracts.ppos.dto.common.FunctionType;
+import com.platon.contracts.ppos.dto.resp.RestrictingItem;
+import com.platon.contracts.ppos.exception.EstimateGasException;
+import com.platon.contracts.ppos.exception.NoSupportFunctionType;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.RemoteCall;
+import com.platon.protocol.core.methods.response.PlatonSendTransaction;
+import com.platon.tx.TransactionManager;
+import com.platon.tx.gas.GasProvider;
+import com.cicdi.jcli.template.hedge.CreateRestrictingPlanTemplate;
 import com.cicdi.jcli.util.NetworkParametersUtil;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * @author haypo
  * @date 2021/1/11
- * @see com.alaya.contracts.ppos.RewardContract
+ * @see com.platon.contracts.ppos.dto.RestrictingPlan
  */
 @SuppressWarnings("unused")
 public class RestrictPlanContractX extends BaseContract {
@@ -38,7 +39,7 @@ public class RestrictPlanContractX extends BaseContract {
     }
 
     private RestrictPlanContractX(String contractAddress, long chainId, Web3j web3j, Credentials credentials) {
-        super(contractAddress, chainId, web3j, credentials);
+        super(contractAddress, web3j, credentials);
     }
 
     private RestrictPlanContractX(String contractAddress, Web3j web3j, TransactionManager transactionManager) {
@@ -78,6 +79,32 @@ public class RestrictPlanContractX extends BaseContract {
         return new RestrictPlanContractX(NetworkParametersUtil.getPposContractAddressOfRestrictingPlan(hrp), chainId, web3j, credentials);
     }
 
+    /**
+     * 创建锁仓计划方法
+     *
+     * @param account             锁仓释放到账账户
+     * @param restrictingPlanList 其中，Epoch：表示结算周期的倍数。与每个结算周期出块数的乘积表示在目标区块高度上释放锁定的资金。
+     *                            如果 account 是激励池地址，那么 period 值是 120（即，30*4） 的倍数。
+     *                            另外，period * 每周期的区块数至少要大于最高不可逆区块高度。Amount：表示目标区块上待释放的金额。
+     * @return 锁仓方法
+     */
+    public static Function createRestrictingPlanFunction(String account, List<RestrictingPlan> restrictingPlanList) {
+        return new Function(
+                FunctionType.CREATE_RESTRICTINGPLAN_FUNC_TYPE,
+                Arrays.asList(new BytesType(Bech32.addressDecode(account)), new CustomStaticArray<>(restrictingPlanList)));
+    }
+
+    public static Function createRestrictingPlanFunctionX(String account, List<CreateRestrictingPlanTemplate.Plan> restrictingPlanList) {
+        return new Function(
+                FunctionType.CREATE_RESTRICTINGPLAN_FUNC_TYPE,
+                Arrays.asList(new BytesType(Bech32.addressDecode(account)), new CustomStaticArray<>(restrictingPlanList)));
+    }
+
+    public static Function createGetRestrictingInfoFunction(String account) {
+        return new Function(
+                FunctionType.GET_RESTRICTINGINFO_FUNC_TYPE,
+                Collections.singletonList(new BytesType(Bech32.addressDecode(account))));
+    }
 
     /**
      * 创建锁仓计划
@@ -115,7 +142,7 @@ public class RestrictPlanContractX extends BaseContract {
      * @param restrictingPlanList 锁仓计划列表
      * @return gas提供器
      */
-    public GasProvider getCreateRestrictingPlan(String account, List<RestrictingPlan> restrictingPlanList) throws IOException, NoSupportFunctionType, EstimateGasException {
+    public GasProvider getCreateRestrictingPlan(String account, List<RestrictingPlan> restrictingPlanList) throws IOException, EstimateGasException {
         Function function = createRestrictingPlanFunction(account, restrictingPlanList);
         return getDefaultGasProvider(function);
     }
@@ -146,30 +173,13 @@ public class RestrictPlanContractX extends BaseContract {
     }
 
     /**
-     * 创建锁仓计划方法
-     *
-     * @param account             锁仓释放到账账户
-     * @param restrictingPlanList 其中，Epoch：表示结算周期的倍数。与每个结算周期出块数的乘积表示在目标区块高度上释放锁定的资金。
-     *                            如果 account 是激励池地址，那么 period 值是 120（即，30*4） 的倍数。
-     *                            另外，period * 每周期的区块数至少要大于最高不可逆区块高度。Amount：表示目标区块上待释放的金额。
-     * @return 锁仓方法
-     */
-    private Function createRestrictingPlanFunction(String account, List<RestrictingPlan> restrictingPlanList) {
-        return new Function(
-                FunctionType.CREATE_RESTRICTINGPLAN_FUNC_TYPE,
-                Arrays.asList(new BytesType(Bech32.addressDecode(account)), new CustomStaticArray<>(restrictingPlanList)));
-    }
-
-    /**
      * 获取锁仓信息
      *
      * @param account 锁仓释放到账账户
      * @return 锁仓信息
      */
     public RemoteCall<CallResponse<RestrictingItem>> getRestrictingInfo(String account) {
-        Function function = new Function(
-                FunctionType.GET_RESTRICTINGINFO_FUNC_TYPE,
-                Collections.singletonList(new BytesType(Bech32.addressDecode(account))));
+        Function function = createGetRestrictingInfoFunction(account);
         return executeRemoteCallObjectValueReturn(function, RestrictingItem.class);
     }
 }

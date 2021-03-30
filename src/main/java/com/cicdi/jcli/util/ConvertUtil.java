@@ -1,8 +1,8 @@
 package com.cicdi.jcli.util;
 
-import com.alaya.bech32.Bech32;
-import com.alaya.crypto.Credentials;
-import com.alaya.tx.gas.GasProvider;
+import com.platon.bech32.Bech32;
+import com.platon.crypto.Credentials;
+import com.platon.tx.gas.GasProvider;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.template.BaseTemplate4Deserialize;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
@@ -50,7 +50,7 @@ public class ConvertUtil {
         return von2Hrp(gasPrice.multiply(gas));
     }
 
-    public static GasProvider genGasProvider(BigInteger gasLimit, BigInteger gasPrice) {
+    public static GasProvider createGasProvider(BigInteger gasLimit, BigInteger gasPrice) {
         return new GasProvider() {
             @Override
             public BigInteger getGasLimit() {
@@ -68,29 +68,7 @@ public class ConvertUtil {
         return new BigDecimal(vonValue).divide(BigDecimal.TEN.pow(18), MathContext.DECIMAL128);
     }
 
-    /**
-     * 格式化地址，例如将lax开头的地址转换为atp开头的，方便对多种钱包文件实现兼容
-     *
-     * @param address 原始地址
-     * @param hrp     地址前缀
-     * @return 符合地址前缀的格式化的地址
-     */
-    public static String formatHrpAddress(String address, String hrp) {
-        if (address.startsWith(hrp)) {
-            return address;
-        }
-        try {
-            String hexAddress = Bech32.addressDecodeHex(address);
-            return Bech32.addressEncode(hrp, hexAddress);
-        } catch (Exception e) {
-            return Bech32.addressEncode(hrp, address);
-        }
-    }
 
-    public static String formatHrpAddress(Credentials credentials, long chainId, String hrp) {
-        String hexAddress = Bech32.addressDecodeHex(credentials.getAddress(chainId));
-        return Bech32.addressEncode(hrp, hexAddress);
-    }
 
     /**
      * 将BaseTemplate4Deserialize转换为BaseTemplate4Serialize，方便后续的序列化
@@ -101,9 +79,9 @@ public class ConvertUtil {
      */
     public static BaseTemplate4Serialize deserialize2Serialize(BaseTemplate4Deserialize deserialize, NodeConfigModel nodeConfigModel) {
         return new BaseTemplate4Serialize(
-                ConvertUtil.formatHrpAddress(deserialize.getFrom(), nodeConfigModel.getHrp()),
+                AddressUtil.formatHrpAddress(deserialize.getFrom(), nodeConfigModel.getHrp()),
                 deserialize.getTo().stream().map(
-                        s -> ConvertUtil.formatHrpAddress(s, nodeConfigModel.getHrp())
+                        s -> AddressUtil.formatHrpAddress(s, nodeConfigModel.getHrp())
                 ).collect(Collectors.toList()),
                 deserialize.getData(),
                 deserialize.getNonce(),

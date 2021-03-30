@@ -1,10 +1,5 @@
 package com.cicdi.jcli.submodule.tx;
 
-import com.alaya.crypto.Credentials;
-import com.alaya.crypto.RawTransaction;
-import com.alaya.crypto.WalletUtils;
-import com.alaya.protocol.core.methods.response.TransactionReceipt;
-import com.alaya.utils.Numeric;
 import com.alibaba.fastjson.JSON;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -14,9 +9,12 @@ import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
-import com.google.zxing.Result;
+import com.platon.crypto.Credentials;
+import com.platon.crypto.RawTransaction;
+import com.platon.protocol.core.methods.response.TransactionReceipt;
+import com.platon.protocol.http.HttpService;
+import com.platon.utils.Numeric;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -31,9 +29,10 @@ import java.util.Scanner;
  * @date 2020/12/28
  */
 @Slf4j
+@SuppressWarnings("unused")
 @Parameters(commandNames = "tx_sendOffline", commandDescription = "发送已签名交易数据")
 public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--data", "-data"}, description = "已签名的交易data数据或者代签名二维码文件", required = true)
+    @Parameter(names = {"--data", "-data"}, description = "已签名的交易data数据或者待签名二维码文件", required = true)
     protected String data;
     @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址的钱包json文件", required = true)
     protected String address;
@@ -48,20 +47,18 @@ public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
      */
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        Assert.assertTrue(new File(address).isFile());
-
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
-        FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
+        File addressFile = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
+
         System.out.println("需要用户输入密码:");
         Scanner scanner = new Scanner(System.in);
         String password = scanner.nextLine();
-        Credentials credentials = WalletUtils.loadCredentials(password, address);
+        Credentials credentials = WalletUtil.loadCredentials(password, addressFile, nodeConfigModel.getHrp());
         BaseTemplate4Serialize fastTransferTemplate;
         File file = new File(data);
         List<String> hexValueList = new ArrayList<>();
         if (file.isFile()) {
-            Result result = QrUtil.readQrCodeImage(file);
-            fastTransferTemplate = JSON.parseObject(result.toString(), BaseTemplate4Serialize.class);
+            fastTransferTemplate = QrUtil.readQrCodeImage(file);
         } else {
             fastTransferTemplate = JSON.parseObject(data, BaseTemplate4Serialize.class);
         }
@@ -78,23 +75,16 @@ public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
                     Numeric.cleanHexPrefix(fastTransferTemplate.getData()));
             hexValueList.add(SendUtil.signData(rawTransaction, credentials, fastTransferTemplate.getChainId()));
         }
-
         if (fastTransferTemplate.isFast()) {
-            SendUtil.fastSendSingedData(hexValueList, fastHttpService);
+            SendUtil.fastSendSingedData(hexValueList, new FastHttpService(nodeConfigModel.getRpcAddress()));
             log.info("operation: sendOffline, mode: fast, from: {}, toAddressesNumber: {} , transactionContent: {}, nodeRpcAddress:{}",
                     credentials.getAddress(), hexValueList.size(), "", nodeConfigModel.getRpcAddress());
         } else {
             for (String signedData : hexValueList) {
-                String hash = SendUtil.sendSingedData(signedData, fastHttpService);
-
-                Assert.assertNotNull(hash);
+                String hash = SendUtil.sendSingedData(signedData, new HttpService(nodeConfigModel.getRpcAddress()));
 
                 TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, hash);
-                log.info("operation: sendOffline, mode: normal, from: {}, nodeRpcAddress: {},receipt: {}",
-                        credentials.getAddress(),
-                        nodeConfigModel.getRpcAddress(),
-                        receipt
-                );
+                log.info(TransactionReceiptUtil.handleTxReceipt(receipt));
             }
         }
         return Common.SUCCESS_STR;

@@ -1,10 +1,5 @@
 package com.cicdi.jcli.submodule.delegate;
 
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.contracts.ppos.dto.common.ErrorCode;
-import com.alaya.contracts.ppos.dto.resp.Node;
-import com.alaya.contracts.ppos.dto.resp.Reward;
-import com.alaya.protocol.Web3j;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -13,10 +8,14 @@ import com.cicdi.jcli.contractx.RewardContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.delegate.GetDelegateRewardTemplate;
+import com.cicdi.jcli.util.CallResponseUtil;
 import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ConfigUtil;
-import com.cicdi.jcli.util.JsonUtil;
 import com.cicdi.jcli.util.ParamUtil;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.contracts.ppos.dto.resp.Node;
+import com.platon.contracts.ppos.dto.resp.Reward;
+import com.platon.protocol.Web3j;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,7 +52,6 @@ public class GetDelegateRewardSubmodule extends AbstractSimpleSubmodule {
         CallResponse<List<Reward>> response = rcx.getDelegateReward(getDelegateRewardTemplate.getAddress(),
                 getDelegateRewardTemplate.getNodeIds()).send();
 
-        return response.isStatusOk() ?
-                "Data:\n" + JsonUtil.toPrettyJsonString(response.getData()) : Common.FAIL_STR + ":" + ErrorCode.getErrorMsg(response.getCode());
+        return CallResponseUtil.handleCallResponse(response);
     }
 }

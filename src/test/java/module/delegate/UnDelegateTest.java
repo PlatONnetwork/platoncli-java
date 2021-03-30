@@ -51,7 +51,7 @@ public class UnDelegateTest {
     @Test
     public void testOffline() {
         String[] argv = {"delegate_unDelegate", "-fast", "-d", "atp1zhe8zecq7evp897azxssudk4t9z0a7emp8fulx",
-                "-p", "param/delegate_unDelegate.json"
+                "-p", "param/delegate_unDelegate.json", "-o"
         };
         Main.main(argv);
     }
@@ -65,7 +65,7 @@ public class UnDelegateTest {
     @Test
     public void testSendOffline() {
         testOffline();
-        String pngPath = QrUtil.getDesktopPath() + "\\" + Main.result.split(":")[1];
+        String pngPath = QrUtil.getDesktopPath() + "\\" + Main.result.split("：")[1];
         String[] args = {
                 "tx_sendOffline", "-data", pngPath, "-d", TestCommon.rewardWalletDir
         };

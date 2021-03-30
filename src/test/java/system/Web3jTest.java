@@ -1,14 +1,12 @@
 package system;
 
-import com.alaya.contracts.ppos.dto.resp.Node;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.Web3jService;
-import com.alaya.protocol.core.methods.response.PlatonEvidences;
-import com.alaya.protocol.http.HttpService;
 import com.cicdi.jcli.contractx.NodeContractX;
 import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ConvertUtil;
-import com.cicdi.jcli.util.JsonUtil;
+import com.platon.contracts.ppos.dto.resp.Node;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.Web3jService;
+import com.platon.protocol.http.HttpService;
 import org.junit.Test;
 
 import java.math.BigInteger;

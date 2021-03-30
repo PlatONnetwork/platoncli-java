@@ -1,12 +1,5 @@
 package com.cicdi.jcli.submodule.delegate;
 
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.contracts.ppos.dto.common.ErrorCode;
-import com.alaya.contracts.ppos.utils.EncoderUtils;
-import com.alaya.crypto.Credentials;
-import com.alaya.crypto.WalletUtils;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.methods.response.TransactionReceipt;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -17,6 +10,12 @@ import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
+import com.platon.contracts.ppos.utils.EncoderUtils;
+import com.platon.crypto.Credentials;
+import com.platon.crypto.WalletUtils;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.methods.response.TransactionReceipt;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -28,6 +27,8 @@ import java.util.Collections;
  * @author haypo
  * @date 2021/1/8
  */
+@SuppressWarnings("unused")
+@Slf4j
 @Parameters(commandNames = "delegate_withdrawDelegateReward", commandDescription = "提取委托奖励")
 public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
@@ -47,32 +48,43 @@ public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
+        GasPriceUtil.verifyGasPrice(gasPrice);
+
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         Web3j web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
+        String hrpAddress = AddressUtil.readAddress(address, nodeConfigModel.getHrp());
+
+        //若待领取收益为0则提醒
+        if (WalletUtil.getDelegateReward(web3j, nodeConfigModel.getHrp(), hrpAddress).compareTo(BigInteger.ZERO) == 0) {
+            log.warn("Un-withdrew delegate reward is zero, continue? Y/N");
+            if (!StringUtil.readYesOrNo()) {
+                return Common.CANCEL_STR;
+            }
+        }
 
         if (isOnline()) {
-            Credentials credentials = WalletUtils.loadCredentials(StringUtil.readPassword(), address);
+            File addressFile = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
+            Credentials credentials = WalletUtil.loadCredentials(StringUtil.readPassword(), addressFile,nodeConfigModel.getHrp());
             RewardContractX rc = RewardContractX.load(web3j, credentials, nodeConfigModel.getChainId(), nodeConfigModel.getHrp());
             if (fast) {
+                //快速发送交易
                 rc.fastWithdrawDelegateReward(
                         nodeConfigModel.getRpcAddress(),
                         credentials,
                         nodeConfigModel.getChainId(), gasLimit, gasPrice,
-                        NonceUtil.getNonce(web3j, ParamUtil.parseAddress(address, nodeConfigModel.getHrp()), nodeConfigModel.getHrp())
+                        NonceUtil.getNonce(web3j, hrpAddress, nodeConfigModel.getHrp())
                 );
                 return Common.SUCCESS_STR;
             } else {
-                TransactionReceipt transactionReceipt = rc.withdrawDelegateReward(ConvertUtil.genGasProvider(gasLimit, gasPrice)).send().getTransactionReceipt();
-                TransactionResponse response = getResponseFromTransactionReceipt(transactionReceipt);
-                return response.isStatusOk() ? Common.SUCCESS_STR : Common.FAIL_STR + ":" + ErrorCode.getErrorMsg(response.getCode());
+                TransactionReceipt transactionReceipt = rc.withdrawDelegateReward(ConvertUtil.createGasProvider(gasLimit, gasPrice)).send().getTransactionReceipt();
+                return TransactionReceiptUtil.handleTxReceipt(transactionReceipt);
             }
         } else {
-            String parsedAddress = ParamUtil.parseAddress(address, nodeConfigModel.getHrp());
             BaseTemplate4Serialize baseTemplate4Serialize = new BaseTemplate4Serialize(
-                    parsedAddress,
+                    hrpAddress,
                     Collections.singletonList(NetworkParametersUtil.getPposContractAddressOfReward(nodeConfigModel.getHrp())),
                     EncoderUtils.functionEncoder(RewardContractX.createWithdrawDelegateRewardFunction()),
-                    NonceUtil.getNonce(web3j, parsedAddress, nodeConfigModel.getHrp()),
+                    NonceUtil.getNonce(web3j, hrpAddress, nodeConfigModel.getHrp()),
                     BigInteger.ZERO,
                     nodeConfigModel.getChainId(),
                     gasLimit,

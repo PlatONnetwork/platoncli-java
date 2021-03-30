@@ -1,27 +1,27 @@
 package com.cicdi.jcli.contractx;
 
-import com.alaya.abi.solidity.datatypes.BytesType;
-import com.alaya.abi.solidity.datatypes.Utf8String;
-import com.alaya.abi.solidity.datatypes.generated.Uint32;
-import com.alaya.abi.solidity.datatypes.generated.Uint8;
-import com.alaya.contracts.ppos.BaseContract;
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.contracts.ppos.dto.common.FunctionType;
-import com.alaya.contracts.ppos.dto.enums.VoteOption;
-import com.alaya.contracts.ppos.dto.resp.GovernParam;
-import com.alaya.contracts.ppos.dto.resp.Proposal;
-import com.alaya.contracts.ppos.dto.resp.TallyResult;
-import com.alaya.crypto.Credentials;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.RemoteCall;
-import com.alaya.protocol.core.methods.response.bean.ProgramVersion;
-import com.alaya.tx.TransactionManager;
-import com.alaya.tx.gas.GasProvider;
-import com.alaya.utils.Numeric;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.util.NetworkParametersUtil;
+import com.platon.abi.solidity.datatypes.BytesType;
+import com.platon.abi.solidity.datatypes.Utf8String;
+import com.platon.abi.solidity.datatypes.generated.Uint32;
+import com.platon.abi.solidity.datatypes.generated.Uint8;
+import com.platon.contracts.ppos.BaseContract;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.contracts.ppos.dto.TransactionResponse;
+import com.platon.contracts.ppos.dto.common.FunctionType;
+import com.platon.contracts.ppos.dto.enums.VoteOption;
+import com.platon.contracts.ppos.dto.resp.GovernParam;
+import com.platon.contracts.ppos.dto.resp.Proposal;
+import com.platon.contracts.ppos.dto.resp.TallyResult;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.RemoteCall;
+import com.platon.protocol.core.methods.response.bean.ProgramVersion;
+import com.platon.tx.TransactionManager;
+import com.platon.tx.gas.GasProvider;
+import com.platon.utils.Numeric;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public class ProposalContractX extends BaseContract {
     }
 
     private ProposalContractX(String contractAddress, long chainId, Web3j web3j, Credentials credentials) {
-        super(contractAddress, chainId, web3j, credentials);
+        super(contractAddress, web3j, credentials);
     }
 
     private ProposalContractX(String contractAddress, Web3j web3j, TransactionManager transactionManager) {
@@ -95,6 +95,9 @@ public class ProposalContractX extends BaseContract {
     }
 
     public static Function createDeclareVersionFunction(ProgramVersion programVersion, String verifier) {
+        if (programVersion == null) {
+            throw new RuntimeException("无法获得节点版本，可能此功能被官方rpc关闭，尝试用本地节点替代");
+        }
         return new Function(FunctionType.DECLARE_VERSION_FUNC_TYPE,
                 Arrays.asList(new BytesType(Numeric.hexStringToByteArray(verifier)),
                         new Uint32(programVersion.getProgramVersion()),
@@ -164,10 +167,12 @@ public class ProposalContractX extends BaseContract {
         Function function = createSubmitProposalFunction(proposal);
         return executeRemoteCallTransaction(function);
     }
+
     public RemoteCall<TransactionResponse> submitProposal(Proposal proposal, GasProvider gasProvider) {
         Function function = createSubmitProposalFunction(proposal);
-        return executeRemoteCallTransaction(function,gasProvider);
+        return executeRemoteCallTransaction(function, gasProvider);
     }
+
     /**
      * 查询已生效的版本
      *

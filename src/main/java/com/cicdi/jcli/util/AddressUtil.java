@@ -1,12 +1,11 @@
 package com.cicdi.jcli.util;
 
-import com.alaya.bech32.Bech32;
-import com.alaya.crypto.Address;
-import com.alaya.crypto.WalletFile;
-import com.alaya.utils.Files;
-import com.alaya.utils.JSONUtil;
 import com.cicdi.jcli.model.OldWalletFile;
 import com.cicdi.jcli.model.Tuple;
+import com.platon.bech32.Bech32;
+import com.platon.crypto.WalletFile;
+import com.platon.utils.Files;
+import com.platon.utils.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -37,8 +36,10 @@ public class AddressUtil {
      */
     public static String formatHrpAddress(String address, String hrp) {
         if (address.startsWith(hrp)) {
+            log.info("钱包文件地址：{}，匹配hrp：{}", address, hrp);
             return address;
         }
+        log.warn("钱包文件地址：{}，不匹配hrp：{}，将自动进行转换！", address, hrp);
         try {
             String hexAddress = Bech32.addressDecodeHex(address);
             return Bech32.addressEncode(hrp, hexAddress);
@@ -47,7 +48,20 @@ public class AddressUtil {
         }
     }
 
-    public static String getFileNameFromAddress(String hrp, String address) throws FileNotFoundException {
+    public static File getFileFromAddress(String hrp, String address) throws FileNotFoundException {
+        if (new File(address).isFile()) {
+            return new File(address);
+        }
+        List<Tuple<String, File>> tuples = readAddressFileFromDir(hrp, "./");
+        for (Tuple<String, File> t : tuples) {
+            if (t.getA().equals(address)) {
+                return t.getB();
+            }
+        }
+        throw new FileNotFoundException("can not find wallet file matches address: " + address);
+    }
+
+    public static String getFilenameFromAddress(String hrp, String address) throws FileNotFoundException {
         List<Tuple<String, String>> tuples = readAddressFromDir(hrp);
         for (Tuple<String, String> t : tuples) {
             if (t.getA().equals(address)) {
@@ -60,8 +74,8 @@ public class AddressUtil {
     public static List<Tuple<String, File>> readAddressFileFromDir(String hrp, String dir) {
         File root = new File(dir);
         List<Tuple<String, File>> addressFileTuple = new ArrayList<>();
-        File[] files = root.listFiles(file -> file.getName().contains("json") ||
-                file.getName().contains("JSON"));
+        File[] files = root.listFiles(file -> file.isFile() && file.getName().endsWith(".json") ||
+                file.getName().endsWith(".json"));
         if (files != null) {
             for (File file : files) {
                 try {
@@ -76,10 +90,17 @@ public class AddressUtil {
         return addressFileTuple;
     }
 
+    /**
+     * Tuple<String, String> address,filename
+     * 从jar所在文件夹下读取钱包地址和钱包名称
+     *
+     * @param hrp hrp值
+     * @return 钱包地址, 钱包名称的元组列表
+     */
     public static List<Tuple<String, String>> readAddressFromDir(String hrp) {
         File root = new File("./");
         List<Tuple<String, String>> addressList = new ArrayList<>();
-        File[] files = root.listFiles(file -> file.getName().contains("json") ||
+        File[] files = root.listFiles(file -> file.isFile() && file.getName().contains("json") ||
                 file.getName().contains("JSON"));
         if (files != null) {
             for (File file : files) {
@@ -95,21 +116,20 @@ public class AddressUtil {
         return addressList;
     }
 
-    public static String readAddressFromFile(File file, String hrp) throws IOException {
+    public static String readAddress(String address, String hrp) throws IOException {
+        if (new File(address).isFile()) {
+            return readAddressFromFile(new File(address), hrp);
+        }
+        return address;
+    }
+
+    private static String readAddressFromFile(File file, String hrp) throws IOException {
         String fileContent = Files.readString(file);
         WalletFile walletFile;
         Matcher matcher = OLD_ADDRESS_PATTERN.matcher(fileContent);
         if (!matcher.find()) {
-            walletFile = JsonUtil.readFile(file, WalletFile.class);
-            Address addressObject = walletFile.getAddress();
-            String mainNet = addressObject.getMainnet();
-            if (mainNet.startsWith(hrp)) {
-                return mainNet;
-            }
-            if (addressObject.getTestnet().startsWith(hrp)) {
-                return fileContent;
-            }
-            throw new RuntimeException("wallet file not match hrp");
+            walletFile = JsonUtil.readFile(file, WalletFile.class, null);
+            return formatHrpAddress(walletFile.getAddress(), hrp);
         } else {
             OldWalletFile oldWalletFile = JSONUtil.parseObject(fileContent, OldWalletFile.class);
             return AddressUtil.formatHrpAddress(oldWalletFile.getAddress(), hrp);

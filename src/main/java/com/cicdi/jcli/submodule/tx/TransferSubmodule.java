@@ -1,12 +1,5 @@
 package com.cicdi.jcli.submodule.tx;
 
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.crypto.CipherException;
-import com.alaya.crypto.Credentials;
-import com.alaya.crypto.WalletUtils;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.methods.response.TransactionReceipt;
-import com.alaya.protocol.exceptions.TransactionException;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -16,6 +9,11 @@ import com.cicdi.jcli.template.BaseTemplate4Deserialize;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
 import com.google.zxing.WriterException;
+import com.platon.crypto.CipherException;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.methods.response.TransactionReceipt;
+import com.platon.protocol.exceptions.TransactionException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -29,6 +27,7 @@ import java.math.BigInteger;
  * @date 2020/12/23
  */
 @Slf4j
+@SuppressWarnings("unused")
 @Parameters(commandNames = "tx_transfer", commandDescription = "发送交易")
 public class TransferSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
@@ -56,16 +55,33 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
         }
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         BaseTemplate4Deserialize template = ParamUtil.readParam(param, BaseTemplate4Deserialize.class);
+        BigInteger vonValue = ConvertUtil.hrp2Von(template.getValue());
+        if (vonValue.compareTo(BigInteger.ZERO) < 0) {
+            throw new RuntimeException("transfer value can not below zero");
+        }
+        if (vonValue.compareTo(BigInteger.ZERO) == 0) {
+            System.out.println("transfer value is zero, continue? Y/N");
+            if (!StringUtil.readYesOrNo()) {
+                return Common.CANCEL_STR;
+            }
+        }
+
+        //设置gas
         BigInteger gasLimit = template.getGasLimit() == null ? Common.MID_GAS_LIMIT : template.getGasLimit();
         BigInteger gasPrice = template.getGasPrice() == null ? Common.MID_GAS_PRICE : template.getGasPrice();
+
+        //校验gasPrice
+        GasPriceUtil.verifyGasPrice(gasPrice);
+
         if (!offline && new File(address).isFile()) {
+            //在线交易
             String password = StringUtil.readPassword();
-            Credentials credentials = WalletUtils.loadCredentials(password, address);
+            Credentials credentials = WalletUtil.loadCredentials(password, address, nodeConfigModel.getHrp());
             if (fast) {
                 SendUtil.fastSendBatch(
                         nodeConfigModel.getRpcAddress(),
                         credentials,
-                        ConvertUtil.hrp2Von(template.getValue()),
+                        vonValue,
                         template.getTo(),
                         template.getData(),
                         nodeConfigModel.getChainId(),
@@ -73,15 +89,17 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
                         gasPrice,
                         nodeConfigModel.getHrp()
                 );
+                return Common.SUCCESS_STR;
             } else {
                 Web3j web3j = createWeb3j();
+                boolean flag = true;
                 for (String to : template.getTo()) {
                     try {
                         String platonSendTransaction = SendUtil.send(
                                 nodeConfigModel.getHrp(),
                                 to,
                                 template.getData(),
-                                template.getValue(),
+                                vonValue,
                                 gasPrice,
                                 gasLimit,
                                 web3j,
@@ -89,14 +107,17 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
                                 nodeConfigModel.getChainId()
                         );
                         TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, platonSendTransaction);
-                        TransactionResponse response = getResponseFromTransactionReceipt(receipt);
-                        log.info(response.toString());
+                        log.info(TransactionReceiptUtil.handleTxReceipt(receipt));
+                        if (!receipt.isStatusOK()) {
+                            flag = false;
+                        }
                     } catch (Exception e) {
-                        log.error("tx send failed: " + e.getMessage(), e);
+                        log.error(e.getMessage(), e);
+                        throw new RuntimeException("The transaction send failed");
                     }
                 }
+                return flag ? Common.SUCCESS_STR : Common.FAIL_STR;
             }
-            return Common.SUCCESS_STR;
         } else {
             BaseTemplate4Serialize serialize = ConvertUtil.deserialize2Serialize(template, nodeConfigModel);
             serialize.setChainId(nodeConfigModel.getChainId());

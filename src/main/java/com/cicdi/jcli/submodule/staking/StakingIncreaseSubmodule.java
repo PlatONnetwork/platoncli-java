@@ -1,13 +1,10 @@
 package com.cicdi.jcli.submodule.staking;
 
-import com.alaya.crypto.CipherException;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.staking.StakingIncreaseTemplate;
 import com.cicdi.jcli.util.contract.staking.StakingIncreaseUtil;
-
-import java.io.IOException;
 
 /**
  * 增持质押
@@ -19,7 +16,7 @@ import java.io.IOException;
 public class StakingIncreaseSubmodule extends AbstractComplexSubmodule<StakingIncreaseTemplate, StakingIncreaseUtil> {
 
     @Override
-    public FunctionUtil<StakingIncreaseUtil> function() throws IOException, CipherException {
+    public FunctionUtil<StakingIncreaseUtil> function() {
         return () -> new StakingIncreaseUtil(isOnline(), address, config, param, StakingIncreaseTemplate.class);
     }
 

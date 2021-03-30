@@ -1,7 +1,7 @@
 package com.cicdi.jcli.submodule.tx;
 
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.methods.response.Transaction;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.methods.response.Transaction;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;

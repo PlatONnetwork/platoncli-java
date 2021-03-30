@@ -1,6 +1,6 @@
 package com.cicdi.jcli.model;
 
-import com.alaya.crypto.WalletFile;
+import com.platon.crypto.WalletFile;
 import lombok.Data;
 
 /**

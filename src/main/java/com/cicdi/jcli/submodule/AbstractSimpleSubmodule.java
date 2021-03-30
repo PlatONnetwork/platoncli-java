@@ -1,20 +1,20 @@
 package com.cicdi.jcli.submodule;
 
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.contracts.ppos.utils.EncoderUtils;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.methods.response.Log;
-import com.alaya.protocol.core.methods.response.TransactionReceipt;
-import com.alaya.protocol.exceptions.TransactionException;
-import com.alaya.rlp.solidity.RlpDecoder;
-import com.alaya.rlp.solidity.RlpList;
-import com.alaya.rlp.solidity.RlpString;
-import com.alaya.rlp.solidity.RlpType;
-import com.alaya.tx.response.PollingTransactionReceiptProcessor;
-import com.alaya.tx.response.TransactionReceiptProcessor;
-import com.alaya.utils.Numeric;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.contracts.ppos.dto.TransactionResponse;
+import com.platon.contracts.ppos.utils.EncoderUtils;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.methods.response.Log;
+import com.platon.protocol.core.methods.response.TransactionReceipt;
+import com.platon.protocol.exceptions.TransactionException;
+import com.platon.rlp.solidity.RlpDecoder;
+import com.platon.rlp.solidity.RlpList;
+import com.platon.rlp.solidity.RlpString;
+import com.platon.rlp.solidity.RlpType;
+import com.platon.tx.response.PollingTransactionReceiptProcessor;
+import com.platon.tx.response.TransactionReceiptProcessor;
+import com.platon.utils.Numeric;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -34,10 +34,11 @@ import java.util.List;
  * @author haypo
  * @date 2020/12/23
  */
+@SuppressWarnings("unused")
 public abstract class AbstractSimpleSubmodule implements ISubmodule {
     @Parameter(names = {"--help", "-help"}, help = true, description = "帮助")
     protected boolean help;
-    @Parameter(names = {"--config", "-config", "-c"}, description = "指定交易发送的ip和端口的配置文件，全局配置network文件中若配置，可以通过指定配置中名称获取ip和prot，若未填写network配置，而目录下没有节点，则报错；若没有节点，但是有多个配置节点，提示用户指明交易发送节点")
+    @Parameter(names = {"--config", "-config", "-c"}, description = "指定交易发送的ip和端口的配置文件，全局配置network文件中若配置，可以通过指定配置中名称获取ip和port，若未填写network配置，而目录下没有节点，则报错；若没有节点，但是有多个配置节点，提示用户指明交易发送节点")
     protected String config = Common.DEFAULT_CONFIG;
 
     public static TransactionReceipt waitForTransactionReceipt(NodeConfigModel nodeConfigModel, String hash) throws IOException, TransactionException {
@@ -58,29 +59,6 @@ public abstract class AbstractSimpleSubmodule implements ISubmodule {
 
     public static <T> String genFailString(CallResponse<T> callResponse) {
         return Common.FAIL_STR + ":" + callResponse.getErrMsg();
-    }
-
-    protected static TransactionResponse getResponseFromTransactionReceipt(TransactionReceipt transactionReceipt) throws TransactionException {
-        List<Log> logs = transactionReceipt.getLogs();
-        if (logs == null || logs.isEmpty()) {
-            throw new TransactionException("TransactionReceipt logs is empty");
-        }
-
-        String logData = logs.get(0).getData();
-        if (null == logData || "".equals(logData)) {
-            throw new TransactionException("TransactionReceipt log data is empty");
-        }
-
-        RlpList rlp = RlpDecoder.decode(Numeric.hexStringToByteArray(logData));
-        List<RlpType> rlpList = ((RlpList) (rlp.getValues().get(0))).getValues();
-        String decodedStatus = new String(((RlpString) rlpList.get(0)).getBytes());
-        int statusCode = Integer.parseInt(decodedStatus);
-
-        TransactionResponse transactionResponse = new TransactionResponse();
-        transactionResponse.setCode(statusCode);
-        transactionResponse.setTransactionReceipt(transactionReceipt);
-
-        return transactionResponse;
     }
 
     /**
@@ -107,7 +85,7 @@ public abstract class AbstractSimpleSubmodule implements ISubmodule {
             Function function, NodeConfigModel nodeConfigModel, Web3j web3j, String address,
             BigInteger gasLimit, BigInteger gasPrice, Boolean fast) throws IOException {
         String to = NetworkParametersUtil.getPposContractAddressOfProposal(nodeConfigModel.getHrp());
-        String parsedAddress = ParamUtil.parseAddress(address, nodeConfigModel.getHrp());
+        String parsedAddress =AddressUtil.readAddress(address, nodeConfigModel.getHrp());
         BigInteger nonce = NonceUtil.getNonce(web3j, parsedAddress, nodeConfigModel.getHrp());
         String data = EncoderUtils.functionEncoder(function);
         return new BaseTemplate4Serialize(

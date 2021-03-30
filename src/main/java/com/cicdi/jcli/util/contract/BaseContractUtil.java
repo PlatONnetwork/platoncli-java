@@ -1,22 +1,19 @@
 package com.cicdi.jcli.util.contract;
 
 
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.exception.NoSupportFunctionType;
-import com.alaya.contracts.ppos.utils.EncoderUtils;
-import com.alaya.crypto.CipherException;
-import com.alaya.crypto.Credentials;
-import com.alaya.crypto.WalletUtils;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.exceptions.TransactionException;
-import com.alaya.tx.RawTransactionManager;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.util.*;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.utils.EncoderUtils;
+import com.platon.crypto.CipherException;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.exceptions.TransactionException;
+import com.platon.tx.RawTransactionManager;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -37,8 +34,8 @@ public abstract class BaseContractUtil<T> {
         web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
         if (isOnline) {
             String password = StringUtil.readPassword();
-            credentials = WalletUtils.loadCredentials(password, address);
-            rawTransactionManager = new RawTransactionManager(web3j, credentials, nodeConfigModel.getChainId());
+            credentials = WalletUtil.loadCredentials(password, address, nodeConfigModel.getHrp());
+            rawTransactionManager = new RawTransactionManager(web3j, credentials);
         }
     }
 
@@ -76,7 +73,7 @@ public abstract class BaseContractUtil<T> {
                 getPposContractAddress(),
                 data,
                 //合约调用一般不发送币
-                BigDecimal.ZERO,
+                BigInteger.ZERO,
                 gasPrice,
                 gasLimit,
                 web3j,
@@ -90,7 +87,7 @@ public abstract class BaseContractUtil<T> {
      *
      * @throws IOException 会抛出一些异常
      */
-    public void fastSendTransaction(BigInteger gasLimit, BigInteger gasPrice) throws IOException, NoSupportFunctionType {
+    public void fastSendTransaction(BigInteger gasLimit, BigInteger gasPrice) throws IOException {
         FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
         Web3j web3j = Web3j.build(fastHttpService);
         Function function = createFunction();

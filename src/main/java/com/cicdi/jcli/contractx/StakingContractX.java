@@ -1,23 +1,23 @@
 package com.cicdi.jcli.contractx;
 
-import com.alaya.abi.solidity.datatypes.BytesType;
-import com.alaya.abi.solidity.datatypes.generated.Uint16;
-import com.alaya.abi.solidity.datatypes.generated.Uint256;
-import com.alaya.contracts.ppos.BaseContract;
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.contracts.ppos.dto.common.FunctionType;
-import com.alaya.contracts.ppos.dto.enums.StakingAmountType;
-import com.alaya.contracts.ppos.dto.req.StakingParam;
-import com.alaya.contracts.ppos.dto.req.UpdateStakingParam;
-import com.alaya.contracts.ppos.dto.resp.Node;
-import com.alaya.crypto.Credentials;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.RemoteCall;
-import com.alaya.tx.TransactionManager;
-import com.alaya.tx.gas.GasProvider;
-import com.alaya.utils.Numeric;
+import com.platon.abi.solidity.datatypes.BytesType;
+import com.platon.abi.solidity.datatypes.generated.Uint16;
+import com.platon.abi.solidity.datatypes.generated.Uint256;
+import com.platon.contracts.ppos.BaseContract;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.contracts.ppos.dto.TransactionResponse;
+import com.platon.contracts.ppos.dto.common.FunctionType;
+import com.platon.contracts.ppos.dto.enums.StakingAmountType;
+import com.platon.contracts.ppos.dto.req.StakingParam;
+import com.platon.contracts.ppos.dto.req.UpdateStakingParam;
+import com.platon.contracts.ppos.dto.resp.Node;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.RemoteCall;
+import com.platon.tx.TransactionManager;
+import com.platon.tx.gas.GasProvider;
+import com.platon.utils.Numeric;
 import com.cicdi.jcli.util.NetworkParametersUtil;
 
 import java.math.BigInteger;
@@ -37,7 +37,7 @@ public class StakingContractX extends BaseContract {
     }
 
     private StakingContractX(String contractAddress, long chainId, Web3j web3j, Credentials credentials) {
-        super(contractAddress, chainId, web3j, credentials);
+        super(contractAddress, web3j, credentials);
     }
 
     private StakingContractX(String contractAddress, Web3j web3j, TransactionManager transactionManager) {

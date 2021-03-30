@@ -1,7 +1,7 @@
 package com.cicdi.jcli.submodule.staking;
 
-import com.alaya.contracts.ppos.dto.resp.Node;
-import com.alaya.protocol.Web3j;
+import com.platon.contracts.ppos.dto.resp.Node;
+import com.platon.protocol.Web3j;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.contractx.NodeContractX;

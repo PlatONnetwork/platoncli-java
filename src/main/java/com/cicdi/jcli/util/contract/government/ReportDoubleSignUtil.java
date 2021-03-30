@@ -1,8 +1,8 @@
 package com.cicdi.jcli.util.contract.government;
 
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.common.DuplicateSignType;
-import com.alaya.crypto.CipherException;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.common.DuplicateSignType;
+import com.platon.crypto.CipherException;
 import com.cicdi.jcli.contractx.SlashContractX;
 import com.cicdi.jcli.template.government.ReportDoubleSignTemplate;
 import com.cicdi.jcli.util.NetworkParametersUtil;

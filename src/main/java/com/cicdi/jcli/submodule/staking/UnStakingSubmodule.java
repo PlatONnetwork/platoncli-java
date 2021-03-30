@@ -1,13 +1,10 @@
 package com.cicdi.jcli.submodule.staking;
 
-import com.alaya.crypto.CipherException;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.staking.StakingUnStakingTemplate;
 import com.cicdi.jcli.util.contract.staking.StakingUnStakingUtil;
-
-import java.io.IOException;
 
 /**
  * 退出验证人
@@ -19,7 +16,7 @@ import java.io.IOException;
 public class UnStakingSubmodule extends AbstractComplexSubmodule<StakingUnStakingTemplate, StakingUnStakingUtil> {
 
     @Override
-    public FunctionUtil<StakingUnStakingUtil> function() throws IOException, CipherException {
+    public FunctionUtil<StakingUnStakingUtil> function() {
         return () -> new StakingUnStakingUtil(isOnline(), address, config, param, StakingUnStakingTemplate.class);
     }
 

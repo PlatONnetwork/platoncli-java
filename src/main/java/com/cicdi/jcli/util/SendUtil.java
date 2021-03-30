@@ -1,22 +1,22 @@
 package com.cicdi.jcli.util;
 
-import com.alaya.crypto.Credentials;
-import com.alaya.crypto.Hash;
-import com.alaya.crypto.RawTransaction;
-import com.alaya.crypto.TransactionEncoder;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.Request;
-import com.alaya.protocol.core.methods.response.PlatonSendTransaction;
-import com.alaya.protocol.exceptions.TransactionException;
-import com.alaya.tx.exceptions.TxHashMismatchException;
-import com.alaya.utils.Numeric;
-import com.alaya.utils.TxHashVerifier;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.service.FastService;
+import com.platon.crypto.Credentials;
+import com.platon.crypto.Hash;
+import com.platon.crypto.RawTransaction;
+import com.platon.crypto.TransactionEncoder;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.Request;
+import com.platon.protocol.core.methods.response.PlatonSendTransaction;
+import com.platon.protocol.exceptions.TransactionException;
+import com.platon.protocol.http.HttpService;
+import com.platon.tx.exceptions.TxHashMismatchException;
+import com.platon.utils.Numeric;
+import com.platon.utils.TxHashVerifier;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 发送交易的工具类
  *
- * @author renhui
+ * @author haypo
  * @date 2020/6/30
  */
 @Slf4j
@@ -38,7 +38,7 @@ public class SendUtil {
      * @param hrp         hrp，币的单位
      * @param to          接收方地址
      * @param data        交易数据
-     * @param hrpValue    发送金额，单位为hrp
+     * @param vonValue    发送金额，单位为von
      * @param gasPrice    gas价格
      * @param gasLimit    gas限制
      * @param web3j       web3j
@@ -51,24 +51,29 @@ public class SendUtil {
     public static String send(String hrp,
                               String to,
                               String data,
-                              BigDecimal hrpValue,
+                              BigInteger vonValue,
                               BigInteger gasPrice,
                               BigInteger gasLimit,
                               Web3j web3j,
                               Credentials credentials,
                               Long chainId
     ) throws IOException, TransactionException {
-        BigInteger nonce = NonceUtil.getNonce(web3j, credentials.getAddress(chainId), hrp);
+        BigInteger nonce = NonceUtil.getNonce(web3j, credentials.getAddress(), hrp);
         RawTransaction rawTransaction = RawTransaction.createTransaction(
                 nonce,
                 gasPrice,
                 gasLimit,
                 to,
-                ConvertUtil.hrp2Von(hrpValue),
+                vonValue,
                 Numeric.cleanHexPrefix(StringUtil.isBlank(data) ? "" : data));
         String signedData = SendUtil.signData(rawTransaction, credentials, chainId);
 
         PlatonSendTransaction ethSendTransaction = web3j.platonSendRawTransaction(signedData).send();
+
+        if (ethSendTransaction != null && ethSendTransaction.hasError()) {
+            throw new RuntimeException("Error processing transaction request: "
+                    + ethSendTransaction.getError().getMessage());
+        }
 
         if (ethSendTransaction != null && !ethSendTransaction.hasError()) {
             String txHashLocal = Hash.sha3(signedData);
@@ -77,10 +82,11 @@ public class SendUtil {
                 throw new TxHashMismatchException(txHashLocal, txHashRemote);
             }
         }
+
         if (ethSendTransaction != null) {
             return ethSendTransaction.getTransactionHash();
         } else {
-            throw new NullPointerException("no response!");
+            throw new TransactionException("no response!");
         }
     }
 
@@ -210,7 +216,7 @@ public class SendUtil {
      * @param web3jService web3j对象
      * @return 交易hash
      */
-    public static String sendSingedData(String hexValue, FastHttpService web3jService) throws IOException {
+    public static String sendSingedData(String hexValue, HttpService web3jService) throws IOException {
         PlatonSendTransaction platonSendTransaction = Web3j.build(web3jService).platonSendRawTransaction(hexValue).send();
         if (platonSendTransaction.getError() != null) {
             throw new RuntimeException(platonSendTransaction.getError().getMessage());

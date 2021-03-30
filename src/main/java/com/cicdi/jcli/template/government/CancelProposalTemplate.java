@@ -1,9 +1,6 @@
 package com.cicdi.jcli.template.government;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.math.BigInteger;
 
@@ -18,12 +15,8 @@ import java.math.BigInteger;
  */
 @Data
 public class CancelProposalTemplate {
-    @JsonProperty(required = true)
     private String verifier;
-    @JsonProperty(required = true)
     private String piPid;
-    @JsonProperty(required = true)
     private BigInteger endVotingRound;
-    @JsonProperty(required = true)
     private String canceledProposalId;
 }

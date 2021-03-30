@@ -1,8 +1,8 @@
 package com.cicdi.jcli.util.contract.staking;
 
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.enums.StakingAmountType;
-import com.alaya.crypto.CipherException;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.enums.StakingAmountType;
+import com.platon.crypto.CipherException;
 import com.cicdi.jcli.contractx.StakingContractX;
 import com.cicdi.jcli.template.staking.StakingIncreaseTemplate;
 import com.cicdi.jcli.util.ConvertUtil;

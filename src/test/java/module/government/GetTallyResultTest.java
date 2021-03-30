@@ -10,7 +10,7 @@ import org.junit.Test;
 public class GetTallyResultTest {
     @Test
     public void test() {
-        String[] args = "government_getTallyResult -pid 0xf61e717687fb76ef097b7078f9ea6723dd30926ec754ffc4db266b57461b1011".split(" ");
+        String[] args = "government_getTallyResult -pid 0x81a704420dfdafb9056ad1b85066d896899186dac4ce5f72753c8e74131841bc".split(" ");
         Main.main(args);
     }
 }

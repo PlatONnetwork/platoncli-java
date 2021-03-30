@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "ParamProposalTemplate",
+  "description": "参数提案",
+  "type": "object",
+  "properties": {
+    "verifier": {
+      "description": "提交提案的验证人，nodeId",
+      "type": "string"
+    },
+    "piPid": {
+      "description": "PIPID",
+      "type": "string"
+    },
+    "module": {
+      "description": "参数模块",
+      "type": "string"
+    },
+    "name": {
+      "description": "参数名称",
+      "type": "string"
+    },
+    "newValue": {
+      "description": "参数新值",
+      "type": "string"
+    }
+  },
+  "required": [
+    "verifier",
+    "piPid",
+    "module",
+    "name",
+    "newValue"
+  ]
+}

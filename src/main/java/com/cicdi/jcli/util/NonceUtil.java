@@ -1,9 +1,9 @@
 package com.cicdi.jcli.util;
 
-import com.alaya.crypto.Credentials;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.DefaultBlockParameterName;
-import com.alaya.protocol.core.methods.response.PlatonGetTransactionCount;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.DefaultBlockParameterName;
+import com.platon.protocol.core.methods.response.PlatonGetTransactionCount;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -26,16 +26,7 @@ public class NonceUtil {
     public synchronized static BigInteger getNonce(Web3j web3j, Credentials credentials, String hrp) throws IOException {
         //需要对地址进行标准格式化
         String address = credentials.getAddress();
-        String formattedAddress = ConvertUtil.formatHrpAddress(address, hrp);
-        PlatonGetTransactionCount count = web3j.platonGetTransactionCount(formattedAddress, DefaultBlockParameterName.PENDING).send();
-        if (count.getError() != null) {
-            throw new RuntimeException(count.getError().getMessage());
-        }
-        if (count.getTransactionCount().intValue() == 0) {
-            count = web3j.platonGetTransactionCount(
-                    address, DefaultBlockParameterName.LATEST).send();
-        }
-        return count.getTransactionCount();
+        return getNonce(web3j, address, hrp);
     }
 
     /**
@@ -48,7 +39,7 @@ public class NonceUtil {
      */
     public synchronized static BigInteger getNonce(Web3j web3j, String address, String hrp) throws IOException {
         //需要对地址进行标准格式化
-        String formattedAddress = ConvertUtil.formatHrpAddress(address, hrp);
+        String formattedAddress = AddressUtil.formatHrpAddress(address, hrp);
         PlatonGetTransactionCount count = web3j.platonGetTransactionCount(formattedAddress, DefaultBlockParameterName.PENDING).send();
         if (count.getError() != null) {
             throw new RuntimeException(count.getError().getMessage());

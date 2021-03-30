@@ -1,6 +1,6 @@
 package com.cicdi.jcli.util;
 
-import com.alaya.bech32.Bech32;
+import com.platon.bech32.Bech32;
 import lombok.Data;
 
 /**

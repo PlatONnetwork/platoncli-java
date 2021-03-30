@@ -1,7 +1,5 @@
 package com.cicdi.jcli.submodule.government;
 
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.protocol.Web3j;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -9,10 +7,12 @@ import com.cicdi.jcli.contractx.ProposalContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.government.GetGovernParamValueTemplate;
+import com.cicdi.jcli.util.CallResponseUtil;
 import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ConfigUtil;
-import com.cicdi.jcli.util.JsonUtil;
 import com.cicdi.jcli.util.ParamUtil;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.protocol.Web3j;
 
 /**
  * 查询最新的治理参数值
@@ -40,10 +40,6 @@ public class GetGovernParamValueSubmodule extends AbstractSimpleSubmodule {
         ProposalContractX proposalContractX = ProposalContractX.load(web3j, nodeConfigModel.getHrp());
         GetGovernParamValueTemplate template = ParamUtil.readParam(param, GetGovernParamValueTemplate.class);
         CallResponse<String> callResponse = proposalContractX.getGovernParamValue(template.getModule(), template.getName()).send();
-        if (callResponse.isStatusOk()) {
-            return JsonUtil.toPrettyJsonString(callResponse.getData());
-        } else {
-            return Common.FAIL_STR + ": " + callResponse.getErrMsg();
-        }
+        return CallResponseUtil.handleCallResponse(callResponse);
     }
 }

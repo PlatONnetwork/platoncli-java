@@ -1,20 +1,20 @@
 package com.cicdi.jcli.contractx;
 
-import com.alaya.abi.solidity.datatypes.BytesType;
-import com.alaya.bech32.Bech32;
-import com.alaya.contracts.ppos.BaseContract;
-import com.alaya.contracts.ppos.abi.CustomStaticArray;
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.abi.custom.NodeId;
-import com.alaya.contracts.ppos.dto.CallResponse;
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.contracts.ppos.dto.common.FunctionType;
-import com.alaya.contracts.ppos.dto.resp.Reward;
-import com.alaya.contracts.ppos.utils.EncoderUtils;
-import com.alaya.crypto.Credentials;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.RemoteCall;
-import com.alaya.tx.gas.GasProvider;
+import com.platon.abi.solidity.datatypes.BytesType;
+import com.platon.bech32.Bech32;
+import com.platon.contracts.ppos.BaseContract;
+import com.platon.contracts.ppos.abi.CustomStaticArray;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.abi.custom.NodeId;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.contracts.ppos.dto.TransactionResponse;
+import com.platon.contracts.ppos.dto.common.FunctionType;
+import com.platon.contracts.ppos.dto.resp.Reward;
+import com.platon.contracts.ppos.utils.EncoderUtils;
+import com.platon.crypto.Credentials;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.RemoteCall;
+import com.platon.tx.gas.GasProvider;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.util.NetworkParametersUtil;
 import com.cicdi.jcli.util.SendUtil;
@@ -34,7 +34,7 @@ public class RewardContractX extends BaseContract {
     }
 
     public RewardContractX(String contractAddress, long chainId, Web3j web3j, Credentials credentials) {
-        super(contractAddress, chainId, web3j, credentials);
+        super(contractAddress, web3j, credentials);
     }
 
     /**

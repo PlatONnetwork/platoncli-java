@@ -1,7 +1,7 @@
 package com.cicdi.jcli.util.contract.government;
 
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.crypto.CipherException;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.crypto.CipherException;
 import com.cicdi.jcli.contractx.ProposalContractX;
 import com.cicdi.jcli.template.government.GetGovernParamValueTemplate;
 import com.cicdi.jcli.util.NetworkParametersUtil;

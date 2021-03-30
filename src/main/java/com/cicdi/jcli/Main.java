@@ -1,6 +1,6 @@
 package com.cicdi.jcli;
 
-import com.alaya.crypto.CipherException;
+import com.platon.crypto.CipherException;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.MissingCommandException;
 import com.beust.jcommander.Parameter;
@@ -79,7 +79,6 @@ public class Main extends AbstractSimpleSubmodule {
         } else {
             return super.getHelpStr(jc);
         }
-
     }
 
 }

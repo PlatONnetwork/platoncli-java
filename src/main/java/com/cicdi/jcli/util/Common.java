@@ -1,12 +1,12 @@
 package com.cicdi.jcli.util;
 
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.common.FunctionType;
-import com.alaya.contracts.ppos.exception.NoSupportFunctionType;
-import com.alaya.contracts.ppos.utils.EstimateGasUtil;
-import com.alaya.protocol.Web3j;
-import com.alaya.tx.gas.ContractGasProvider;
-import com.alaya.tx.gas.GasProvider;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.common.FunctionType;
+import com.platon.contracts.ppos.exception.NoSupportFunctionType;
+import com.platon.contracts.ppos.utils.EstimateGasUtil;
+import com.platon.protocol.Web3j;
+import com.platon.tx.gas.ContractGasProvider;
+import com.platon.tx.gas.GasProvider;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.alaya.protocol.core.JsonRpc2_0Web3j.DEFAULT_BLOCK_TIME;
+import static com.platon.protocol.core.JsonRpc2_0Web3j.DEFAULT_BLOCK_TIME;
 
 /**
  * 存储一些常用常量
@@ -25,6 +25,7 @@ import static com.alaya.protocol.core.JsonRpc2_0Web3j.DEFAULT_BLOCK_TIME;
  */
 public class Common {
     public static final int TWO = 2;
+    public static final String JSON_SUFFIX =".json";
     public static final String LETTER_Y = "y";
     /**
      * 合法地址的长度
@@ -56,7 +57,7 @@ public class Common {
      * 委托收益合约地址
      */
     public static final String PPOS_CONTRACT_HEX_ADDRESS_OF_REWARD = "0x1000000000000000000000000000000000000006";
-
+    public static final String CANCEL_STR = "cancel by user";
     public static final String SUCCESS_STR = "success";
     public static final String FAIL_STR = "fail";
     public static final String HELP_TEXT = "Usage: java -jar platon-jcli-jar-with-dependencies.jar [Submodule/Command] [COMMAND] [ARGS]...\n\n" +

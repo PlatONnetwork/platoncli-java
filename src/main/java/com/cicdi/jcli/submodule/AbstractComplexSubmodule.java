@@ -1,10 +1,5 @@
 package com.cicdi.jcli.submodule;
 
-import com.alaya.contracts.ppos.dto.TransactionResponse;
-import com.alaya.contracts.ppos.utils.EncoderUtils;
-import com.alaya.crypto.CipherException;
-import com.alaya.protocol.Web3j;
-import com.alaya.protocol.core.methods.response.TransactionReceipt;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.cicdi.jcli.converter.BigIntegerConverter;
@@ -13,6 +8,11 @@ import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.util.contract.BaseContractUtil;
+import com.cicdi.jcli.validator.PositiveBigIntegerValidator;
+import com.platon.contracts.ppos.utils.EncoderUtils;
+import com.platon.crypto.CipherException;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.methods.response.TransactionReceipt;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -30,9 +30,9 @@ import java.util.Collections;
 public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>> extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
     protected boolean offline;
-    @Parameter(names = {"--gasLimit", "-gasLimit"}, description = "gas用量限制", converter = BigIntegerConverter.class)
+    @Parameter(names = {"--gasLimit", "-gasLimit"}, description = "gas用量限制", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasLimit = Common.MID_GAS_LIMIT;
-    @Parameter(names = {"--gasPrice", "-gasPrice"}, description = "gas价格", converter = BigIntegerConverter.class)
+    @Parameter(names = {"--gasPrice", "-gasPrice"}, description = "gas价格", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
     @Parameter(names = {"--template", "-template", "-t"}, help = true, description = "查看委托交易参数模板，与其他参数共存没有效果，单独执行查看")
     protected boolean template;
@@ -76,7 +76,7 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
     public BaseTemplate4Serialize convert2BaseTemplate(U util, NodeConfigModel nodeConfigModel) throws IOException {
         String to = util.getPposContractAddress();
         Web3j web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
-        String parseAddress = ParamUtil.parseAddress(address, nodeConfigModel.getHrp());
+        String parseAddress = AddressUtil.readAddress(address, nodeConfigModel.getHrp());
         BigInteger nonce = NonceUtil.getNonce(web3j, parseAddress, nodeConfigModel.getHrp());
         return new BaseTemplate4Serialize(
                 parseAddress,
@@ -103,11 +103,17 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
         if (template && argv.length == Common.TWO) {
+            //打印参数模板
             return '\n' +
                     generateTemplate();
         }
+
+        //校验gasPrice
+        GasPriceUtil.verifyGasPrice(gasPrice);
+
         U util = function().genU();
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
+
         if (isOnline()) {
             if (fast) {
                 try {
@@ -119,10 +125,7 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
             } else {
                 String txHash = util.sendTransaction(gasLimit, gasPrice);
                 TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, txHash);
-                TransactionResponse response = getResponseFromTransactionReceipt(receipt);
-                return response.isStatusOk() ?
-                        Common.SUCCESS_STR + ", tx hash: " + txHash :
-                        Common.FAIL_STR + ": " + response.getTransactionReceipt();
+                return TransactionReceiptUtil.handleTxReceipt(receipt);
             }
         } else {
             BaseTemplate4Serialize baseTemplate4Serialize = convert2BaseTemplate(util, nodeConfigModel);

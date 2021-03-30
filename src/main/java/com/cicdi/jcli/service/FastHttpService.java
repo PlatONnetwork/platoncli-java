@@ -1,6 +1,6 @@
 package com.cicdi.jcli.service;
 
-import com.alaya.protocol.exceptions.ClientConnectionException;
+import com.platon.protocol.exceptions.ClientConnectionException;
 import okhttp3.*;
 import okio.Buffer;
 import okio.BufferedSource;

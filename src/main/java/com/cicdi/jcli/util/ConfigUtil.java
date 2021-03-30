@@ -20,7 +20,7 @@ public class ConfigUtil {
         try {
             File file = new File(config);
             if (file.exists() && file.isFile()) {
-                return JsonUtil.readFile(file, NodeConfigModel.class);
+                return JsonUtil.readFile(file, NodeConfigModel.class,null);
             } else {
                 return JSON.parseObject(config, NodeConfigModel.class);
             }

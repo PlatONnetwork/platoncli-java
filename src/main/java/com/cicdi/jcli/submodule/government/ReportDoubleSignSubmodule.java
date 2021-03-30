@@ -1,6 +1,6 @@
 package com.cicdi.jcli.submodule.government;
 
-import com.alaya.crypto.CipherException;
+import com.platon.crypto.CipherException;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;

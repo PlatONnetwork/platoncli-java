@@ -1,6 +1,6 @@
 package com.cicdi.jcli.submodule.government;
 
-import com.alaya.contracts.ppos.dto.resp.TallyResult;
+import com.platon.contracts.ppos.dto.resp.TallyResult;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;

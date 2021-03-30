@@ -1,26 +1,46 @@
 package com.cicdi.jcli.util.contract.delegate;
 
-import com.alaya.contracts.ppos.abi.Function;
-import com.alaya.contracts.ppos.dto.enums.StakingAmountType;
-import com.alaya.crypto.CipherException;
 import com.cicdi.jcli.contractx.DelegateContractX;
 import com.cicdi.jcli.template.delegate.DelegateNewTemplate;
-import com.cicdi.jcli.util.ConvertUtil;
-import com.cicdi.jcli.util.NetworkParametersUtil;
-import com.cicdi.jcli.util.StringUtil;
-import com.cicdi.jcli.util.Web3jUtil;
+import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.util.contract.BaseContractUtil;
+import com.platon.contracts.ppos.abi.Function;
+import com.platon.contracts.ppos.dto.enums.StakingAmountType;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * @author haypo
  * @date 2021/1/4
  */
+@Slf4j
 public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
 
-    public DelegateNewUtil(boolean isOnline, String address, String config, String param, Class<DelegateNewTemplate> clazz) throws IOException, CipherException {
+    public DelegateNewUtil(boolean isOnline, String address, String config, String param, Class<DelegateNewTemplate> clazz) throws Exception {
         super(isOnline, address, config, param, clazz);
+        //委托大于余额
+        BigDecimal balance = ConvertUtil.von2Hrp(WalletUtil.getBalance(web3j, nodeConfigModel.getHrp(), address));
+        if (t.getAmount().compareTo(balance) > 0) {
+            System.out.println("Amount: " + t.getAmount() + " is greater than balance: " + balance + nodeConfigModel.getHrp() + ", so delegation has no sense, continue? Y/N");
+            if (!StringUtil.readYesOrNo()) {
+                log.info(Common.CANCEL_STR);
+                System.exit(0);
+            }
+        }
+
+        //委托小于阈值
+        BigDecimal threshold = ConvertUtil.von2Hrp(Web3jUtil.getStakingOperatingThreshold(web3j, nodeConfigModel.getHrp()));
+        if (t.getAmount().compareTo(threshold) < 0) {
+            System.out.println("Amount: " + t.getAmount() + " is less than threshold:" + threshold + ", so delegation has no sense, continue? Y/N");
+            if (!StringUtil.readYesOrNo()) {
+                log.info(Common.CANCEL_STR);
+                System.exit(0);
+            }
+        }
+
+        VerifyUtil.verifyNodeId(web3j, nodeConfigModel.getHrp(), t.getNodeId());
     }
 
     @Override

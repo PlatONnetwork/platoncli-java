@@ -1,12 +1,11 @@
 package com.cicdi.jcli.submodule.delegate;
 
-import com.alaya.crypto.CipherException;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.delegate.DelegateNewTemplate;
 import com.cicdi.jcli.util.contract.delegate.DelegateNewUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.platon.crypto.CipherException;
 
 import java.io.IOException;
 
@@ -16,7 +15,7 @@ import java.io.IOException;
  * @author haypo
  * @date 2021/1/4
  */
-@Slf4j
+@SuppressWarnings("unused")
 @Parameters(commandNames = "delegate_new", commandDescription = "委托")
 public class DelegateNewSubmodule extends AbstractComplexSubmodule<DelegateNewTemplate, DelegateNewUtil> {
 

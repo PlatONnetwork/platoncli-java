@@ -39,6 +39,12 @@ public class TransferTest {
     }
 
     @Test
+    public void testTransferFastOffline() {
+        String[] args = ("tx_transfer -fast -o -p param/transfer1.json -d " + TestCommon.rewardWalletDir).split(" ");
+        Main.main(args);
+    }
+
+    @Test
     public void testTransferFast2() {
         String para = "param/transfer2.json";
         String config = "{\"rpcAddress\":\"https://openapi.alaya.network/rpc\",\"hrp\":\"atp\",\"chainId\":201018}";
@@ -46,7 +52,7 @@ public class TransferTest {
                 "  \"rpcAddress\": \"https://openapi.alaya.network/rpc\",\n" +
                 "  \"hrp\": \"atp\",\n" +
                 "  \"chainId\": 201018\n" +
-                "}".replaceAll(" ", "").replace(' ','\0').replace(' ','\0');
+                "}".replaceAll(" ", "").replace(' ', '\0').replace(' ', '\0');
         String[] args = ("tx_transfer -fast -p " + para + " -d " + TestCommon.rewardWalletDir + " -c " + config).split(" ");
         Main.main(args);
     }

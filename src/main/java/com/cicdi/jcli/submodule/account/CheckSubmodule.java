@@ -36,8 +36,8 @@ public class CheckSubmodule extends AbstractSimpleSubmodule {
                 stringBuilder.append("File name: ").append(tuple.getB()).append(", address: ").append(tuple.getA()).append(".\n");
             }
         } else {
-            String fileName = AddressUtil.getFileNameFromAddress(nodeConfigModel.getHrp(), address);
-            stringBuilder.append("File name: ").append(fileName).append(", address: ").append(address).append(".\n");
+            String filename = AddressUtil.getFilenameFromAddress(nodeConfigModel.getHrp(), address);
+            stringBuilder.append("File name: ").append(filename).append(", address: ").append(address).append(".\n");
         }
         return stringBuilder.toString();
     }

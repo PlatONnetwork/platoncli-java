@@ -19,7 +19,7 @@ public class SendOfflineTest {
     @Test
     public void testSendOffline() {
         testTransferOffline();
-        String pngPath = QrUtil.getDesktopPath() + "\\" + Main.result.split(":")[1];
+        String pngPath = QrUtil.getDesktopPath() + "\\" + Main.result.split("：")[1];
         String[] args = ("tx_sendOffline -data " + pngPath + " -d E:/codes/IdeaProjects/block_chain_git/trunk/alaya-util-springboot/keystore_core/reward.json").split(" ");
         Main.main(args);
     }

@@ -1,6 +1,6 @@
 package com.cicdi.jcli.template.government;
 
-import com.alaya.contracts.ppos.dto.common.DuplicateSignType;
+import com.platon.contracts.ppos.dto.common.DuplicateSignType;
 import lombok.Data;
 
 /**
