@@ -10,8 +10,6 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.platon.utils.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileSystemView;
@@ -23,6 +21,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.DeflaterOutputStream;
@@ -89,9 +88,12 @@ public class QrUtil {
      * @return 压缩的字符串
      */
     public static String uncompress(String compressedStr) {
+        if (compressedStr == null) {
+            return null;
+        }
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             try (OutputStream outputStream = new InflaterOutputStream(os)) {
-                outputStream.write(new BASE64Decoder().decodeBuffer(compressedStr));
+                outputStream.write(Base64.getDecoder().decode(compressedStr));
             }
             return new String(os.toByteArray(), StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -107,11 +109,14 @@ public class QrUtil {
      * @return 压缩的字符串
      */
     public static String compress(String text) {
+        if (text == null) {
+            return null;
+        }
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             try (DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream(out)) {
                 deflaterOutputStream.write(text.getBytes(StandardCharsets.UTF_8));
             }
-            return new BASE64Encoder().encode(out.toByteArray());
+            return Base64.getEncoder().encodeToString(out.toByteArray());
         } catch (IOException e) {
             log.error("压缩文本失败:{}", text, e);
         }
