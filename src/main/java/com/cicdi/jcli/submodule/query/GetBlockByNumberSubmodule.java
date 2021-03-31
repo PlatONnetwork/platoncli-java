@@ -1,6 +1,10 @@
 package com.cicdi.jcli.submodule.query;
 
 
+import com.beust.jcommander.validators.PositiveInteger;
+import com.cicdi.jcli.converter.BigIntegerConverter;
+import com.cicdi.jcli.validator.PositiveBigIntegerValidator;
+import com.github.fge.jsonschema.keyword.validator.helpers.PositiveIntegerValidator;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.DefaultBlockParameter;
 import com.platon.protocol.core.methods.response.PlatonBlock;
@@ -22,10 +26,14 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2020/12/24
  */
+@SuppressWarnings("unused")
 @Parameters(commandNames = "query_getBlockByNumber", commandDescription = "根据区块块高查询区块信息")
 public class GetBlockByNumberSubmodule extends AbstractSimpleSubmodule implements ISubmodule {
-    @Parameter(names = {"-number", "number", "-n"}, description = "int类型，具体查询区块的块高", required = true)
-    protected String number;
+    @Parameter(names = {"-number", "number", "-n"}, description = "int类型，具体查询区块的块高",
+            required = true,validateValueWith = PositiveBigIntegerValidator.class,
+            converter = BigIntegerConverter.class
+    )
+    protected BigInteger number;
 
     private String getBlockInfo(PlatonBlock.Block block) {
         return "difficulty: " + block.getDifficultyRaw() + ",\n" +
@@ -57,7 +65,7 @@ public class GetBlockByNumberSubmodule extends AbstractSimpleSubmodule implement
     public String run(JCommander jc, String... argv) throws IOException {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         Web3j web3j = createWeb3j(nodeConfigModel);
-        DefaultBlockParameter dbp = DefaultBlockParameter.valueOf(new BigInteger(number));
+        DefaultBlockParameter dbp = DefaultBlockParameter.valueOf(number);
         PlatonBlock.Block block = web3j.platonGetBlockByNumber(dbp, true).send().getBlock();
         return JsonUtil.toPrettyJsonString(block);
     }
