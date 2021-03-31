@@ -122,7 +122,7 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
             BaseTemplate4Serialize serialize = ConvertUtil.deserialize2Serialize(template, nodeConfigModel);
             serialize.setChainId(nodeConfigModel.getChainId());
             serialize.setNonce(NonceUtil.getNonce(createWeb3j(), template.getFrom(), nodeConfigModel.getHrp()));
-            serialize.setFast(true);
+            serialize.setFast(fast);
             serialize.setGasLimit(gasLimit);
             serialize.setGasPrice(gasPrice);
             return QrUtil.save2QrCodeImage(getQrCodeImagePrefix(), serialize);
