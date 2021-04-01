@@ -39,7 +39,7 @@ public class ProposalContractX extends BaseContract {
         super(contractAddress, web3j);
     }
 
-    private ProposalContractX(String contractAddress, long chainId, Web3j web3j, Credentials credentials) {
+    private ProposalContractX(String contractAddress, Web3j web3j, Credentials credentials) {
         super(contractAddress, web3j, credentials);
     }
 
@@ -74,12 +74,11 @@ public class ProposalContractX extends BaseContract {
      *
      * @param web3j       web3j对象
      * @param credentials 钱包
-     * @param chainId     链id
      * @param hrp         hrp值
      * @return ProposalContractX
      */
-    public static ProposalContractX load(Web3j web3j, Credentials credentials, long chainId, String hrp) {
-        return new ProposalContractX(NetworkParametersUtil.getPposContractAddressOfProposal(hrp), chainId, web3j, credentials);
+    public static ProposalContractX load(Web3j web3j, Credentials credentials, String hrp) {
+        return new ProposalContractX(NetworkParametersUtil.getPposContractAddressOfProposal(hrp), web3j, credentials);
     }
 
     /**
@@ -91,7 +90,7 @@ public class ProposalContractX extends BaseContract {
      * @return ProposalContractX
      */
     public static ProposalContractX load(Web3j web3j, Credentials credentials, NodeConfigModel nodeConfigModel) {
-        return new ProposalContractX(NetworkParametersUtil.getPposContractAddressOfProposal(nodeConfigModel.getHrp()), nodeConfigModel.getChainId(), web3j, credentials);
+        return new ProposalContractX(NetworkParametersUtil.getPposContractAddressOfProposal(nodeConfigModel.getHrp()), web3j, credentials);
     }
 
     public static Function createDeclareVersionFunction(ProgramVersion programVersion, String verifier) {

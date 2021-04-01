@@ -139,7 +139,7 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
         if (isOnline()) {
             String password = StringUtil.readPassword();
             Credentials credentials = WalletUtil.loadCredentials(password, address, nodeConfigModel.getHrp());
-            ProposalContractX pc = ProposalContractX.load(web3j, credentials, nodeConfigModel.getChainId(), nodeConfigModel.getHrp());
+            ProposalContractX pc = ProposalContractX.load(web3j, credentials, nodeConfigModel.getHrp());
             RemoteCall<TransactionResponse> remoteCall = pc.submitProposal(proposal, gasProvider);
             TransactionResponse response = remoteCall.send();
             return TransactionResponseUtil.handleTxResponse(response);
