@@ -20,18 +20,25 @@ public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateT
     public DelegateUnDelegateUtil(boolean isOnline, String address, String config, String param, Class<DelegateUnDelegateTemplate> clazz) throws Exception {
         super(isOnline, address, config, param, clazz);
         //赎回委托小于阈值
-        BigInteger threshold = Web3jUtil.getStakingOperatingThreshold(web3j, nodeConfigModel.getHrp());
-        if (this.t.getAmount().compareTo(ConvertUtil.von2Hrp(threshold)) < 0 ||
+        BigInteger thresholdVon = Web3jUtil.getStakingOperatingThreshold(web3j, nodeConfigModel.getHrp());
+        BigDecimal thresholdHrp = ConvertUtil.von2Hrp(thresholdVon);
+        if (this.t.getAmount().compareTo(thresholdHrp) < 0 ||
                 this.t.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-            System.out.println("Amount is less than threshold, so un-delegation has no sense, continue? Y/N");
+            System.out.println("Amount: " + t.getAmount() + nodeConfigModel.getHrp() +
+                    " is less than threshold: " + thresholdHrp + nodeConfigModel.getHrp() +
+                    ", so un-delegation has no sense, continue? Y/N");
             if (!StringUtil.readYesOrNo()) {
                 log.info(Common.CANCEL_STR);
                 System.exit(0);
             }
         }
 
-        if (this.t.getAmount().compareTo(ConvertUtil.von2Hrp(WalletUtil.getDelegateTotal(web3j, nodeConfigModel.getHrp(), credentials.getAddress()))) > 0) {
-            System.out.println("Amount is greater than delegated, so un-delegation has no sense, continue? Y/N");
+        BigInteger delegatedVon = WalletUtil.getDelegateTotal(web3j, nodeConfigModel.getHrp(), credentials.getAddress());
+        BigDecimal delegatedHrp = ConvertUtil.von2Hrp(delegatedVon);
+        if (this.t.getAmount().compareTo(delegatedHrp) > 0) {
+            System.out.println("Amount: " + t.getAmount() + nodeConfigModel.getHrp() +
+                    " is greater than delegated: " + delegatedHrp + nodeConfigModel.getHrp() +
+                    ", so un-delegation has no sense, continue? Y/N");
             if (!StringUtil.readYesOrNo()) {
                 log.info(Common.CANCEL_STR);
                 System.exit(0);
