@@ -145,8 +145,8 @@ public class WalletUtil {
         return totalReward;
     }
 
-    public static BigInteger getBalance(Web3j web3j, String hrp, String address) throws IOException {
-        return web3j.platonGetBalance(AddressUtil.formatHrpAddress(address, hrp), DefaultBlockParameterName.LATEST).send().getBalance();
+    public static BigInteger getBalance(Web3j web3j, String address) throws IOException {
+        return web3j.platonGetBalance(address, DefaultBlockParameterName.LATEST).send().getBalance();
     }
 
     public static WalletFile genWalletByPrivateKey(String privateKey, String password) throws CipherException {

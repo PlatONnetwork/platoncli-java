@@ -48,6 +48,14 @@ public class AddressUtil {
         }
     }
 
+    /**
+     * 在jar所在目录查找匹配地址的钱包文件
+     *
+     * @param hrp     hrp值
+     * @param address 地址
+     * @return 钱包文件
+     * @throws FileNotFoundException 未找到钱包文件
+     */
     public static File getFileFromAddress(String hrp, String address) throws FileNotFoundException {
         if (new File(address).isFile()) {
             return new File(address);
@@ -71,6 +79,13 @@ public class AddressUtil {
         throw new FileNotFoundException("can not find wallet file matches address: " + address);
     }
 
+    /**
+     * 从dir中读取钱包文件
+     *
+     * @param hrp hrp值
+     * @param dir 钱包路径
+     * @return Tuple<String, File>列表，地址-钱包文件
+     */
     public static List<Tuple<String, File>> readAddressFileFromDir(String hrp, String dir) {
         File root = new File(dir);
         List<Tuple<String, File>> addressFileTuple = new ArrayList<>();
@@ -116,11 +131,19 @@ public class AddressUtil {
         return addressList;
     }
 
+    /**
+     * 根据address读取地址
+     *
+     * @param address 地址或钱包json
+     * @param hrp     hrp值
+     * @return 地址
+     * @throws IOException io异常
+     */
     public static String readAddress(String address, String hrp) throws IOException {
         if (new File(address).isFile()) {
             return readAddressFromFile(new File(address), hrp);
         }
-        return address;
+        return formatHrpAddress(address, hrp);
     }
 
     private static String readAddressFromFile(File file, String hrp) throws IOException {
@@ -132,7 +155,7 @@ public class AddressUtil {
             return formatHrpAddress(walletFile.getAddress(), hrp);
         } else {
             OldWalletFile oldWalletFile = JSONUtil.parseObject(fileContent, OldWalletFile.class);
-            return AddressUtil.formatHrpAddress(oldWalletFile.getAddress(), hrp);
+            return formatHrpAddress(oldWalletFile.getAddress(), hrp);
         }
     }
 }

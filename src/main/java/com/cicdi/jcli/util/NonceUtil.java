@@ -39,7 +39,7 @@ public class NonceUtil {
      */
     public synchronized static BigInteger getNonce(Web3j web3j, String address, String hrp) throws IOException {
         //需要对地址进行标准格式化
-        String formattedAddress = AddressUtil.formatHrpAddress(address, hrp);
+        String formattedAddress = AddressUtil.readAddress(address, hrp);
         PlatonGetTransactionCount count = web3j.platonGetTransactionCount(formattedAddress, DefaultBlockParameterName.PENDING).send();
         if (count.getError() != null) {
             throw new RuntimeException(count.getError().getMessage());

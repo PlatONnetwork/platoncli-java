@@ -21,7 +21,7 @@ public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
     public DelegateNewUtil(boolean isOnline, String address, String config, String param, Class<DelegateNewTemplate> clazz) throws Exception {
         super(isOnline, address, config, param, clazz);
         //委托大于余额
-        BigDecimal balance = ConvertUtil.von2Hrp(WalletUtil.getBalance(web3j, nodeConfigModel.getHrp(), address));
+        BigDecimal balance = ConvertUtil.von2Hrp(WalletUtil.getBalance(web3j, AddressUtil.readAddress(address, nodeConfigModel.getHrp())));
         if (t.getAmount().compareTo(balance) > 0) {
             System.out.println("Amount: " + t.getAmount() + " is greater than balance: " + balance + nodeConfigModel.getHrp() + ", so delegation has no sense, continue? Y/N");
             if (!StringUtil.readYesOrNo()) {
