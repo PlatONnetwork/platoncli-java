@@ -1,11 +1,11 @@
 package com.cicdi.jcli.util;
 
-import com.cicdi.jcli.model.OldWalletFile;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.Feature;
 import com.cicdi.jcli.model.Tuple;
 import com.platon.bech32.Bech32;
 import com.platon.crypto.WalletFile;
 import com.platon.utils.Files;
-import com.platon.utils.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -13,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -148,14 +147,8 @@ public class AddressUtil {
 
     private static String readAddressFromFile(File file, String hrp) throws IOException {
         String fileContent = Files.readString(file);
-        WalletFile walletFile;
-        Matcher matcher = OLD_ADDRESS_PATTERN.matcher(fileContent);
-        if (!matcher.find()) {
-            walletFile = JsonUtil.readFile(file, WalletFile.class, null);
-            return formatHrpAddress(walletFile.getAddress(), hrp);
-        } else {
-            OldWalletFile oldWalletFile = JSONUtil.parseObject(fileContent, OldWalletFile.class);
-            return formatHrpAddress(oldWalletFile.getAddress(), hrp);
-        }
+        fileContent = fileContent.replaceAll(WalletUtil.MAIN_TEST_ADDRESS_REGEX, "\"address\": \"$1\"");
+        WalletFile walletFile = JSON.parseObject(fileContent, WalletFile.class);
+        return formatHrpAddress(walletFile.getAddress(), hrp);
     }
 }
