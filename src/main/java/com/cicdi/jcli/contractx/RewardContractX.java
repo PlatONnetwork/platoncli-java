@@ -33,7 +33,7 @@ public class RewardContractX extends BaseContract {
         super(contractAddress, web3j);
     }
 
-    public RewardContractX(String contractAddress, long chainId, Web3j web3j, Credentials credentials) {
+    public RewardContractX(String contractAddress, Web3j web3j, Credentials credentials) {
         super(contractAddress, web3j, credentials);
     }
 
@@ -52,11 +52,10 @@ public class RewardContractX extends BaseContract {
      *
      * @param web3j       web3j对象
      * @param credentials 钱包
-     * @param chainId     链id
      * @return RewardContractX
      */
-    public static RewardContractX load(Web3j web3j, Credentials credentials, long chainId, String hrp) {
-        return new RewardContractX(NetworkParametersUtil.getPposContractAddressOfReward(hrp), chainId, web3j, credentials);
+    public static RewardContractX load(Web3j web3j, Credentials credentials, String hrp) {
+        return new RewardContractX(NetworkParametersUtil.getPposContractAddressOfReward(hrp), web3j, credentials);
     }
 
     public static Function createWithdrawDelegateRewardFunction() {
