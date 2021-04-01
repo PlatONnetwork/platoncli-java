@@ -100,7 +100,7 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
             case "VersionProposal":
                 VersionProposalTemplate versionProposalTemplate = ParamUtil.readParam(param, VersionProposalTemplate.class,
                         JsonUtil.readJsonSchemaFromResource("/json/VersionProposalTemplateSchema.json"));
-                proposal = Proposal.createSubmitVersionProposalParam(versionProposalTemplate.getVerifier(), versionProposalTemplate.getPiPid(), versionProposalTemplate.getEndVotingRound(), versionProposalTemplate.getNewVersion());
+                proposal = Proposal.createSubmitVersionProposalParam(versionProposalTemplate.getVerifier(), versionProposalTemplate.getPiPid(), versionProposalTemplate.getNewVersion(), versionProposalTemplate.getEndVotingRound());
                 break;
             case "TextProposal":
             case "text_proposal":
