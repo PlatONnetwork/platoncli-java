@@ -2,6 +2,7 @@ package com.cicdi.jcli.util;
 
 import com.alibaba.fastjson.JSON;
 import com.cicdi.jcli.model.NodeConfigModel;
+import com.platon.parameters.NetworkParameters;
 
 import java.io.File;
 
@@ -17,13 +18,16 @@ public class ConfigUtil {
      * @return NodeConfigModel
      */
     public static NodeConfigModel readConfig(String config) {
+        NodeConfigModel nodeConfigModel;
         try {
             File file = new File(config);
             if (file.exists() && file.isFile()) {
-                return JsonUtil.readFile(file, NodeConfigModel.class,null);
+                nodeConfigModel = JsonUtil.readFile(file, NodeConfigModel.class, null);
             } else {
-                return JSON.parseObject(config, NodeConfigModel.class);
+                nodeConfigModel = JSON.parseObject(config, NodeConfigModel.class);
             }
+            NetworkParameters.init(nodeConfigModel.getChainId(), nodeConfigModel.getHrp());
+            return nodeConfigModel;
         } catch (Exception e) {
             System.out.println("无法读取配置文件。默认配置文件路径为config/node_config.json\nconfig模板如下：\n" +
                     "类型        必填性         参数名称          参数解释\n" +
