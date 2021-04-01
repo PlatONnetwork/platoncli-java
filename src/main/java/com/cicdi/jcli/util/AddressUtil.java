@@ -1,7 +1,6 @@
 package com.cicdi.jcli.util;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.parser.Feature;
 import com.cicdi.jcli.model.Tuple;
 import com.platon.bech32.Bech32;
 import com.platon.crypto.WalletFile;
@@ -13,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -139,7 +139,14 @@ public class AddressUtil {
      * @throws IOException io异常
      */
     public static String readAddress(String address, String hrp) throws IOException {
-        if (new File(address).isFile()) {
+        //判断address是否是地址还是json
+        if (address.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX) ||
+                !address.startsWith(hrp)
+        ) {
+            File file = new File(address);
+            if (!file.isFile() || !file.exists()) {
+                throw new FileNotFoundException(file.getName() + " not exist");
+            }
             return readAddressFromFile(new File(address), hrp);
         }
         return formatHrpAddress(address, hrp);
