@@ -14,15 +14,16 @@ import com.cicdi.jcli.template.government.TextProposalTemplate;
 import com.cicdi.jcli.template.government.VersionProposalTemplate;
 import com.cicdi.jcli.util.*;
 import com.platon.contracts.ppos.abi.Function;
-import com.platon.contracts.ppos.dto.TransactionResponse;
 import com.platon.contracts.ppos.dto.resp.Proposal;
+import com.platon.contracts.ppos.utils.EncoderUtils;
 import com.platon.crypto.Credentials;
 import com.platon.protocol.Web3j;
-import com.platon.protocol.core.RemoteCall;
 import com.platon.tx.gas.GasProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
 
 /**
  * 提交参数/升级/取消提案
@@ -50,37 +51,34 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
         return !offline && new File(address).isFile();
     }
 
-    @Override
-    public String run(JCommander jc, String... argv) throws Exception {
-        if (template && argv.length == Common.TWO) {
-            return '\n' +
-                    "CancelProposalTemplate:\n" +
-                    "类型             必填性         参数名称              参数解释\n" +
-                    "String          must          verifier            提交提案的验证人，nodeId\n" +
-                    "String          must          piPid               PIPID\n" +
-                    "BigInteger      must          endVotingRound      投票共识轮数量\n" +
-                    "String          must          canceledProposalId  待取消的提案ID\n" +
-                    "ParamProposalTemplate:\n" +
-                    "类型             必填性         参数名称             参数解释\n" +
-                    "String          must          verifier            提交提案的验证人，nodeId\n" +
-                    "String          must          piPid               PIPID\n" +
-                    "String          must          module              参数模块\n" +
-                    "String          must          name                参数名称\n" +
-                    "String          must          newValue            参数新值\n" +
-                    "VersionProposalTemplate:\n" +
-                    "类型             必填性         参数名称             参数解释\n" +
-                    "String          must          verifier            提交提案的验证人，nodeId\n" +
-                    "String          must          piPid               PIPID\n" +
-                    "BigInteger      must          endVotingRound      投票共识轮数量\n" +
-                    "BigInteger      must          newVersion          升级版本\n" +
-                    "TextProposalTemplate:\n" +
-                    "类型             必填性         参数名称             参数解释\n" +
-                    "String          must          verifier            提交提案的验证人，nodeId\n" +
-                    "String          must          piPid               PIPID\n";
-        }
+    public String getTemplateInfo() {
+        return '\n' +
+                "CancelProposalTemplate:\n" +
+                "类型             必填性         参数名称              参数解释\n" +
+                "String          must          verifier            提交提案的验证人，nodeId\n" +
+                "String          must          piPid               PIPID\n" +
+                "BigInteger      must          endVotingRound      投票共识轮数量\n" +
+                "String          must          canceledProposalId  待取消的提案ID\n" +
+                "ParamProposalTemplate:\n" +
+                "类型             必填性         参数名称             参数解释\n" +
+                "String          must          verifier            提交提案的验证人，nodeId\n" +
+                "String          must          piPid               PIPID\n" +
+                "String          must          module              参数模块\n" +
+                "String          must          name                参数名称\n" +
+                "String          must          newValue            参数新值\n" +
+                "VersionProposalTemplate:\n" +
+                "类型             必填性         参数名称             参数解释\n" +
+                "String          must          verifier            提交提案的验证人，nodeId\n" +
+                "String          must          piPid               PIPID\n" +
+                "BigInteger      must          endVotingRound      投票共识轮数量\n" +
+                "BigInteger      must          newVersion          升级版本\n" +
+                "TextProposalTemplate:\n" +
+                "类型             必填性         参数名称             参数解释\n" +
+                "String          must          verifier            提交提案的验证人，nodeId\n" +
+                "String          must          piPid               PIPID\n";
+    }
 
-        NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
-        Web3j web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
+    public Proposal getProposalByModule(String module) throws IOException {
         Proposal proposal;
         switch (module) {
             case "cancel_proposal":
@@ -88,61 +86,64 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
             case "CancelProposal":
                 CancelProposalTemplate cancelProposalTemplate = ParamUtil.readParam(param, CancelProposalTemplate.class,
                         JsonUtil.readJsonSchemaFromResource("/json/CancelProposalTemplateSchema.json"));
-                proposal = Proposal.createSubmitCancelProposalParam(
-                        cancelProposalTemplate.getVerifier(),
-                        cancelProposalTemplate.getPiPid(),
-                        cancelProposalTemplate.getEndVotingRound(),
-                        cancelProposalTemplate.getCanceledProposalId()
-                );
+                proposal = Proposal.createSubmitCancelProposalParam(cancelProposalTemplate.getVerifier(), cancelProposalTemplate.getPiPid(), cancelProposalTemplate.getEndVotingRound(), cancelProposalTemplate.getCanceledProposalId());
                 break;
             case "param_proposal":
             case "paramProposal":
             case "ParamProposal":
                 ParamProposalTemplate paramProposalTemplate = ParamUtil.readParam(param, ParamProposalTemplate.class,
                         JsonUtil.readJsonSchemaFromResource("/json/ParamProposalTemplateSchema.json"));
-                proposal = Proposal.createSubmitParamProposalParam(
-                        paramProposalTemplate.getVerifier(),
-                        paramProposalTemplate.getPiPid(),
-                        paramProposalTemplate.getModule(),
-                        paramProposalTemplate.getName(),
-                        paramProposalTemplate.getNewValue()
-                );
+                proposal = Proposal.createSubmitParamProposalParam(paramProposalTemplate.getVerifier(), paramProposalTemplate.getPiPid(), paramProposalTemplate.getModule(), paramProposalTemplate.getName(), paramProposalTemplate.getNewValue());
                 break;
             case "version_proposal":
             case "versionProposal":
             case "VersionProposal":
                 VersionProposalTemplate versionProposalTemplate = ParamUtil.readParam(param, VersionProposalTemplate.class,
                         JsonUtil.readJsonSchemaFromResource("/json/VersionProposalTemplateSchema.json"));
-                proposal = Proposal.createSubmitVersionProposalParam(
-                        versionProposalTemplate.getVerifier(),
-                        versionProposalTemplate.getPiPid(),
-                        versionProposalTemplate.getEndVotingRound(),
-                        versionProposalTemplate.getNewVersion()
-                );
+                proposal = Proposal.createSubmitVersionProposalParam(versionProposalTemplate.getVerifier(), versionProposalTemplate.getPiPid(), versionProposalTemplate.getEndVotingRound(), versionProposalTemplate.getNewVersion());
                 break;
             case "TextProposal":
             case "text_proposal":
             case "textProposal":
                 TextProposalTemplate textProposalTemplate = ParamUtil.readParam(param, TextProposalTemplate.class,
                         JsonUtil.readJsonSchemaFromResource("/json/TextProposalTemplateSchema.json"));
-                proposal = Proposal.createSubmitTextProposalParam(
-                        textProposalTemplate.getVerifier(),
-                        textProposalTemplate.getPiPid()
-                );
+                proposal = Proposal.createSubmitTextProposalParam(textProposalTemplate.getVerifier(), textProposalTemplate.getPiPid());
                 break;
             default:
                 throw new RuntimeException("module parameter error!");
         }
+        return proposal;
+    }
+
+    @Override
+    public String run(JCommander jc, String... argv) throws Exception {
+        if (template && argv.length == Common.TWO) {
+            return getTemplateInfo();
+        }
+
+        NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
+        Web3j web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
+        Proposal proposal = getProposalByModule(module);
 
         Function function = ProposalContractX.createSubmitProposalFunction(proposal);
         GasProvider gasProvider = Common.getDefaultGasProvider(function);
         if (isOnline()) {
             String password = StringUtil.readPassword();
             Credentials credentials = WalletUtil.loadCredentials(password, address, nodeConfigModel.getHrp());
-            ProposalContractX pc = ProposalContractX.load(web3j, credentials, nodeConfigModel.getHrp());
-            RemoteCall<TransactionResponse> remoteCall = pc.submitProposal(proposal, gasProvider);
-            TransactionResponse response = remoteCall.send();
-            return TransactionResponseUtil.handleTxResponse(response);
+
+            String txHash = SendUtil.send(
+                    nodeConfigModel.getHrp(),
+                    NetworkParametersUtil.getPposContractAddressOfProposal(nodeConfigModel.getHrp()),
+                    EncoderUtils.functionEncoder(function),
+                    BigInteger.ZERO,
+                    gasProvider.getGasPrice(),
+                    gasProvider.getGasLimit(),
+                    web3j,
+                    credentials,
+                    nodeConfigModel.getChainId()
+            );
+
+            return Common.SUCCESS_STR + ": " + txHash;
         } else {
             BaseTemplate4Serialize baseTemplate4Serialize = convert2BaseTemplate4Serialize(
                     function,
