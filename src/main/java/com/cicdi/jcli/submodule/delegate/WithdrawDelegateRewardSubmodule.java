@@ -12,7 +12,6 @@ import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
 import com.platon.contracts.ppos.utils.EncoderUtils;
 import com.platon.crypto.Credentials;
-import com.platon.crypto.WalletUtils;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +64,7 @@ public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
         if (isOnline()) {
             File addressFile = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
             Credentials credentials = WalletUtil.loadCredentials(StringUtil.readPassword(), addressFile,nodeConfigModel.getHrp());
-            RewardContractX rc = RewardContractX.load(web3j, credentials, nodeConfigModel.getChainId(), nodeConfigModel.getHrp());
+            RewardContractX rc = RewardContractX.load(web3j, credentials, nodeConfigModel.getHrp());
             if (fast) {
                 //快速发送交易
                 rc.fastWithdrawDelegateReward(
