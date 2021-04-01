@@ -2,6 +2,7 @@ package com.cicdi.jcli.util;
 
 import com.alibaba.fastjson.JSON;
 import com.cicdi.jcli.model.NodeConfigModel;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.platon.parameters.NetworkParameters;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +28,11 @@ public class ConfigUtil {
                 nodeConfigModel = JsonUtil.readFile(file, NodeConfigModel.class,
                         JsonUtil.readJsonSchemaFromResource("/json/NodeConfigModelSchema.json"));
             } else {
+                ProcessingReport processingReport = JsonValidateUtil.validatorJsonSchema(
+                        JsonUtil.readJsonSchemaFromResource("/json/NodeConfigModelSchema.json"), config);
+                if(!processingReport.isSuccess()){
+                    throw new RuntimeException("json schema not match");
+                }
                 nodeConfigModel = JSON.parseObject(config, NodeConfigModel.class);
             }
             NetworkParameters.init(nodeConfigModel.getChainId(), nodeConfigModel.getHrp());
