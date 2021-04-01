@@ -33,7 +33,8 @@ public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateT
             }
         }
 
-        BigInteger delegatedVon = WalletUtil.getDelegateTotal(web3j, nodeConfigModel.getHrp(), credentials.getAddress());
+        BigInteger delegatedVon = WalletUtil.getDelegateTotal(web3j, nodeConfigModel.getHrp(),
+                AddressUtil.readAddress(address, nodeConfigModel.getHrp()));
         BigDecimal delegatedHrp = ConvertUtil.von2Hrp(delegatedVon);
         if (this.t.getAmount().compareTo(delegatedHrp) > 0) {
             System.out.println("Amount: " + t.getAmount() + nodeConfigModel.getHrp() +
@@ -50,7 +51,9 @@ public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateT
         //验证节点质押块高
         VerifyUtil.verifyStakingBlockNum(web3j, nodeConfigModel.getHrp(), t.getNodeId(), t.getStakingBlockNum());
 
-        VerifyUtil.verifyDelNodeIdAndStakingBlockNum(web3j, nodeConfigModel.getHrp(), t.getNodeId(), credentials.getAddress(), t.getStakingBlockNum());
+        VerifyUtil.verifyDelNodeIdAndStakingBlockNum(web3j, nodeConfigModel.getHrp(), t.getNodeId(),
+                AddressUtil.readAddress(address, nodeConfigModel.getHrp()),
+                t.getStakingBlockNum());
     }
 
     @Override
