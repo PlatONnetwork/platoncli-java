@@ -28,6 +28,17 @@ public abstract class BaseContractUtil<T> {
     protected NodeConfigModel nodeConfigModel;
     protected T t;
 
+    /**
+     * 合约工具的初始化，对参数进行解析得到实例化对象
+     *
+     * @param isOnline 是否在线交易
+     * @param address  json文件或地址字符串
+     * @param config   节点配置，json文件或字符串
+     * @param param    模板参数，json文件或字符串
+     * @param clazz    模板类
+     * @throws IOException     param读取失败
+     * @throws CipherException 钱包解锁失败
+     */
     public BaseContractUtil(boolean isOnline, String address, String config, String param, Class<T> clazz) throws IOException, CipherException {
         this.nodeConfigModel = ConfigUtil.readConfig(config);
         String jsonSchemaPath = JsonUtil.readJsonSchemaFromResource(getTemplateSchemaPath());
@@ -44,6 +55,9 @@ public abstract class BaseContractUtil<T> {
         }
     }
 
+    /**
+     * @return 获取模板schema路径，可被子类覆写
+     */
     protected String getTemplateSchemaPath() {
         return null;
     }
