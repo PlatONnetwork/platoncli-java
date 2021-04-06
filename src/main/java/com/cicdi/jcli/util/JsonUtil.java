@@ -103,6 +103,9 @@ public class JsonUtil {
      * @return json字符串
      */
     public static String readJsonSchemaFromResource(String filePath) {
+        if (filePath == null) {
+            return null;
+        }
         String jsonStr;
         try {
             //打包成jar之后读取resource下的json

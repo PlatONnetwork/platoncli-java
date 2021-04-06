@@ -30,7 +30,12 @@ public abstract class BaseContractUtil<T> {
 
     public BaseContractUtil(boolean isOnline, String address, String config, String param, Class<T> clazz) throws IOException, CipherException {
         this.nodeConfigModel = ConfigUtil.readConfig(config);
-        this.t = ParamUtil.readParam(param, clazz);
+        String jsonSchemaPath = JsonUtil.readJsonSchemaFromResource(getTemplateSchemaPath());
+        if (StringUtil.isBlank(jsonSchemaPath)) {
+            this.t = ParamUtil.readParam(param, clazz);
+        } else {
+            this.t = ParamUtil.readParam(param, clazz, jsonSchemaPath);
+        }
         web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
         if (isOnline) {
             String password = StringUtil.readPassword();
@@ -39,6 +44,9 @@ public abstract class BaseContractUtil<T> {
         }
     }
 
+    protected String getTemplateSchemaPath() {
+        return null;
+    }
 
     /**
      * 获取合约方法

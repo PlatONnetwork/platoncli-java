@@ -17,7 +17,6 @@ import java.math.BigDecimal;
  */
 @Slf4j
 public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
-
     public DelegateNewUtil(boolean isOnline, String address, String config, String param, Class<DelegateNewTemplate> clazz) throws Exception {
         super(isOnline, address, config, param, clazz);
         //委托大于余额
@@ -41,6 +40,11 @@ public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
         }
 
         VerifyUtil.verifyNodeId(web3j, nodeConfigModel.getHrp(), t.getNodeId());
+    }
+
+    @Override
+    public String getTemplateSchemaPath() {
+        return "/json/DelegateNewTemplateSchema.json";
     }
 
     @Override
