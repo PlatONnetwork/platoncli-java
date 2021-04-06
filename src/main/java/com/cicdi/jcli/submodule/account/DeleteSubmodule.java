@@ -8,6 +8,7 @@ import com.cicdi.jcli.util.AddressUtil;
 import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.WalletUtil;
+import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.crypto.Credentials;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +27,8 @@ import static com.cicdi.jcli.util.StringUtil.readPassword;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_delete", commandDescription = "删除钱包")
 public class DeleteSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, required = true, description = "指定钱包文件或者钱包文件地址删除对应钱包文件")
+    @Parameter(names = {"--address", "-address", "-d"}, required = true,
+            description = "指定钱包文件或者钱包文件地址删除对应钱包文件", validateValueWith = AddressValidator.class)
     protected String address;
 
     @Override

@@ -9,8 +9,10 @@ import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.AddressUtil;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.StringUtil;
+import com.cicdi.jcli.validator.AddressValidator;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -23,7 +25,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_check", commandDescription = "查看本地钱包")
 public class CheckSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, description = "具体查看的钱包文件名称或者address，不填写具体参数查询默认目录下全部钱包文件")
+    @Parameter(names = {"--address", "-address", "-d"}, description = "具体查看的钱包文件名称或者address，不填写具体参数查询默认目录下全部钱包文件",
+            validateValueWith = AddressValidator.class)
     protected String address;
 
     @Override
@@ -36,8 +39,13 @@ public class CheckSubmodule extends AbstractSimpleSubmodule {
                 stringBuilder.append("File name: ").append(tuple.getB()).append(", address: ").append(tuple.getA()).append(".\n");
             }
         } else {
-            String filename = AddressUtil.getFilenameFromAddress(nodeConfigModel.getHrp(), address);
-            stringBuilder.append("File name: ").append(filename).append(", address: ").append(address).append(".\n");
+            if (AddressUtil.isJsonFile(address)) {
+                String newAddress = AddressUtil.readAddressFromFile(new File(address), nodeConfigModel.getHrp());
+                stringBuilder.append("File name: ").append(address).append(", address: ").append(newAddress).append(".\n");
+            } else {
+                String filename = AddressUtil.getFilenameFromAddress(nodeConfigModel.getHrp(), address);
+                stringBuilder.append("File name: ").append(filename).append(", address: ").append(address).append(".\n");
+            }
         }
         return stringBuilder.toString();
     }
