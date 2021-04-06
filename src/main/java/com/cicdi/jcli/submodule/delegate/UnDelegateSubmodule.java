@@ -19,7 +19,7 @@ import java.io.IOException;
 public class UnDelegateSubmodule extends AbstractComplexSubmodule<DelegateUnDelegateTemplate, DelegateUnDelegateUtil> {
 
     @Override
-    public FunctionUtil<DelegateUnDelegateUtil> function() throws IOException, CipherException {
+    public FunctionUtil<DelegateUnDelegateUtil> function(){
         return () -> new DelegateUnDelegateUtil(isOnline(), address, config, param, DelegateUnDelegateTemplate.class);
     }
 

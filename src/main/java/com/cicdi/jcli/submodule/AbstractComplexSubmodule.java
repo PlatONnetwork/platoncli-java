@@ -10,7 +10,6 @@ import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.util.contract.BaseContractUtil;
 import com.cicdi.jcli.validator.PositiveBigIntegerValidator;
 import com.platon.contracts.ppos.utils.EncoderUtils;
-import com.platon.crypto.CipherException;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
 import lombok.extern.slf4j.Slf4j;
@@ -47,10 +46,8 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
      * 该方法会产生模块对应的util
      *
      * @return 模块对应的util
-     * @throws IOException     io异常
-     * @throws CipherException 密码异常
      */
-    public abstract FunctionUtil<U> function() throws IOException, CipherException;
+    public abstract FunctionUtil<U> function();
 
     /**
      * 生成模板说明，以供打印

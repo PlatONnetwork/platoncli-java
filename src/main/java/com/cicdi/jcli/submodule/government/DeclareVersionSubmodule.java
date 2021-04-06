@@ -20,7 +20,7 @@ import java.io.IOException;
 @Parameters(commandNames = "government_declareVersion", commandDescription = "版本声明")
 public class DeclareVersionSubmodule extends AbstractComplexSubmodule<DeclareVersionTemplate, DeclareVersionUtil> {
     @Override
-    public FunctionUtil<DeclareVersionUtil> function() throws IOException, CipherException {
+    public FunctionUtil<DeclareVersionUtil> function() {
         return () -> new DeclareVersionUtil(isOnline(), address, config, param, DeclareVersionTemplate.class);
     }
 

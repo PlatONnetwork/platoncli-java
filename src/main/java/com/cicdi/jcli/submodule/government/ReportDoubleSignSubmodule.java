@@ -1,13 +1,10 @@
 package com.cicdi.jcli.submodule.government;
 
-import com.platon.crypto.CipherException;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.government.ReportDoubleSignTemplate;
 import com.cicdi.jcli.util.contract.government.ReportDoubleSignUtil;
-
-import java.io.IOException;
 
 /**
  * 举报双签
@@ -18,7 +15,7 @@ import java.io.IOException;
 @Parameters(commandNames = "government_reportDoubleSign", commandDescription = "举报双签")
 public class ReportDoubleSignSubmodule extends AbstractComplexSubmodule<ReportDoubleSignTemplate, ReportDoubleSignUtil> {
     @Override
-    public FunctionUtil<ReportDoubleSignUtil> function() throws IOException, CipherException {
+    public FunctionUtil<ReportDoubleSignUtil> function() {
         return () -> new ReportDoubleSignUtil(isOnline(), address, config, param, ReportDoubleSignTemplate.class);
     }
 

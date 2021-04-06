@@ -1,13 +1,10 @@
 package com.cicdi.jcli.submodule.government;
 
-import com.platon.crypto.CipherException;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.government.VoteTemplate;
 import com.cicdi.jcli.util.contract.government.VoteUtil;
-
-import java.io.IOException;
 
 /**
  * 提案投票
@@ -18,7 +15,7 @@ import java.io.IOException;
 @Parameters(commandNames = "government_vote", commandDescription = "提案投票")
 public class VoteSubmodule extends AbstractComplexSubmodule<VoteTemplate, VoteUtil> {
     @Override
-    public FunctionUtil<VoteUtil> function() throws IOException, CipherException {
+    public FunctionUtil<VoteUtil> function() {
         return () -> new VoteUtil(isOnline(), address, config, param, VoteTemplate.class);
     }
 
