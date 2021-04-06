@@ -59,15 +59,17 @@ public class AddressUtil {
         if (new File(address).isFile()) {
             return new File(address);
         }
-        List<Tuple<String, File>> tuples = readAddressFileFromDir(hrp, "./");
-        for (Tuple<String, File> t : tuples) {
-            if (t.getA().equals(address)) {
-                return t.getB();
-            }
-        }
-        throw new FileNotFoundException("can not find wallet file matches address: " + address);
+        return new File(getFilenameFromAddress(hrp, address));
     }
 
+    /**
+     * 根据地址查询钱包名称
+     *
+     * @param hrp     hrp值，用于格式化地址
+     * @param address 查询地址
+     * @return 钱包文件名称
+     * @throws FileNotFoundException 无法查找到钱包
+     */
     public static String getFilenameFromAddress(String hrp, String address) throws FileNotFoundException {
         List<Tuple<String, String>> tuples = readAddressFromDir(hrp);
         for (Tuple<String, String> t : tuples) {
