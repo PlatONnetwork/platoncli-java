@@ -34,7 +34,7 @@ public class DeleteSubmodule extends AbstractSimpleSubmodule {
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
         File f1 = new File(address);
-        boolean deleteResult = false;
+
         String hrp = ConfigUtil.readConfig(config).getHrp();
         if (!f1.isFile()) {
             f1 = AddressUtil.getFileFromAddress(hrp, address);
@@ -42,13 +42,22 @@ public class DeleteSubmodule extends AbstractSimpleSubmodule {
         }
         String passwd = readPassword();
         Credentials credentials = WalletUtil.loadCredentials(passwd, f1, hrp);
+
+        boolean deleteResult = false;
         if (credentials.getEcKeyPair().getPrivateKey() != null) {
-            System.out.println("Do you want to delete the wallet file: " + f1.getName() + "? Y/N");
+            System.out.println("Do you want to delete the wallet file: " + f1.getName() + " and it's mnemonic backup file? Y/N");
             String s = new Scanner(System.in).nextLine();
             if (Common.LETTER_Y.equalsIgnoreCase(s)) {
+                File mnemonicFile = new File("wallet/Bip39-" + f1.getName());
+                if (mnemonicFile.delete()) {
+                    log.info("mnemonic backup file has been deleted");
+                } else {
+                    log.warn("mnemonic backup file delete failed");
+                }
                 deleteResult = f1.delete();
             }
         }
-        return deleteResult ? Common.SUCCESS_STR : Common.FAIL_STR;
+        return deleteResult ? Common.SUCCESS_STR + ": " + f1.getName() + " is deleted" :
+                Common.FAIL_STR + ": " + f1.getName() + " delete failed";
     }
 }
