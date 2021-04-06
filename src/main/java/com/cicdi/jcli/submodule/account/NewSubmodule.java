@@ -1,6 +1,5 @@
 package com.cicdi.jcli.submodule.account;
 
-import com.platon.crypto.WalletUtils;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
@@ -42,8 +41,10 @@ public class NewSubmodule extends AbstractSimpleSubmodule {
         if (batch == 0 && StringUtil.isBlank(name)) {
             throw new ParameterException("生成单个钱包时需要指定名称");
         }
-        if (!name.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX)) {
-            name += ".json";
+        if (name != null) {
+            if (!name.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX)) {
+                name += ".json";
+            }
         }
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         if (hrp == null) {
@@ -55,7 +56,7 @@ public class NewSubmodule extends AbstractSimpleSubmodule {
             if (!file.exists()) {
                 String passwd = StringUtil.readPassword();
                 if (WalletUtil.createWalletFile(passwd, file, hrp)) {
-                    return Common.SUCCESS_STR ;
+                    return Common.SUCCESS_STR;
                 }
             } else {
                 //重复钱包不会覆盖
