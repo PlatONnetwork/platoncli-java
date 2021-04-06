@@ -1,6 +1,5 @@
 package com.cicdi.jcli.template;
 
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
