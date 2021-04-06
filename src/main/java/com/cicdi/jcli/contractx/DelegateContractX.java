@@ -105,17 +105,6 @@ public class DelegateContractX extends BaseContract {
                         , new Uint256(amount)));
     }
 
-    private static StakingAmountType parseStakingAmountType(int type) {
-        switch (type) {
-            case 0:
-                return StakingAmountType.FREE_AMOUNT_TYPE;
-            case 1:
-                return StakingAmountType.RESTRICTING_AMOUNT_TYPE;
-            default:
-                throw new RuntimeException("type error!");
-        }
-    }
-
     /**
      * 发起委托
      *
@@ -131,7 +120,7 @@ public class DelegateContractX extends BaseContract {
 
     public RemoteCall<TransactionResponse> delegate(DelegateNewTemplate template, GasProvider gasProvider) {
         return delegate(template.getNodeId(),
-                parseStakingAmountType(template.getType()),
+                template.getType(),
                 ConvertUtil.hrp2Von(template.getAmount()),
                 gasProvider);
     }

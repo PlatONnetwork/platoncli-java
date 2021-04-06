@@ -1,5 +1,6 @@
 package com.cicdi.jcli.template.delegate;
 
+import com.platon.contracts.ppos.dto.enums.StakingAmountType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
  */
 @Data
 public class DelegateNewTemplate {
-    private Integer type;
+    private StakingAmountType type;
     private String nodeId;
     private BigDecimal amount;
 }

@@ -45,7 +45,7 @@ public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
 
     @Override
     public Function createFunction() throws IOException {
-        StakingAmountType sta = t.getType().longValue() == 0 ? StakingAmountType.FREE_AMOUNT_TYPE : StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+        StakingAmountType sta = t.getType();
         if (StringUtil.isBlank(t.getNodeId())) {
             t.setNodeId(Web3jUtil.getNodeId(nodeConfigModel.getRpcAddress()));
         }
