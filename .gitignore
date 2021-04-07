@@ -11,6 +11,6 @@ buildNumber.properties
 .idea
 *.iml
 logs
-logsbackup/
+backup/
 wallet/
 recovery/

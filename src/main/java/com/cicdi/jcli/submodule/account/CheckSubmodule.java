@@ -23,9 +23,9 @@ import java.util.List;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_check", commandDescription = "查看本地钱包")
+@Parameters(commandNames = "account_check", resourceBundle = "command", commandDescription = "查看本地钱包")
 public class CheckSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, description = "具体查看的钱包文件名称或者address，不填写具体参数查询默认目录下全部钱包文件",
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.check.address",
             validateValueWith = AddressValidator.class)
     protected String address;
 
