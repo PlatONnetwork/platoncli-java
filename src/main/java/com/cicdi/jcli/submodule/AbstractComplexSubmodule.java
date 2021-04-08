@@ -31,7 +31,7 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
     protected boolean offline;
     @Parameter(names = {"--gasLimit", "-gasLimit"}, descriptionKey = "AbstractComplexSubmodule.gasLimit", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasLimit = Common.MID_GAS_LIMIT;
-    @Parameter(names = {"--gasPrice", "-gasPrice"}, description = "AbstractComplexSubmodule.gasPrice", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
+    @Parameter(names = {"--gasPrice", "-gasPrice"}, descriptionKey = "AbstractComplexSubmodule.gasPrice", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
     @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "AbstractComplexSubmodule.template")
     protected boolean template;

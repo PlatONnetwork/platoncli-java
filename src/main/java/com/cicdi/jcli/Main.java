@@ -51,7 +51,7 @@ public class Main extends AbstractSimpleSubmodule {
             for (String s : argv) {
                 argStr.append(" ").append(s);
             }
-            log.info("\r\nCommand: java -jar platoncli-java-jar-with-dependencies.jar{}", argStr.toString());
+            log.info("Command: java -jar platoncli-java-jar-with-dependencies.jar{}", argStr);
             jc = parseArgs(argv);
             result = main.parse(jc, argv);
             log.info("Result: {}", result);

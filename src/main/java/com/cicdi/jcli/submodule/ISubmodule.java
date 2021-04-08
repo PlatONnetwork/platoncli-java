@@ -1,6 +1,7 @@
 package com.cicdi.jcli.submodule;
 
 import com.beust.jcommander.JCommander;
+import com.cicdi.jcli.util.ResourceBundleUtil;
 
 /**
  * 子模块接口,包含account, delegate,government,hedge,node,query,staking,tx
@@ -26,7 +27,7 @@ public interface ISubmodule {
      *
      * @param jc   JCommander对象
      * @param argv 参数
-     * @return 解析結果
+     * @return 解析结果`
      * @throws Exception 解析异常
      */
     String parse(JCommander jc, String... argv) throws Exception;
@@ -41,6 +42,8 @@ public interface ISubmodule {
         JCommander thisJc = jc.getCommands().get(jc.getParsedCommand());
         StringBuilder sb = new StringBuilder();
         if (thisJc != null) {
+            sb.append(ResourceBundleUtil.getTextString("ISubmodule.text1"))
+                    .append(jc.getUsageFormatter().getCommandDescription(thisJc.getProgramName())).append('\n');
             thisJc.setProgramName(jc.getProgramName() + " " + thisJc.getProgramName());
             thisJc.getUsageFormatter().usage(sb);
         } else {
