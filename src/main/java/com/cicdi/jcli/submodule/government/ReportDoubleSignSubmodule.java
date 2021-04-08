@@ -12,7 +12,7 @@ import com.cicdi.jcli.util.contract.government.ReportDoubleSignUtil;
  * @author haypo
  * @date 2021/1/17
  */
-@Parameters(commandNames = "government_reportDoubleSign", commandDescription = "举报双签")
+@Parameters(commandNames = "government_reportDoubleSign",resourceBundle = "command",  commandDescription = "举报双签")
 public class ReportDoubleSignSubmodule extends AbstractComplexSubmodule<ReportDoubleSignTemplate, ReportDoubleSignUtil> {
     @Override
     public FunctionUtil<ReportDoubleSignUtil> function() {

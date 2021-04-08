@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "hedge_GetRestrictingInfo", commandDescription = "获取锁仓计划")
+@Parameters(commandNames = "hedge_GetRestrictingInfo",resourceBundle = "command",  commandDescription = "获取锁仓计划")
 public class GetRestrictingInfoSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址或者名称.json", required = true)
     protected String address;

@@ -16,7 +16,7 @@ import com.cicdi.jcli.util.JsonUtil;
  * @author haypo
  * @date 2021/2/19
  */
-@Parameters(commandNames = "government_getProposal", commandDescription = "根据提案id查询提案信息")
+@Parameters(commandNames = "government_getProposal",resourceBundle = "command",  commandDescription = "根据提案id查询提案信息")
 public class GetProposalSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--pid", "-pid"}, description = "提案id")
     protected String pid;

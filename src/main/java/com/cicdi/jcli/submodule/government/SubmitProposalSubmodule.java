@@ -32,7 +32,7 @@ import java.math.BigInteger;
  * @date 2021/1/14
  */
 @Slf4j
-@Parameters(commandNames = "government_submitProposal", commandDescription = "提交参数/升级/取消提案")
+@Parameters(commandNames = "government_submitProposal",resourceBundle = "command",  commandDescription = "提交参数/升级/取消提案")
 public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
     protected boolean offline;

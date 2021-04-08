@@ -20,7 +20,7 @@ import java.util.Optional;
  * @date 2020/12/28
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "tx_getTransactionReceipt", commandDescription = "根据交易hash查询交易信息")
+@Parameters(commandNames = "tx_getTransactionReceipt",resourceBundle = "command",  commandDescription = "根据交易hash查询交易信息")
 public class GetTransactionReceiptSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--hash", "-hash", "-h"}, description = "String类型,具体查询区块hash", required = true)
     protected String hash;

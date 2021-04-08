@@ -24,9 +24,9 @@ import java.util.Scanner;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_modify", commandDescription = "修改钱包密码")
+@Parameters(commandNames = "account_modify", resourceBundle = "command", commandDescriptionKey = "account.modify")
 public class ModifySubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, description = "通过名称.json或者地址指定修改的钱包文件", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.modify.address", required = true)
     protected String address;
 
     @Override

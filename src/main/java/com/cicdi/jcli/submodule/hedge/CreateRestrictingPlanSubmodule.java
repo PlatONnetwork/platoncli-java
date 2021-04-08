@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "hedge_createRestrictingPlan", commandDescription = "创建锁仓计划")
+@Parameters(commandNames = "hedge_createRestrictingPlan",resourceBundle = "command",  commandDescription = "创建锁仓计划")
 public class CreateRestrictingPlanSubmodule extends AbstractComplexSubmodule<CreateRestrictingPlanTemplate, CreateRestrictingPlanUtil> {
     @Override
     public FunctionUtil<CreateRestrictingPlanUtil> function() {

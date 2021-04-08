@@ -20,7 +20,7 @@ import java.util.List;
  * @author haypo
  * @date 2021/1/17
  */
-@Parameters(commandNames = "government_listGovernParam", commandDescription = "查询治理参数列表")
+@Parameters(commandNames = "government_listGovernParam",resourceBundle = "command",  commandDescription = "查询治理参数列表")
 public class ListGovernParamSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--module", "-module", "-m"}, description = "查询具体的参数模块，输入\"\"空串，表示查询所有治理参数。包含staking、slashing、block、reward、restricting等模块")
     protected String module = "";

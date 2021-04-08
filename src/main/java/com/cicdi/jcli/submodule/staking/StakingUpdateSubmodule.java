@@ -12,7 +12,7 @@ import com.cicdi.jcli.util.contract.staking.StakingUpdateUtil;
  * @author haypo
  * @date 2020/12/29
  */
-@Parameters(commandNames = "staking_update", commandDescription = "修改质押信息")
+@Parameters(commandNames = "staking_update", resourceBundle = "command", commandDescription = "修改质押信息")
 public class StakingUpdateSubmodule extends AbstractComplexSubmodule<StakingUpdateTemplate, StakingUpdateUtil> {
 
     @Override

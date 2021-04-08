@@ -16,7 +16,7 @@ import com.cicdi.jcli.util.JsonUtil;
  * @author haypo
  * @date 2021/2/19
  */
-@Parameters(commandNames = "government_getTallyResult", commandDescription = "查询提案结果")
+@Parameters(commandNames = "government_getTallyResult",resourceBundle = "command",  commandDescription = "查询提案结果")
 public class GetTallyResultSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--pid", "-pid"}, description = "提案id")
     protected String pid;

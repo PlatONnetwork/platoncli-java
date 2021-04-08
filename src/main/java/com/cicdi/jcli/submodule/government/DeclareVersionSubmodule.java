@@ -17,7 +17,7 @@ import java.io.IOException;
  * @date 2020/12/31
  */
 @Slf4j
-@Parameters(commandNames = "government_declareVersion", commandDescription = "版本声明")
+@Parameters(commandNames = "government_declareVersion",resourceBundle = "command",  commandDescription = "版本声明")
 public class DeclareVersionSubmodule extends AbstractComplexSubmodule<DeclareVersionTemplate, DeclareVersionUtil> {
     @Override
     public FunctionUtil<DeclareVersionUtil> function() {

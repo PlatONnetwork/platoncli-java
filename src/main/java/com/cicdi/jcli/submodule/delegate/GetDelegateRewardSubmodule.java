@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @author haypo
  * @date 2021/1/8
  */
-@Parameters(commandNames = "delegate_getDelegateReward", commandDescription = "查询账户在各节点未提取委托奖励")
+@Parameters(commandNames = "delegate_getDelegateReward", resourceBundle = "command", commandDescription = "查询账户在各节点未提取委托奖励")
 public class GetDelegateRewardSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--param", "-param", "-p"}, description = "交易参数json字符串，或者交易参数json文件路径", required = true)
     protected String param;

@@ -13,7 +13,7 @@ import com.cicdi.jcli.util.contract.staking.StakingCreateUtil;
  * @author haypo
  * @date 2020/12/25
  */
-@Parameters(commandNames = "staking_create", commandDescription = "创建验证人")
+@Parameters(commandNames = "staking_create", resourceBundle = "command", commandDescription = "创建验证人")
 public class StakingCreateSubmodule extends AbstractComplexSubmodule<StakingCreateTemplate, StakingCreateUtil> {
 
     @Override

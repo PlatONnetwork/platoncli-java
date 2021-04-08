@@ -27,7 +27,6 @@ import java.util.Collections;
  * @date 2020/12/23
  */
 @SuppressWarnings("unused")
-@Parameters(resourceBundle = "command")
 public abstract class AbstractSimpleSubmodule implements ISubmodule {
     @Parameter(names = {"--help", "-help"}, help = true, descriptionKey = "help")
     protected boolean help;

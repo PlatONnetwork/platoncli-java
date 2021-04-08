@@ -1,7 +1,5 @@
 package com.cicdi.jcli.submodule.query;
 
-import com.platon.contracts.ppos.dto.CallResponse;
-import com.platon.protocol.Web3j;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.contractx.StakingContractX;
@@ -9,6 +7,8 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.ConvertUtil;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.protocol.Web3j;
 
 import java.math.BigInteger;
 
@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2021/1/18
  */
-@Parameters(commandNames = "query_getPackageReward", commandDescription = "查询当前结算周期的区块奖励")
+@Parameters(commandNames = "query_getPackageReward", resourceBundle = "command", commandDescription = "查询当前结算周期的区块奖励")
 public class GetPackageRewardSubmodule extends AbstractSimpleSubmodule {
     @Override
     public String run(JCommander jc, String... argv) throws Exception {

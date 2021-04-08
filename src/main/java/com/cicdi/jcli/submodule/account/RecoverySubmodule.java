@@ -21,7 +21,7 @@ import java.io.File;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_recovery", commandDescription = "恢复私钥")
+@Parameters(commandNames = "account_recovery", resourceBundle = "command", commandDescription = "恢复私钥")
 public class RecoverySubmodule extends AbstractSimpleSubmodule {
     private static final File RECOVERY_DIR = new File("recovery");
     @Parameter(names = {"--type", "-type", "-t"}, description = "选择恢复方式，助记词或者私钥。--type mnemonic 或者--type privateKey", required = true)

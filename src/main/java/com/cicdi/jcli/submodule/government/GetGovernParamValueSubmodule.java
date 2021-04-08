@@ -20,7 +20,7 @@ import com.platon.protocol.Web3j;
  * @author haypo
  * @date 2021/1/17
  */
-@Parameters(commandNames = "government_getGovernParamValue", commandDescription = "查询最新的治理参数值")
+@Parameters(commandNames = "government_getGovernParamValue", resourceBundle = "command", commandDescription = "查询最新的治理参数值")
 public class GetGovernParamValueSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--template", "-template", "-t"}, help = true, description = "查看委托交易参数模板，与其他参数共存没有效果，单独执行查看")
     protected boolean template;

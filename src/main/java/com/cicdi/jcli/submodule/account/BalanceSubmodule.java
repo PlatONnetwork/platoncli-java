@@ -1,8 +1,5 @@
 package com.cicdi.jcli.submodule.account;
 
-import com.platon.contracts.ppos.dto.resp.RestrictingItem;
-import com.platon.protocol.Web3j;
-import com.platon.protocol.core.DefaultBlockParameterName;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -13,6 +10,9 @@ import com.cicdi.jcli.util.AddressUtil;
 import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.ConvertUtil;
+import com.platon.contracts.ppos.dto.resp.RestrictingItem;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.DefaultBlockParameterName;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigInteger;
@@ -25,7 +25,7 @@ import java.math.BigInteger;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_getBalance", commandDescription = "钱包余额")
+@Parameters(commandNames = "account_getBalance", resourceBundle = "command", commandDescription = "钱包余额")
 public class BalanceSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.getBalance.address", required = true)
     protected String address;

@@ -1,13 +1,13 @@
 package com.cicdi.jcli.submodule.query;
 
-import com.platon.contracts.ppos.dto.CallResponse;
-import com.platon.protocol.Web3j;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.contractx.StakingContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.ConfigUtil;
+import com.platon.contracts.ppos.dto.CallResponse;
+import com.platon.protocol.Web3j;
 
 import java.math.BigInteger;
 
@@ -17,7 +17,7 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2021/1/18
  */
-@Parameters(commandNames = "query_getAvgPackTime", commandDescription = "查询打包区块的平均时间")
+@Parameters(commandNames = "query_getAvgPackTime", resourceBundle = "command", commandDescription = "查询打包区块的平均时间")
 public class GetAvgPackTimeSubmodule extends AbstractSimpleSubmodule {
 
     @Override

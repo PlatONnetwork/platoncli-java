@@ -1,9 +1,5 @@
 package com.cicdi.jcli.submodule.account;
 
-import com.platon.crypto.Credentials;
-import com.platon.crypto.RawTransaction;
-import com.platon.crypto.WalletUtils;
-import com.platon.utils.Numeric;
 import com.alibaba.fastjson.JSON;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -12,7 +8,10 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
-import com.google.zxing.Result;
+import com.platon.crypto.Credentials;
+import com.platon.crypto.RawTransaction;
+import com.platon.crypto.WalletUtils;
+import com.platon.utils.Numeric;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -29,7 +28,7 @@ import java.util.Locale;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_sign", commandDescription = "离线签名")
+@Parameters(commandNames = "account_sign", resourceBundle = "command", commandDescription = "离线签名")
 public class SignSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址或者名称.json", required = true)
     protected String address;
@@ -49,7 +48,7 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
         BaseTemplate4Serialize transferTemplate;
         if (datafile.isFile()) {
             if (datafile.getName().toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX)) {
-                transferTemplate = JsonUtil.readFile(datafile, BaseTemplate4Serialize.class,null);
+                transferTemplate = JsonUtil.readFile(datafile, BaseTemplate4Serialize.class, null);
             } else {
                 transferTemplate = QrUtil.readQrCodeImage(datafile);
             }

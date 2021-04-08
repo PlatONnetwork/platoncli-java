@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * @date 2021/1/17
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "government_getActiveVersion", commandDescription = "查询节点的链生效版本")
+@Parameters(commandNames = "government_getActiveVersion",resourceBundle = "command",  commandDescription = "查询节点的链生效版本")
 public class GetActiveVersionSubmodule extends AbstractSimpleSubmodule {
     @Override
     public String run(JCommander jc, String... argv) throws Exception {

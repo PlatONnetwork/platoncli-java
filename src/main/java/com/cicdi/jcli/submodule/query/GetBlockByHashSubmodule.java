@@ -1,7 +1,5 @@
 package com.cicdi.jcli.submodule.query;
 
-import com.platon.protocol.Web3j;
-import com.platon.protocol.core.methods.response.PlatonBlock;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -9,6 +7,8 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.JsonUtil;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.methods.response.PlatonBlock;
 
 /**
  * 根据区块hash查询区块信息
@@ -16,9 +16,10 @@ import com.cicdi.jcli.util.JsonUtil;
  * @author haypo
  * @date 2021/1/18
  */
-@Parameters(commandNames = "query_getBlockByHash", commandDescription = "根据区块hash查询区块信息")
+@SuppressWarnings("unused")
+@Parameters(commandNames = "query_getBlockByHash", resourceBundle = "command", commandDescription = "根据区块hash查询区块信息")
 public class GetBlockByHashSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--hash", "-hash", "-h"}, description = "具体查询区块hash")
+    @Parameter(names = {"--hash", "-hash", "-h"}, descriptionKey = "query.getBlockByHash.hash")
     protected String hash;
 
     @Override

@@ -1,15 +1,16 @@
 package com.cicdi.jcli;
 
-import com.platon.crypto.CipherException;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.MissingCommandException;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.submodule.ISubmodule;
 import com.cicdi.jcli.submodule.SubModuleScanner;
 import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.GitUtil;
 import com.cicdi.jcli.util.TimeUtil;
+import com.platon.crypto.CipherException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @date 2020/12/22
  */
 @Slf4j
+@Parameters(resourceBundle = "command")
 public class Main extends AbstractSimpleSubmodule {
     private static final String CLI_VERSION = "0.1.0";
     private static final String CLI_NAME = "platoncli-java";

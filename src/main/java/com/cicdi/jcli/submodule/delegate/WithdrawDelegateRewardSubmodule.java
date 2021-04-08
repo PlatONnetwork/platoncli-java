@@ -28,7 +28,7 @@ import java.util.Collections;
  */
 @SuppressWarnings("unused")
 @Slf4j
-@Parameters(commandNames = "delegate_withdrawDelegateReward", commandDescription = "提取委托奖励")
+@Parameters(commandNames = "delegate_withdrawDelegateReward", resourceBundle = "command", commandDescription = "提取委托奖励")
 public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
     protected boolean offline;
@@ -63,7 +63,7 @@ public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
 
         if (isOnline()) {
             File addressFile = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
-            Credentials credentials = WalletUtil.loadCredentials(StringUtil.readPassword(), addressFile,nodeConfigModel.getHrp());
+            Credentials credentials = WalletUtil.loadCredentials(StringUtil.readPassword(), addressFile, nodeConfigModel.getHrp());
             RewardContractX rc = RewardContractX.load(web3j, credentials, nodeConfigModel.getHrp());
             if (fast) {
                 //快速发送交易

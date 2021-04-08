@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2021/1/8
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "delegate_getRelatedListByDelAddr", commandDescription = "查询当前账户地址所委托的节点的NodeId和质押Id")
+@Parameters(commandNames = "delegate_getRelatedListByDelAddr", resourceBundle = "command", commandDescription = "查询当前账户地址所委托的节点的NodeId和质押Id")
 public class GetRelatedListByDelAddrSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, description = "委托人账户地址", required = true)
     protected String address;

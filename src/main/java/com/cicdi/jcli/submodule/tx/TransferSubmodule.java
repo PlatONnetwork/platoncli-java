@@ -27,7 +27,7 @@ import java.math.BigInteger;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "tx_transfer", commandDescription = "发送交易")
+@Parameters(commandNames = "tx_transfer", resourceBundle = "command", commandDescription = "发送交易")
 public class TransferSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
     protected boolean offline;

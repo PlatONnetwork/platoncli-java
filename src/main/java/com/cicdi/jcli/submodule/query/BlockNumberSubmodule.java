@@ -1,23 +1,24 @@
 package com.cicdi.jcli.submodule.query;
 
-import com.platon.protocol.Web3j;
-import com.platon.protocol.core.DefaultBlockParameterName;
-import com.platon.protocol.core.methods.response.PlatonBlock;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.ConfigUtil;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.DefaultBlockParameterName;
+import com.platon.protocol.core.methods.response.PlatonBlock;
 
 import java.io.IOException;
 
 /**
- * 查询当前最高块高查询当前最高块高
+ * 查询当前最高块高
  *
  * @author haypo
  * @date 2020/12/25
  */
-@Parameters(commandNames = "query_blockNumber", commandDescription = "查询当前最高块高查询当前最高块高")
+@SuppressWarnings("unused")
+@Parameters(commandNames = "query_blockNumber", resourceBundle = "command", commandDescriptionKey = "query.blockNumber")
 public class BlockNumberSubmodule extends AbstractSimpleSubmodule {
     /**
      * @param jc JCommander 对象

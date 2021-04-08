@@ -25,10 +25,10 @@ import static com.cicdi.jcli.util.StringUtil.readPassword;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_delete", commandDescription = "删除钱包")
+@Parameters(commandNames = "account_delete", resourceBundle = "command", commandDescriptionKey = "account.delete")
 public class DeleteSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, required = true,
-            description = "指定钱包文件或者钱包文件地址删除对应钱包文件", validateValueWith = AddressValidator.class)
+            descriptionKey = "account.delete.address", validateValueWith = AddressValidator.class)
     protected String address;
 
     @Override

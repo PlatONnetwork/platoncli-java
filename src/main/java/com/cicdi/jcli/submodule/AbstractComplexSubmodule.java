@@ -27,19 +27,19 @@ import java.util.Collections;
  */
 @Slf4j
 public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>> extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
+    @Parameter(names = {"--offline", "-o"}, descriptionKey = "AbstractComplexSubmodule.offline")
     protected boolean offline;
-    @Parameter(names = {"--gasLimit", "-gasLimit"}, description = "gas用量限制", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
+    @Parameter(names = {"--gasLimit", "-gasLimit"}, descriptionKey = "AbstractComplexSubmodule.gasLimit", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasLimit = Common.MID_GAS_LIMIT;
-    @Parameter(names = {"--gasPrice", "-gasPrice"}, description = "gas价格", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
+    @Parameter(names = {"--gasPrice", "-gasPrice"}, description = "AbstractComplexSubmodule.gasPrice", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
-    @Parameter(names = {"--template", "-template", "-t"}, help = true, description = "查看委托交易参数模板，与其他参数共存没有效果，单独执行查看")
+    @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "AbstractComplexSubmodule.template")
     protected boolean template;
     @Parameter(names = {"--param", "-param", "-p"}, description = "交易参数json字符串，或者交易参数json文件路径", required = true)
     protected String param;
-    @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址或者名称.json", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "AbstractComplexSubmodule.address", required = true)
     protected String address;
-    @Parameter(names = {"--fast", "-fast", "-f"}, description = "是否使用快速发送功能，默认不使用")
+    @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "AbstractComplexSubmodule.fast")
     protected boolean fast;
 
     /**

@@ -24,7 +24,7 @@ import java.util.Locale;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_new", commandDescription = "创建钱包，同时在wallet文件夹下创建助记词的密文文件，请勿删除，否则无法备份！")
+@Parameters(commandNames = "account_new", resourceBundle = "command", commandDescriptionKey = "account.new")
 public class NewSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--name", "-name", "-n"}, description = "钱包名字，如wallet.json")
     protected String name;

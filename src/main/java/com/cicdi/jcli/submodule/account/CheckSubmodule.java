@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_check", resourceBundle = "command", commandDescription = "查看本地钱包")
+@Parameters(commandNames = "account_check", resourceBundle = "command", commandDescriptionKey = "account.check")
 public class CheckSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.check.address",
             validateValueWith = AddressValidator.class)

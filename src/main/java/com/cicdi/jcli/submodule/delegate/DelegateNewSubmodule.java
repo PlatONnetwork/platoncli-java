@@ -13,7 +13,7 @@ import com.cicdi.jcli.util.contract.delegate.DelegateNewUtil;
  * @date 2021/1/4
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "delegate_new", commandDescription = "委托")
+@Parameters(commandNames = "delegate_new", resourceBundle = "command", commandDescription = "委托")
 public class DelegateNewSubmodule extends AbstractComplexSubmodule<DelegateNewTemplate, DelegateNewUtil> {
 
     @Override

@@ -12,7 +12,7 @@ import com.cicdi.jcli.util.contract.government.VoteUtil;
  * @author haypo
  * @date 2021/1/14
  */
-@Parameters(commandNames = "government_vote", commandDescription = "提案投票")
+@Parameters(commandNames = "government_vote",resourceBundle = "command",  commandDescription = "提案投票")
 public class VoteSubmodule extends AbstractComplexSubmodule<VoteTemplate, VoteUtil> {
     @Override
     public FunctionUtil<VoteUtil> function() {

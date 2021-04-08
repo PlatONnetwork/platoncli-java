@@ -1,13 +1,10 @@
 package com.cicdi.jcli.submodule.delegate;
 
-import com.platon.crypto.CipherException;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.delegate.DelegateUnDelegateTemplate;
 import com.cicdi.jcli.util.contract.delegate.DelegateUnDelegateUtil;
-
-import java.io.IOException;
 
 /**
  * 减持/撤销委托
@@ -15,11 +12,11 @@ import java.io.IOException;
  * @author haypo
  * @date 2021/1/8
  */
-@Parameters(commandNames = "delegate_unDelegate", commandDescription = "减持/撤销委托")
+@Parameters(commandNames = "delegate_unDelegate", resourceBundle = "command", commandDescription = "减持/撤销委托")
 public class UnDelegateSubmodule extends AbstractComplexSubmodule<DelegateUnDelegateTemplate, DelegateUnDelegateUtil> {
 
     @Override
-    public FunctionUtil<DelegateUnDelegateUtil> function(){
+    public FunctionUtil<DelegateUnDelegateUtil> function() {
         return () -> new DelegateUnDelegateUtil(isOnline(), address, config, param, DelegateUnDelegateTemplate.class);
     }
 

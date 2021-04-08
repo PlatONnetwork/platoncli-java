@@ -19,7 +19,7 @@ import java.util.List;
  * @author haypo
  * @date 2021/1/8
  */
-@Parameters(commandNames = "staking_getCandidateList", commandDescription = "查询所有实时候选人列表")
+@Parameters(commandNames = "staking_getCandidateList", resourceBundle = "command", commandDescription = "查询所有实时候选人列表")
 public class GetCandidateListSubmodule extends AbstractSimpleSubmodule {
 
     @Override
