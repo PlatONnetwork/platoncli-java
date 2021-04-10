@@ -62,7 +62,7 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
     @Override
     public String run(JCommander jc, String... argv) throws IOException, CipherException, WriterException {
         if (template && argv.length == Common.TWO) {
-            getTemplate();
+            return getTemplate();
         }
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         String schema = JsonUtil.readJsonSchemaFromResource("/json/BaseTemplate4DeserializeSchema.json");
