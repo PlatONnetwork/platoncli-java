@@ -8,10 +8,7 @@ import com.cicdi.jcli.contractx.RewardContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.delegate.GetDelegateRewardTemplate;
-import com.cicdi.jcli.util.CallResponseUtil;
-import com.cicdi.jcli.util.Common;
-import com.cicdi.jcli.util.ConfigUtil;
-import com.cicdi.jcli.util.ParamUtil;
+import com.cicdi.jcli.util.*;
 import com.platon.contracts.ppos.dto.CallResponse;
 import com.platon.contracts.ppos.dto.resp.Node;
 import com.platon.contracts.ppos.dto.resp.Reward;
@@ -43,7 +40,10 @@ public class GetDelegateRewardSubmodule extends AbstractSimpleSubmodule {
                     "String          must          address          账户地址\n" +
                     "List<String>    must          nodeIds          节点ID列表，若为空则表示查询当前全网节点\n";
         }
-        GetDelegateRewardTemplate getDelegateRewardTemplate = ParamUtil.readParam(param, GetDelegateRewardTemplate.class);
+        //校验json
+        GetDelegateRewardTemplate getDelegateRewardTemplate = ParamUtil.readParam(param, GetDelegateRewardTemplate.class,
+                JsonUtil.readJsonSchemaFromResource("/json/GetDelegateRewardTemplateSchema.json"));
+
         if (getDelegateRewardTemplate.getNodeIds() == null || getDelegateRewardTemplate.getNodeIds().isEmpty()) {
             List<Node> nodes = NodeContractX.load(web3j, nodeConfigModel.getHrp()).getCandidateList().send().getData();
             getDelegateRewardTemplate.setNodeIds(nodes.stream().map(Node::getNodeId).collect(Collectors.toList()));

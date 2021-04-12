@@ -22,16 +22,21 @@ public class VoteUtil extends BaseContractUtil<VoteTemplate> {
     }
 
     @Override
+    protected String getTemplateSchemaPath() {
+        return "/json/VoteTemplateSchema.json";
+    }
+
+    @Override
     public Function createFunction() throws IOException {
         if (StringUtil.isBlank(t.getVerifier())) {
             t.setVerifier(Web3jUtil.getNodeId(nodeConfigModel.getRpcAddress()));
         }
-        VoteOption voteOption = VoteOption.valueOf(t.getOption());
+
         return ProposalContractX.createVoteFunction(
                 web3j.getProgramVersion().send().getAdminProgramVersion(),
                 t.getProposalId(),
                 t.getVerifier(),
-                voteOption);
+                t.getOption());
     }
 
     @Override

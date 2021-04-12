@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "VoteTemplate",
+  "description": "投票",
+  "type": "object",
+  "properties": {
+    "verifier": {
+      "description": "声明的节点，只能是验证人/候选人",
+      "type": "string",
+      "maxLength": 130,
+      "minLength": 128
+    },
+    "proposalId": {
+      "description": "提案ID，所投的提案交易的hash",
+      "type": "string"
+    },
+    "option": {
+      "description": "投票类型；YEAS 赞成票、NAYS 反对票、ABSTENTIONS 弃权票",
+      "type": "string",
+      "enum": [
+        "YEAS",
+        "NAYS",
+        "ABSTENTIONS"
+      ]
+    }
+  },
+  "required": [
+    "proposalId",
+    "option"
+  ]
+}

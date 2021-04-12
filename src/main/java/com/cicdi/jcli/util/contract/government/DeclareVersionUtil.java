@@ -17,6 +17,10 @@ import java.io.IOException;
  */
 public class DeclareVersionUtil extends BaseContractUtil<DeclareVersionTemplate> {
 
+    @Override
+    protected String getTemplateSchemaPath() {
+        return "/json/DeclareVersionTemplateSchema.json";
+    }
 
     public DeclareVersionUtil(boolean isOnline, String jsonPath, String config, String param, Class<DeclareVersionTemplate> clazz) throws IOException, CipherException {
         super(isOnline, jsonPath, config, param, clazz);

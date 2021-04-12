@@ -1,5 +1,6 @@
 package com.cicdi.jcli.template.government;
 
+import com.platon.contracts.ppos.dto.enums.VoteOption;
 import lombok.Data;
 
 /**
@@ -14,5 +15,5 @@ import lombok.Data;
 public class VoteTemplate {
     private String verifier;
     private String proposalId;
-    private String option;
+    private VoteOption option;
 }
