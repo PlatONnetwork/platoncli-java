@@ -1,14 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "DelegateNewTemplate",
-  "description": "委托",
+  "title": "DelegateUnDelegateTemplate",
+  "description": "赎回委托",
   "type": "object",
   "properties": {
-    "type": {
-      "description": "余额类型，0: 自由金额，1: 锁仓金额，2：自动分配金额，优先使用锁仓",
+    "stakingBlockNum": {
+      "description": "质押节点时的块高",
       "type": "integer",
-      "minimum": 0,
-      "maximum": 2
+      "minimum": 0
     },
     "nodeId": {
       "description": "节点ID",
@@ -23,7 +22,7 @@
     }
   },
   "required": [
-    "type",
+    "stakingBlockNum",
     "nodeId",
     "amount"
   ]

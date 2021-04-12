@@ -17,6 +17,11 @@ import java.math.BigInteger;
  */
 @Slf4j
 public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateTemplate> {
+    @Override
+    protected String getTemplateSchemaPath() {
+        return "/json/DelegateUnDelegateTemplateSchema.json";
+    }
+
     public DelegateUnDelegateUtil(boolean isOnline, String address, String config, String param, Class<DelegateUnDelegateTemplate> clazz) throws Exception {
         super(isOnline, address, config, param, clazz);
         //赎回委托小于阈值
