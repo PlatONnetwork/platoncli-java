@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.hedge.CreateRestrictingPlanTemplate;
+import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.contract.hedge.CreateRestrictingPlanUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "hedge_createRestrictingPlan",resourceBundle = "command",  commandDescription = "创建锁仓计划")
+@Parameters(commandNames = "hedge_createRestrictingPlan", resourceBundle = "command", commandDescriptionKey = "hedge.createRestrictingPlan")
 public class CreateRestrictingPlanSubmodule extends AbstractComplexSubmodule<CreateRestrictingPlanTemplate, CreateRestrictingPlanUtil> {
     @Override
     public FunctionUtil<CreateRestrictingPlanUtil> function() {
@@ -24,13 +25,7 @@ public class CreateRestrictingPlanSubmodule extends AbstractComplexSubmodule<Cre
 
     @Override
     public String generateTemplate() {
-        return "类型            必填性        参数名称          参数解释\n" +
-                "String         must          account        锁仓计划释放到的仓库\n" +
-                "Array          must          plans          锁仓计划列表(数组)\n" +
-                "Plans: \n" +
-                "类型             必填性         参数名称          参数解释\n" +
-                "BigInteger      must          epoch            表示结算周期的倍数\n" +
-                "BigInteger      must          amount           表示目标区块上待释放的金额，单位为von\n";
+        return ResourceBundleUtil.getTemplateString("CreateRestrictingPlanSubmodule");
     }
 
 }

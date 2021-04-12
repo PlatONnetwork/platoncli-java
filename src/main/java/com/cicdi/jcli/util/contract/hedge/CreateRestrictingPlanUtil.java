@@ -20,6 +20,11 @@ public class CreateRestrictingPlanUtil extends BaseContractUtil<CreateRestrictin
     }
 
     @Override
+    protected String getTemplateSchemaPath() {
+        return "/json/CreateRestrictingPlanTemplateSchema.json";
+    }
+
+    @Override
     public Function createFunction() throws IOException {
         return RestrictPlanContractX.createRestrictingPlanFunctionX(t.getAccount(), t.getPlans());
     }

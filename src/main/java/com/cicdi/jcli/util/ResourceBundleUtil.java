@@ -10,4 +10,8 @@ public class ResourceBundleUtil {
     public static String getTextString(String key) {
         return ResourceBundle.getBundle("text").getString(key);
     }
+
+    public static String getTemplateString(String key) {
+        return ResourceBundle.getBundle("template").getString(key);
+    }
 }
