@@ -18,9 +18,9 @@ import com.platon.protocol.Web3j;
  * @author haypo
  * @date 2021/1/18
  */
-@Parameters(commandNames = "staking_getStakingInfo", resourceBundle = "command", commandDescription = "获取质押信息")
+@Parameters(commandNames = "staking_getStakingInfo", resourceBundle = "command", commandDescriptionKey = "staking.getStakingInfo")
 public class GetStakingInfoSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--nodeId", "-nodeId"}, description = "节点id")
+    @Parameter(names = {"--nodeId", "-nodeId"}, descriptionKey = "staking.getStakingInfo.nodeId", required = true)
     protected String nodeId;
 
     @Override

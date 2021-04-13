@@ -21,7 +21,7 @@ import java.math.MathContext;
  * @author haypo
  * @date 2021/1/8
  */
-@Parameters(commandNames = "staking_getStakingReward", resourceBundle = "command", commandDescription = "查询当前结算周期的质押奖励")
+@Parameters(commandNames = "staking_getStakingReward", resourceBundle = "command", commandDescriptionKey = "staking.getStakingReward")
 public class GetStakingRewardSubmodule extends AbstractSimpleSubmodule {
 
     @Override

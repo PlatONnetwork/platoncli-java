@@ -6,14 +6,13 @@ import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.staking.StakingCreateTemplate;
 import com.cicdi.jcli.util.contract.staking.StakingCreateUtil;
 
-
 /**
  * 创建验证人
  *
  * @author haypo
  * @date 2020/12/25
  */
-@Parameters(commandNames = "staking_create", resourceBundle = "command", commandDescription = "创建验证人")
+@Parameters(commandNames = "staking_create", resourceBundle = "command", commandDescriptionKey = "staking.create")
 public class StakingCreateSubmodule extends AbstractComplexSubmodule<StakingCreateTemplate, StakingCreateUtil> {
 
     @Override
@@ -23,7 +22,7 @@ public class StakingCreateSubmodule extends AbstractComplexSubmodule<StakingCrea
 
     @Override
     public String generateTemplate() {
-        return "类型             必填性         参数名称             参数解释\n" +
+        return "类型             必填性         参数名称            参数解释\n" +
                 "BigInteger      must          type               金额类型，0: 自由金额，1: 锁仓金额\n" +
                 "String          must          benefitAddress     收益账户\n" +
                 "String          optional      nodeId             节点ID\n" +

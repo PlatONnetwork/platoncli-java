@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
  * @author haypo
  * @date 2021/1/8
  */
-@Parameters(commandNames = "staking_getCandidateInfo", resourceBundle = "command", commandDescription = "根据nodeId查询节点质押信息")
+@Parameters(commandNames = "staking_getCandidateInfo", resourceBundle = "command", commandDescriptionKey = "staking.getCandidateInfo")
 public class GetCandidateInfoSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--nodeId", "-nodeId"}, description = "节点id，若为空，则表示查询所有的节点")
+    @Parameter(names = {"--nodeId", "-nodeId"}, descriptionKey = "staking.getCandidateInfo.nodeId")
     protected String nodeId;
 
     @Override

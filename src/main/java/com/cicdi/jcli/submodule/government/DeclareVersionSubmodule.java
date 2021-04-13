@@ -7,6 +7,7 @@ import com.cicdi.jcli.template.government.DeclareVersionTemplate;
 import com.cicdi.jcli.util.contract.government.DeclareVersionUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ResourceBundle;
 
 /**
@@ -25,6 +26,8 @@ public class DeclareVersionSubmodule extends AbstractComplexSubmodule<DeclareVer
 
     @Override
     public String generateTemplate() {
+
         return ResourceBundle.getBundle("template").getString("DeclareVersionSubmodule");
+
     }
 }

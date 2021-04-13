@@ -19,7 +19,7 @@ import java.util.List;
  * @author haypo
  * @date 2020/12/23
  */
-@Parameters(commandNames = "staking_getVerifierList", resourceBundle = "command", commandDescription = "查询当前结算周期的验证人列表")
+@Parameters(commandNames = "staking_getVerifierList", resourceBundle = "command", commandDescriptionKey = "staking.getVerifierList")
 public class GetVerifierListSubmodule extends AbstractSimpleSubmodule {
 
     @Override

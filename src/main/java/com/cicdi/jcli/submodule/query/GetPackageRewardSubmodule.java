@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2021/1/18
  */
-@Parameters(commandNames = "query_getPackageReward", resourceBundle = "command", commandDescription = "查询当前结算周期的区块奖励")
+@Parameters(commandNames = "query_getPackageReward", resourceBundle = "command", commandDescriptionKey = "query.getPackageReward")
 public class GetPackageRewardSubmodule extends AbstractSimpleSubmodule {
     @Override
     public String run(JCommander jc, String... argv) throws Exception {

@@ -19,12 +19,12 @@ import java.util.List;
  * @author haypo
  * @date 2020/12/23
  */
-@Parameters(commandNames = "staking_getValidatorList", resourceBundle = "command", commandDescription = "查询当前共识周期的验证人列表")
+@Parameters(commandNames = "staking_getValidatorList", resourceBundle = "command", commandDescriptionKey = "staking.getValidatorList")
 public class GetValidatorListSubmodule extends AbstractSimpleSubmodule {
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        NodeConfigModel nodeConfigModel =  ConfigUtil.readConfig(config);
+        NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         FastHttpService fastHttpService = new FastHttpService(nodeConfigModel.getRpcAddress());
         Web3j web3j = Web3j.build(fastHttpService);
 
