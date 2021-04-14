@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.government.ReportDoubleSignTemplate;
+import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.contract.government.ReportDoubleSignUtil;
 
 /**
@@ -12,7 +13,7 @@ import com.cicdi.jcli.util.contract.government.ReportDoubleSignUtil;
  * @author haypo
  * @date 2021/1/17
  */
-@Parameters(commandNames = "government_reportDoubleSign",resourceBundle = "command",  commandDescription = "举报双签")
+@Parameters(commandNames = "government_reportDoubleSign", resourceBundle = "command", commandDescriptionKey = "government.reportDoubleSign")
 public class ReportDoubleSignSubmodule extends AbstractComplexSubmodule<ReportDoubleSignTemplate, ReportDoubleSignUtil> {
     @Override
     public FunctionUtil<ReportDoubleSignUtil> function() {
@@ -21,8 +22,6 @@ public class ReportDoubleSignSubmodule extends AbstractComplexSubmodule<ReportDo
 
     @Override
     public String generateTemplate() {
-        return "类型             必填性         参数名称          参数解释\n" +
-                "BigInteger       must          type            代表双签类型，1：prepareBlock，2：prepareVote，3：viewChange\n" +
-                "String           must          data            单个证据的json值，格式参照RPC接口Evidences\n";
+        return ResourceBundleUtil.getTemplateString("ReportDoubleSignSubmodule");
     }
 }

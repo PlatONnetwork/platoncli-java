@@ -30,11 +30,11 @@ import java.util.Scanner;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "tx_sendOffline", resourceBundle = "command", commandDescription = "发送已签名交易数据")
+@Parameters(commandNames = "tx_sendOffline", resourceBundle = "command", commandDescriptionKey = "tx.sendOffline")
 public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--data", "-data"}, description = "已签名的交易data数据或者待签名二维码文件", required = true)
+    @Parameter(names = {"--data", "-data"}, descriptionKey = "tx.sendOffline.data", required = true)
     protected String data;
-    @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址的钱包json文件", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true)
     protected String address;
 
     /**

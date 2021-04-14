@@ -6,6 +6,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
+import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.TransactionReceiptUtil;
 import com.platon.protocol.Web3j;
@@ -20,9 +21,9 @@ import java.util.Optional;
  * @date 2020/12/28
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "tx_getTransactionReceipt",resourceBundle = "command",  commandDescription = "根据交易hash查询交易信息")
+@Parameters(commandNames = "tx_getTransactionReceipt", resourceBundle = "command", commandDescriptionKey = "tx.getTransactionReceipt")
 public class GetTransactionReceiptSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--hash", "-hash", "-h"}, description = "String类型,具体查询区块hash", required = true)
+    @Parameter(names = {"--hash", "-hash", "-h"}, descriptionKey = "tx.getTransactionReceipt.hash", required = true)
     protected String hash;
 
     @Override
@@ -33,7 +34,7 @@ public class GetTransactionReceiptSubmodule extends AbstractSimpleSubmodule {
         if (optional.isPresent()) {
             return TransactionReceiptUtil.handleTxReceipt(optional.get());
         } else {
-            throw new RuntimeException("fail");
+            return Common.FAIL_STR;
         }
     }
 

@@ -22,13 +22,13 @@ import java.math.BigInteger;
  * @date 2021/1/18
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "government_checkDoubleSign", resourceBundle = "command", commandDescription = "查询节点是否已被举报过多签")
+@Parameters(commandNames = "government_checkDoubleSign", resourceBundle = "command", commandDescriptionKey = "government.checkDoubleSign")
 public class CheckDoubleSignSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--type", "-type", "-t"}, description = "双签类型：1:PREPARE_BLOCK; 2:PREPARE_VOTE; 3:VIEW_CHANGE", required = true, converter = CheckDoubleSignTypeConverter.class)
+    @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "government.checkDoubleSign.type", required = true, converter = CheckDoubleSignTypeConverter.class)
     protected DuplicateSignType type;
-    @Parameter(names = {"--nodeId", "-nodeId"}, description = "举报的节点id", required = true)
+    @Parameter(names = {"--nodeId", "-nodeId"}, descriptionKey = "government.checkDoubleSign.nodeId", required = true)
     protected String nodeId;
-    @Parameter(names = {"--number", "-number", "-n"}, description = "多签的块高", required = true)
+    @Parameter(names = {"--number", "-number", "-n"}, descriptionKey = "government.checkDoubleSign.number", required = true)
     protected String number;
 
     @Override

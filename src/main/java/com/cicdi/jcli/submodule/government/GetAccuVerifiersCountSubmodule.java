@@ -23,11 +23,11 @@ import java.util.Map;
  * @author haypo
  * @date 2021/1/17
  */
-@Parameters(commandNames = "government_getAccuVerifiersCount",resourceBundle = "command",  commandDescription = "查询提案的累计可投票人数")
+@Parameters(commandNames = "government_getAccuVerifiersCount", resourceBundle = "command", commandDescriptionKey = "government.getAccuVerifiersCount")
 public class GetAccuVerifiersCountSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--pid", "-pid"}, description = "查询的提案的id", required = true)
+    @Parameter(names = {"--pid", "-pid"}, descriptionKey = "government.getAccuVerifiersCount.pid", required = true)
     protected String proposalId;
-    @Parameter(names = {"--hash", "-hash", "-h"}, description = "当前最新区块的hash", required = true)
+    @Parameter(names = {"--hash", "-hash", "-h"}, descriptionKey = "government.getAccuVerifiersCount.hash", required = true)
     protected String blockHash;
 
     /**

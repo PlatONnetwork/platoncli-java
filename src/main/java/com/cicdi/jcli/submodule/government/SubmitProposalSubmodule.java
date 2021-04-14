@@ -42,9 +42,9 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
     protected String param;
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "AbstractComplexSubmodule.address", required = true)
     protected String address;
-    @Parameter(names = {"--module", "-module", "-m"}, description = "government.submitProposal.module", required = true)
+    @Parameter(names = {"--module", "-module", "-m"}, descriptionKey = "government.submitProposal.module", required = true)
     protected String module;
-    @Parameter(names = {"--fast", "-fast", "-f"}, description = "AbstractComplexSubmodule.fast")
+    @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;
 
     public boolean isOnline() {

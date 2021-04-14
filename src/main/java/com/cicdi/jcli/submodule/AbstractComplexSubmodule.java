@@ -27,19 +27,19 @@ import java.util.Collections;
  */
 @Slf4j
 public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>> extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--offline", "-o"}, descriptionKey = "AbstractComplexSubmodule.offline")
+    @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")
     protected boolean offline;
-    @Parameter(names = {"--gasLimit", "-gasLimit"}, descriptionKey = "AbstractComplexSubmodule.gasLimit", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
+    @Parameter(names = {"--gasLimit", "-gasLimit"}, descriptionKey = "gasLimit", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasLimit = Common.MID_GAS_LIMIT;
     @Parameter(names = {"--gasPrice", "-gasPrice"}, descriptionKey = "AbstractComplexSubmodule.gasPrice", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
-    @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "AbstractComplexSubmodule.template")
+    @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;
-    @Parameter(names = {"--param", "-param", "-p"}, description = "交易参数json字符串，或者交易参数json文件路径", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
     protected String param;
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "AbstractComplexSubmodule.address", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true)
     protected String address;
-    @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "AbstractComplexSubmodule.fast")
+    @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;
 
     /**

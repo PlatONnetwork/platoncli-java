@@ -7,7 +7,6 @@ import com.cicdi.jcli.template.government.DeclareVersionTemplate;
 import com.cicdi.jcli.util.contract.government.DeclareVersionUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ResourceBundle;
 
 /**
@@ -17,7 +16,7 @@ import java.util.ResourceBundle;
  * @date 2020/12/31
  */
 @Slf4j
-@Parameters(commandNames = "government_declareVersion", resourceBundle = "command", commandDescription = "版本声明")
+@Parameters(commandNames = "government_declareVersion", resourceBundle = "command", commandDescriptionKey = "government.declareVersion")
 public class DeclareVersionSubmodule extends AbstractComplexSubmodule<DeclareVersionTemplate, DeclareVersionUtil> {
     @Override
     public FunctionUtil<DeclareVersionUtil> function() {

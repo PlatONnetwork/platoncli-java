@@ -20,9 +20,9 @@ import java.util.Optional;
  * @author haypo
  * @date 2020/12/28
  */
-@Parameters(commandNames = "tx_getTransaction",resourceBundle = "command",  commandDescription = "根据交易hash查询交易")
+@Parameters(commandNames = "tx_getTransaction",resourceBundle = "command",  commandDescriptionKey = "tx.getTransaction")
 public class GetTransactionSubmodule extends AbstractSimpleSubmodule implements ISubmodule {
-    @Parameter(names = {"--hash", "-hash", "-h"}, description = "String类型,具体查询区块hash", required = true)
+    @Parameter(names = {"--hash", "-hash", "-h"}, descriptionKey = "tx.getTransaction.hash", required = true)
     protected String hash;
 
     @Override

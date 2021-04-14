@@ -29,15 +29,15 @@ import java.math.BigInteger;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "tx_transfer", resourceBundle = "command", commandDescription = "发送交易")
 public class TransferSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
+    @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")
     protected boolean offline;
-    @Parameter(names = {"--template", "-template", "-t"}, help = true, description = "查看委托交易参数模板，与其他参数共存没有效果，单独执行查看")
+    @Parameter(names = {"--template", "-template", "-t"}, descriptionKey = "template", help = true)
     protected boolean template;
-    @Parameter(names = {"--param", "-param", "-p"}, description = "交易参数json字符串，或者交易参数json文件路径", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
     protected String param;
-    @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址或者名称.json", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true)
     protected String address;
-    @Parameter(names = {"--fast", "-fast", "-f"}, description = "是否使用快速发送功能，默认不使用")
+    @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;
 
     public String getTemplate() {

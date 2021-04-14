@@ -12,7 +12,7 @@ import com.cicdi.jcli.util.contract.staking.StakingUnStakingUtil;
  * @author haypo
  * @date 2020/12/25
  */
-@Parameters(commandNames = "staking_unStaking", resourceBundle = "command", commandDescription = "退出验证人")
+@Parameters(commandNames = "staking_unStaking", resourceBundle = "command", commandDescriptionKey = "staking.unStaking")
 public class UnStakingSubmodule extends AbstractComplexSubmodule<StakingUnStakingTemplate, StakingUnStakingUtil> {
 
     @Override

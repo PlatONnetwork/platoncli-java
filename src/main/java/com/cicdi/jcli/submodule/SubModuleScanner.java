@@ -15,21 +15,22 @@ import java.util.TreeMap;
  * @date 2021/1/9
  */
 public class SubModuleScanner {
-    public static List<Class<?>> scan2List(String packageName) {
-        return ReflectionSupport.findAllClassesInPackage(
-                packageName,
-                aClass -> aClass.getAnnotation(Parameters.class) != null && (
-//                        Arrays.asList(aClass.getInterfaces()).contains(ISubModule.class) &&
-                        !ModifierSupport.isAbstract(aClass)
-                ),
-                s1 -> true
-        );
-    }
-
+    /**
+     * 扫描Parameters注解类
+     *
+     * @param packageName 扫描的包名
+     * @return 注解类的map
+     */
     public static Map<String, Class<?>> scan2Map(String packageName) {
         Map<String, Class<?>> map = new TreeMap<>();
 
-        scan2List(packageName).forEach(
+        ReflectionSupport.findAllClassesInPackage(
+                packageName,
+                aClass -> aClass.getAnnotation(Parameters.class) != null && (
+                        !ModifierSupport.isAbstract(aClass)
+                ),
+                s1 -> true
+        ).forEach(
                 aClass -> {
                     Parameters parameters = aClass.getAnnotation(Parameters.class);
                     if (parameters != null) {
@@ -40,6 +41,11 @@ public class SubModuleScanner {
         return map;
     }
 
+    /**
+     * 扫描Parameters注解类
+     *
+     * @return 命令名称和实例化对象的map
+     */
     public static Map<String, ISubmodule> scanSubModule() {
         Map<String, Class<?>> map = scan2Map("com.cicdi.jcli.submodule");
         Map<String, ISubmodule> moduleMap = new HashMap<>(20);
@@ -52,7 +58,6 @@ public class SubModuleScanner {
                     } catch (NoSuchMethodException | IllegalAccessException | InstantiationException e) {
                         e.printStackTrace();
                     }
-
                 }
         );
         return moduleMap;

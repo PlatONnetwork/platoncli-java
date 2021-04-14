@@ -17,7 +17,7 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2021/1/18
  */
-@Parameters(commandNames = "query_getAvgPackTime", resourceBundle = "command", commandDescription = "查询打包区块的平均时间")
+@Parameters(commandNames = "query_getAvgPackTime", resourceBundle = "command", commandDescriptionKey = "query.getAvgPackTime")
 public class GetAvgPackTimeSubmodule extends AbstractSimpleSubmodule {
 
     @Override

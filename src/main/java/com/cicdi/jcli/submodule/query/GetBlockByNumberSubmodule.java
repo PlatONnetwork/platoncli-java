@@ -25,9 +25,9 @@ import java.math.BigInteger;
  * @date 2020/12/24
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "query_getBlockByNumber", resourceBundle = "command", commandDescription = "根据区块块高查询区块信息")
+@Parameters(commandNames = "query_getBlockByNumber", resourceBundle = "command", commandDescriptionKey = "query.getBlockByNumber")
 public class GetBlockByNumberSubmodule extends AbstractSimpleSubmodule implements ISubmodule {
-    @Parameter(names = {"-number", "number", "-n"}, description = "int类型，具体查询区块的块高",
+    @Parameter(names = {"-number", "number", "-n"}, descriptionKey = "query.getBlockByNumber.number",
             required = true, validateValueWith = PositiveBigIntegerValidator.class,
             converter = BigIntegerConverter.class
     )

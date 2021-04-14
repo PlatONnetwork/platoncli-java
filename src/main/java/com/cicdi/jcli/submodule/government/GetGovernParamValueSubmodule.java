@@ -18,20 +18,17 @@ import com.platon.protocol.Web3j;
  * @date 2021/1/17
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "government_getGovernParamValue", resourceBundle = "command", commandDescription = "查询最新的治理参数值")
+@Parameters(commandNames = "government_getGovernParamValue", resourceBundle = "command", commandDescriptionKey = "government.getGovernParamValue")
 public class GetGovernParamValueSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--template", "-template", "-t"}, help = true, description = "查看委托交易参数模板，与其他参数共存没有效果，单独执行查看")
+    @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;
-    @Parameter(names = {"--param", "-param", "-p"}, description = "交易参数json字符串，或者交易参数json文件路径", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
     protected String param;
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
         if (template && argv.length == Common.TWO) {
-            return '\n' +
-                    "类型            必填性         参数名称            参数解释\n" +
-                    "String          must          module             模块名称，可以通过government_listGovernParam查询得到\n" +
-                    "String          must          name               参数名称，可以通过government_listGovernParam查询得到\n";
+            return ResourceBundleUtil.getTemplateString("GetGovernParamValueSubmodule");
         }
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         Web3j web3j = createWeb3j(nodeConfigModel);

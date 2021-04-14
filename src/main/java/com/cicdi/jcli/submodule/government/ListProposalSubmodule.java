@@ -20,7 +20,7 @@ import java.util.List;
  * @author haypo
  * @date 2021/1/17
  */
-@Parameters(commandNames = "government_listProposal", resourceBundle = "command", commandDescription = "查询提案列表")
+@Parameters(commandNames = "government_listProposal", resourceBundle = "command", commandDescriptionKey = "government.listProposal")
 public class ListProposalSubmodule extends AbstractSimpleSubmodule {
     @Override
     public String run(JCommander jc, String... argv) throws Exception {

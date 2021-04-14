@@ -17,7 +17,7 @@ import com.platon.protocol.core.methods.response.PlatonBlock;
  * @date 2021/1/18
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "query_getBlockByHash", resourceBundle = "command", commandDescription = "根据区块hash查询区块信息")
+@Parameters(commandNames = "query_getBlockByHash", resourceBundle = "command", commandDescriptionKey = "query.getBlockByHash")
 public class GetBlockByHashSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--hash", "-hash", "-h"}, descriptionKey = "query.getBlockByHash.hash")
     protected String hash;
