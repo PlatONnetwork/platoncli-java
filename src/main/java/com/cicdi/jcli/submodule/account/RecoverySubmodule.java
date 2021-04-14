@@ -4,8 +4,8 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
-import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.JsonUtil;
+import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.StringUtil;
 import com.cicdi.jcli.util.WalletUtil;
 import com.platon.crypto.WalletFile;
@@ -21,10 +21,10 @@ import java.io.File;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_recovery", resourceBundle = "command", commandDescription = "恢复私钥")
+@Parameters(commandNames = "account_recovery", resourceBundle = "command", commandDescriptionKey = "account.recovery")
 public class RecoverySubmodule extends AbstractSimpleSubmodule {
     private static final File RECOVERY_DIR = new File("recovery");
-    @Parameter(names = {"--type", "-type", "-t"}, description = "选择恢复方式，助记词或者私钥。--type mnemonic 或者--type privateKey", required = true)
+    @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.recovery.type", required = true)
     protected String type;
 
     @Override
@@ -50,8 +50,8 @@ public class RecoverySubmodule extends AbstractSimpleSubmodule {
                 recoveryFilename = JsonUtil.writeJsonFileWithNoConflict(RECOVERY_DIR, recoveryFilename, walletFile);
                 break;
             default:
-                throw new RuntimeException("不支持的type参数");
+                throw new IllegalArgumentException("type");
         }
-        return Common.SUCCESS_STR + " 成功恢复钱包文件：" + recoveryFilename;
+        return ResourceBundleUtil.getTextString("RecoverySubmodule.text1") + ": " + recoveryFilename;
     }
 }
