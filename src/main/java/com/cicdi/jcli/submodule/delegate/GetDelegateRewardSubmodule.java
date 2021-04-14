@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
  * @author haypo
  * @date 2021/1/8
  */
-@Parameters(commandNames = "delegate_getDelegateReward", resourceBundle = "command", commandDescription = "查询账户在各节点未提取委托奖励")
+@Parameters(commandNames = "delegate_getDelegateReward", resourceBundle = "command", commandDescriptionKey = "delegate.getDelegateReward")
 public class GetDelegateRewardSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--param", "-param", "-p"}, description = "交易参数json字符串，或者交易参数json文件路径", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
     protected String param;
-    @Parameter(names = {"--template", "-template", "-t"}, help = true, description = "查看委托交易参数模板，与其他参数共存没有效果，单独执行查看")
+    @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;
 
     @Override
@@ -35,10 +35,7 @@ public class GetDelegateRewardSubmodule extends AbstractSimpleSubmodule {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         Web3j web3j = createWeb3j(nodeConfigModel);
         if (template && argv.length == Common.TWO) {
-            return '\n' +
-                    "类型             必填性         参数名称          参数解释\n" +
-                    "String          must          address          账户地址\n" +
-                    "List<String>    must          nodeIds          节点ID列表，若为空则表示查询当前全网节点\n";
+            return ResourceBundleUtil.getTemplateString("GetDelegateRewardSubmodule");
         }
         //校验json
         GetDelegateRewardTemplate getDelegateRewardTemplate = ParamUtil.readParam(param, GetDelegateRewardTemplate.class,

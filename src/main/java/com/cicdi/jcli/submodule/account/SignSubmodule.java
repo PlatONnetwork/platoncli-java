@@ -28,11 +28,11 @@ import java.util.Locale;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Parameters(commandNames = "account_sign", resourceBundle = "command", commandDescription = "离线签名")
+@Parameters(commandNames = "account_sign", resourceBundle = "command", commandDescriptionKey = "account.sign")
 public class SignSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址或者名称.json", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true)
     protected String address;
-    @Parameter(names = {"--data", "-data"}, description = "待签名数据，可以是待签名二维码文件、json字符串或json文件", required = true)
+    @Parameter(names = {"--data", "-data"}, descriptionKey = "account.sign.data", required = true)
     protected String data;
 
     @Override
@@ -68,7 +68,8 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
             hexValueList.add(SendUtil.signData(rawTransaction, credentials, transferTemplate.getChainId()));
         }
 
-        log.info("签名完成。已签名数据：{}", JsonUtil.toPrettyJsonString(hexValueList));
+        log.info("{}: {}", ResourceBundleUtil.getTextString("SignSubmodule.text1"),
+                JsonUtil.toPrettyJsonString(hexValueList));
 
         return Common.SUCCESS_STR;
     }
