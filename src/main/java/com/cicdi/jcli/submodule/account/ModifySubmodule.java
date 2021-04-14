@@ -7,6 +7,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.model.WalletFileX;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.*;
+import com.platon.crypto.CipherException;
 import com.platon.crypto.Credentials;
 import com.platon.crypto.WalletFile;
 import com.platon.crypto.WalletUtils;
@@ -35,7 +36,7 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
         File file = new File(address);
         if (!file.isFile()) {
             file = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
-            log.info("已找到钱包文件：{}", file.getName());
+            log.info("{}:{}", ResourceBundleUtil.getTextString("foundWalletFile"), file.getName());
         }
         String password = StringUtil.readPassword();
         Credentials credentials = WalletUtils.loadCredentials(password, file);
@@ -43,7 +44,7 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
             password = StringUtil.readPassword();
             credentials = WalletUtils.loadCredentials(password, file);
             if (credentials.getEcKeyPair().getPrivateKey() == null) {
-                throw new RuntimeException("密码输入错误");
+                throw new CipherException("Invalid password provided");
             }
         }
 
@@ -58,17 +59,16 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
             WalletFileX walletFileX = JsonUtil.readFile(oldBipWalletFile, WalletFileX.class, null);
             walletFileX.setFilename(newWalletFilename);
             String finalFilename = JsonUtil.writeJsonFileWithNoConflict("wallet/Bip39-" + newWalletFilename, walletFileX);
-            log.info("已创建助记词密文文件：{}", finalFilename);
+            log.info("{}:{}", ResourceBundleUtil.getTextString("createMnemonicBackupFile"), finalFilename);
         } else {
-            log.warn("找不到原钱包的助记词记录");
+            log.warn("{}", ResourceBundleUtil.getTextString("mnemonicBackupFileNotFound"));
         }
 
-
-        log.info("已更新钱包文件：{}是否备份？Y/N", newWalletFilename);
+        log.info("{}: {}", newWalletFilename, ResourceBundleUtil.getTextString("ModifySubmodule.text1"));
         String select = new Scanner(System.in).nextLine().toLowerCase(Locale.ROOT);
         switch (select) {
             case "y":
-                log.info("备份助记词请输入m，备份私钥请输入p");
+                log.info(ResourceBundleUtil.getTextString("ModifySubmodule.text2"));
                 select = new Scanner(System.in).nextLine().toLowerCase(Locale.ROOT);
                 switch (select) {
                     case "m":
@@ -76,14 +76,13 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
                     case "p":
                         return BackupsSubmodule.backupPrivateKey(WalletUtils.loadCredentials(newPassword, newWalletFilename), newWalletFilename);
                     default:
-                        log.info("输入异常，默认备份助记词");
+                        log.info(ResourceBundleUtil.getTextString("ModifySubmodule.text3"));
                         return BackupsSubmodule.backupMnemonic(newPassword, credentials, newWalletFilename);
                 }
             case "n":
-                log.info("暂不备份");
-                return Common.SUCCESS_STR;
+                return Common.SUCCESS_STR + ": " + ResourceBundleUtil.getTextString("ModifySubmodule.text4");
             default:
-                throw new RuntimeException("输入异常，暂不备份");
+                return ResourceBundleUtil.getTextString("ModifySubmodule.text5");
         }
     }
 }
