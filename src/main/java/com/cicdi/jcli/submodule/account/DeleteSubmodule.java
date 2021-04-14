@@ -4,10 +4,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
-import com.cicdi.jcli.util.AddressUtil;
-import com.cicdi.jcli.util.Common;
-import com.cicdi.jcli.util.ConfigUtil;
-import com.cicdi.jcli.util.WalletUtil;
+import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.crypto.Credentials;
 import lombok.extern.slf4j.Slf4j;
@@ -38,26 +35,28 @@ public class DeleteSubmodule extends AbstractSimpleSubmodule {
         String hrp = ConfigUtil.readConfig(config).getHrp();
         if (!f1.isFile()) {
             f1 = AddressUtil.getFileFromAddress(hrp, address);
-            log.info("已找到钱包文件：{}", f1.getName());
+            log.info("{}: {}", ResourceBundleUtil.getTextString("foundWalletFile"), f1.getName());
         }
         String passwd = readPassword();
         Credentials credentials = WalletUtil.loadCredentials(passwd, f1, hrp);
 
         boolean deleteResult = false;
         if (credentials.getEcKeyPair().getPrivateKey() != null) {
-            System.out.println("Do you want to delete the wallet file: " + f1.getName() + " and it's mnemonic backup file? Y/N");
-            String s = new Scanner(System.in).nextLine();
-            if (Common.LETTER_Y.equalsIgnoreCase(s)) {
+            System.out.println(ResourceBundleUtil.getTextString("DeleteSubmodule.text1"));
+            if (StringUtil.readYesOrNo()) {
                 File mnemonicFile = new File("wallet/Bip39-" + f1.getName());
                 if (mnemonicFile.delete()) {
-                    log.info("mnemonic backup file has been deleted");
+                    log.info("{}: {}", f1.getName(), ResourceBundleUtil.getTextString("DeleteSubmodule.text2"));
                 } else {
-                    log.warn("mnemonic backup file delete failed");
+                    log.warn("{}: {}", f1.getName(), ResourceBundleUtil.getTextString("DeleteSubmodule.text3"));
+                    if (!StringUtil.readYesOrNo()) {
+                        return Common.CANCEL_STR;
+                    }
                 }
                 deleteResult = f1.delete();
             }
         }
-        return deleteResult ? Common.SUCCESS_STR + ": " + f1.getName() + " is deleted" :
-                Common.FAIL_STR + ": " + f1.getName() + " delete failed";
+        return deleteResult ? Common.SUCCESS_STR + ": " + f1.getName() + " " + ResourceBundleUtil.getTextString("deleted") :
+                Common.FAIL_STR + ": " + f1.getName() + " " + ResourceBundleUtil.getTextString("deleteFail");
     }
 }
