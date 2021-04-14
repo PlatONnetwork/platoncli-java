@@ -58,7 +58,7 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
         String bip39WalletName = "Bip39-" + filename;
         File bip39WalletFile = new File("wallet/" + bip39WalletName);
         if (bip39WalletFile.isFile()) {
-            log.info("已找到助记词密文文件：{}", bip39WalletFile.getName());
+            log.info("{}: {}", ResourceBundleUtil.getTextString("BackupsSubmodule.text1"), bip39WalletFile.getName());
             WalletFileX walletFileX = JsonUtil.readFile(bip39WalletFile, WalletFileX.class, null);
             //解密助记词
             String mnemonic = AesUtil.getAesUtil().decrypt(walletFileX.getMnemonic(), password);
@@ -68,9 +68,9 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
             String backupFileName = credentials.getAddress() + ".mnemonic.backup";
 
             String finalFilename = JsonUtil.writeJsonFileWithNoConflict(BACKUP_DIR, backupFileName, bip39Wallet);
-            return Common.SUCCESS_STR + " 助记词备份文件：" + finalFilename;
+            return Common.SUCCESS_STR + " " + ResourceBundleUtil.getTextString("BackupsSubmodule.text2") + ":" + finalFilename;
         }
-        throw new RuntimeException("无法备份助记词，因为找不到钱包的创建记录：" + filename);
+        throw new RuntimeException(ResourceBundleUtil.getTextString("BackupsSubmodule.text3") + ": " + filename);
     }
 
     /**
@@ -82,12 +82,13 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
      */
     public static String backupPrivateKey(Credentials credentials, String filename) throws IOException {
         String privateKeyHex = credentials.getEcKeyPair().getPrivateKey().toString(16);
-        System.out.println("Address: " + credentials.getAddress() + " Private key: " + privateKeyHex);
+        System.out.println(ResourceBundleUtil.getTextString("address") + ": "
+                + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("privatKey") + ": " + privateKeyHex);
         Bip39WalletWithPrivateKey bip39WalletWithPrivateKey = new Bip39WalletWithPrivateKey(filename, privateKeyHex);
         String backupFileName = credentials.getAddress() + ".privateKey.backup";
 
         String finalFilename = JsonUtil.writeJsonFileWithNoConflict(BACKUP_DIR, backupFileName, bip39WalletWithPrivateKey);
-        return Common.SUCCESS_STR + " 私钥备份文件：" + finalFilename;
+        return Common.SUCCESS_STR + " " + ResourceBundleUtil.getTextString("BackupsSubmodule.text4") + ": " + finalFilename;
     }
 
     @Override
@@ -107,12 +108,12 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
                 case "privateKey":
                     return backupPrivateKey(credentials, filename);
                 default:
-                    throw new IllegalArgumentException("不支持的type参数");
+                    throw new IllegalArgumentException("type");
             }
         } else {
             //如果是钱包地址
             String filename = AddressUtil.getFilenameFromAddress(ConfigUtil.readConfig(config).getHrp(), address);
-            log.info("已找到钱包文件：{}", filename);
+            log.info("{}:{}", ResourceBundleUtil.getTextString("foundWalletFile"), filename);
             String password = StringUtil.readPassword();
             Credentials credentials = WalletUtils.loadCredentials(password, filename);
             switch (type) {
@@ -124,7 +125,7 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
                 case "privateKey":
                     return backupPrivateKey(credentials, filename);
                 default:
-                    throw new IllegalArgumentException("不支持的type参数");
+                    throw new IllegalArgumentException("type");
             }
         }
     }

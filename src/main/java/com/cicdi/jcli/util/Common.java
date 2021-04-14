@@ -25,7 +25,7 @@ import static com.platon.protocol.core.JsonRpc2_0Web3j.DEFAULT_BLOCK_TIME;
  */
 public class Common {
     public static final int TWO = 2;
-    public static final String JSON_SUFFIX =".json";
+    public static final String JSON_SUFFIX = ".json";
     public static final String LETTER_Y = "y";
     /**
      * 合法地址的长度
@@ -57,9 +57,9 @@ public class Common {
      * 委托收益合约地址
      */
     public static final String PPOS_CONTRACT_HEX_ADDRESS_OF_REWARD = "0x1000000000000000000000000000000000000006";
-    public static final String CANCEL_STR = "cancel by user";
-    public static final String SUCCESS_STR = "success";
-    public static final String FAIL_STR = "fail";
+    public static final String CANCEL_STR = ResourceBundleUtil.getTextString("cancel");
+    public static final String SUCCESS_STR = ResourceBundleUtil.getTextString("success");
+    public static final String FAIL_STR = ResourceBundleUtil.getTextString("fail");
     public static final String HELP_TEXT = "Usage: java -jar platon-jcli-jar-with-dependencies.jar [Submodule/Command] [COMMAND] [ARGS]...\n\n" +
             "    platoncli 工具\n" +
             "    --help -h     帮助\n" +

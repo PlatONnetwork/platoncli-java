@@ -6,10 +6,8 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
-import com.cicdi.jcli.util.Common;
-import com.cicdi.jcli.util.ConfigUtil;
-import com.cicdi.jcli.util.StringUtil;
-import com.cicdi.jcli.util.WalletUtil;
+import com.cicdi.jcli.util.*;
+import com.cicdi.jcli.validator.PositiveIntegerValidator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -26,20 +24,18 @@ import java.util.Locale;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_new", resourceBundle = "command", commandDescriptionKey = "account.new")
 public class NewSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--name", "-name", "-n"}, description = "钱包名字，如wallet.json")
+    @Parameter(names = {"--name", "-name", "-n"}, descriptionKey = "account.new.name")
     protected String name;
-    @Parameter(names = {"--hrp", "-hrp", "-h"}, description = "网络类型")
+    @Parameter(names = {"--hrp", "-hrp", "-h"}, descriptionKey = "account.new.hrp")
     protected String hrp;
-    @Parameter(names = {"--batch", "-batch", "-b"}, description = "批量生成钱包，自然数")
+    @Parameter(names = {"--batch", "-batch", "-b"}, descriptionKey = "account.new.batch",
+            validateValueWith = PositiveIntegerValidator.class)
     protected int batch;
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        if (batch < 0) {
-            throw new ParameterException("batch参数非法");
-        }
         if (batch == 0 && StringUtil.isBlank(name)) {
-            throw new ParameterException("生成单个钱包时需要指定名称");
+            throw new ParameterException(ResourceBundleUtil.getTextString("NewSubmodule.text1"));
         }
         if (name != null) {
             if (!name.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX)) {
@@ -48,7 +44,7 @@ public class NewSubmodule extends AbstractSimpleSubmodule {
         }
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         if (hrp == null) {
-            System.out.println("未提供hrp参数，默认从节点配置读取");
+            System.out.println(ResourceBundleUtil.getTextString("NewSubmodule.text2"));
             hrp = nodeConfigModel.getHrp();
         }
         if (batch == 0) {
