@@ -32,19 +32,19 @@ import java.math.BigInteger;
  * @date 2021/1/14
  */
 @Slf4j
-@Parameters(commandNames = "government_submitProposal",resourceBundle = "command",  commandDescription = "提交参数/升级/取消提案")
+@Parameters(commandNames = "government_submitProposal", resourceBundle = "command", commandDescriptionKey = "government.submitProposal")
 public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
+    @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")
     protected boolean offline;
-    @Parameter(names = {"--template", "-template", "-t"}, help = true, description = "查看委托交易参数模板，与其他参数共存没有效果，单独执行查看")
+    @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;
-    @Parameter(names = {"--param", "-param", "-p"}, description = "交易参数json字符串，或者交易参数json文件路径", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
     protected String param;
-    @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址或者名称.json", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "AbstractComplexSubmodule.address", required = true)
     protected String address;
-    @Parameter(names = {"--module", "-module", "-m"}, description = "提案类型, 包括: CancelProposal(取消提案), ParamProposal(参数提案), VersionProposal(升级提案), TextProposal(文本提案)", required = true)
+    @Parameter(names = {"--module", "-module", "-m"}, description = "government.submitProposal.module", required = true)
     protected String module;
-    @Parameter(names = {"--fast", "-fast", "-f"}, description = "是否使用快速发送功能，默认不使用")
+    @Parameter(names = {"--fast", "-fast", "-f"}, description = "AbstractComplexSubmodule.fast")
     protected boolean fast;
 
     public boolean isOnline() {
@@ -52,30 +52,7 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
     }
 
     public String getTemplateInfo() {
-        return '\n' +
-                "CancelProposalTemplate:\n" +
-                "类型             必填性         参数名称              参数解释\n" +
-                "String          must          verifier            提交提案的验证人，nodeId\n" +
-                "String          must          piPid               PIPID\n" +
-                "BigInteger      must          endVotingRound      投票共识轮数量\n" +
-                "String          must          canceledProposalId  待取消的提案ID\n" +
-                "ParamProposalTemplate:\n" +
-                "类型             必填性         参数名称             参数解释\n" +
-                "String          must          verifier            提交提案的验证人，nodeId\n" +
-                "String          must          piPid               PIPID\n" +
-                "String          must          module              参数模块\n" +
-                "String          must          name                参数名称\n" +
-                "String          must          newValue            参数新值\n" +
-                "VersionProposalTemplate:\n" +
-                "类型             必填性         参数名称             参数解释\n" +
-                "String          must          verifier            提交提案的验证人，nodeId\n" +
-                "String          must          piPid               PIPID\n" +
-                "BigInteger      must          endVotingRound      投票共识轮数量\n" +
-                "BigInteger      must          newVersion          升级版本\n" +
-                "TextProposalTemplate:\n" +
-                "类型             必填性         参数名称             参数解释\n" +
-                "String          must          verifier            提交提案的验证人，nodeId\n" +
-                "String          must          piPid               PIPID\n";
+        return '\n' + ResourceBundleUtil.getTemplateString("SubmitProposalSubmodule");
     }
 
     public Proposal getProposalByModule(String module) throws IOException {
