@@ -9,10 +9,12 @@ import com.cicdi.jcli.submodule.ISubmodule;
 import com.cicdi.jcli.submodule.SubModuleScanner;
 import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.GitUtil;
+import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.TimeUtil;
 import com.platon.crypto.CipherException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -29,7 +31,7 @@ public class Main extends AbstractSimpleSubmodule {
     public static JCommander jc = null;
     public static Main main = new Main();
     public static String result;
-    static Map<String, ISubmodule> iSubModuleMap = SubModuleScanner.scanSubModule();
+    static Map<String, ISubmodule> iSubModuleMap = new HashMap<>(50);
     @Parameter(names = {"--version", "-version", "-v"}, description = "platon-jcli 版本号")
     protected boolean version;
 
@@ -38,6 +40,7 @@ public class Main extends AbstractSimpleSubmodule {
                 .addObject(main)
                 .build();
         jc.setProgramName(Common.PROGRAM_NAME);
+        iSubModuleMap = SubModuleScanner.scanSubModule();
         for (ISubmodule subModule : iSubModuleMap.values()) {
             jc.addCommand(subModule);
         }
@@ -51,10 +54,10 @@ public class Main extends AbstractSimpleSubmodule {
             for (String s : argv) {
                 argStr.append(" ").append(s);
             }
-            log.info("Command: java -jar platoncli-java-jar-with-dependencies.jar{}", argStr);
+            log.info("{}: java -jar platoncli-java-jar-with-dependencies.jar{}", ResourceBundleUtil.getTextString("command"), argStr);
             jc = parseArgs(argv);
             result = main.parse(jc, argv);
-            log.info("Result: {}", result);
+            log.info("{}: {}", ResourceBundleUtil.getTextString("result"), result);
         } catch (Exception exception) {
             if (exception instanceof MissingCommandException) {
                 log.error("command not found", exception);
