@@ -7,6 +7,8 @@ import com.cicdi.jcli.model.Bip39WalletWithPrivateKey;
 import com.cicdi.jcli.model.WalletFileX;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.*;
+import com.cicdi.jcli.validator.AddressValidator;
+import com.cicdi.jcli.validator.AccountOperationTypeValidator;
 import com.platon.crypto.Bip39Wallet;
 import com.platon.crypto.Credentials;
 import com.platon.crypto.WalletUtils;
@@ -33,9 +35,11 @@ import java.security.spec.InvalidParameterSpecException;
 @Parameters(commandNames = "account_backups", resourceBundle = "command", commandDescriptionKey = "account.backups")
 public class BackupsSubmodule extends AbstractSimpleSubmodule {
     private static final File BACKUP_DIR = new File("backup");
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.backups.address", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.backups.address", required = true,
+            validateValueWith = AddressValidator.class)
     protected String address;
-    @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.backups.type", required = true)
+    @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.backups.type", required = true,
+            validateValueWith = AccountOperationTypeValidator.class)
     protected String type;
 
     /**

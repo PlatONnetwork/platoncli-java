@@ -8,6 +8,7 @@ import com.cicdi.jcli.util.JsonUtil;
 import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.StringUtil;
 import com.cicdi.jcli.util.WalletUtil;
+import com.cicdi.jcli.validator.AccountOperationTypeValidator;
 import com.platon.crypto.WalletFile;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,8 @@ import java.io.File;
 @Parameters(commandNames = "account_recovery", resourceBundle = "command", commandDescriptionKey = "account.recovery")
 public class RecoverySubmodule extends AbstractSimpleSubmodule {
     private static final File RECOVERY_DIR = new File("recovery");
-    @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.recovery.type", required = true)
+    @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.recovery.type", required = true,
+            validateValueWith = AccountOperationTypeValidator.class)
     protected String type;
 
     @Override

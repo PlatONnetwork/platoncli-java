@@ -12,7 +12,7 @@ import com.cicdi.jcli.util.contract.delegate.DelegateUnDelegateUtil;
  * @author haypo
  * @date 2021/1/8
  */
-@Parameters(commandNames = "delegate_unDelegate", resourceBundle = "command", commandDescription = "减持/撤销委托")
+@Parameters(commandNames = "delegate_unDelegate", resourceBundle = "command", commandDescriptionKey = "delegate.unDelegate")
 public class UnDelegateSubmodule extends AbstractComplexSubmodule<DelegateUnDelegateTemplate, DelegateUnDelegateUtil> {
 
     @Override

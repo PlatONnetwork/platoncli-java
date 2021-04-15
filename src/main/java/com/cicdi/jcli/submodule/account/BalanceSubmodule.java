@@ -7,6 +7,7 @@ import com.cicdi.jcli.contractx.RestrictPlanContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.*;
+import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.contracts.ppos.dto.resp.RestrictingItem;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.DefaultBlockParameterName;
@@ -24,7 +25,8 @@ import java.math.BigInteger;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_getBalance", resourceBundle = "command", commandDescriptionKey = "account.getBalance")
 public class BalanceSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.getBalance.address", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.getBalance.address", required = true,
+            validateValueWith = AddressValidator.class)
     protected String address;
 
     @Override

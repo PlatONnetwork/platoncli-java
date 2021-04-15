@@ -1,5 +1,6 @@
 package com.cicdi.jcli.submodule.hedge;
 
+import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.contracts.ppos.dto.resp.RestrictingItem;
 import com.platon.protocol.Web3j;
 import com.beust.jcommander.JCommander;
@@ -23,7 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "hedge_getRestrictingInfo", resourceBundle = "command", commandDescriptionKey = "hedge.getRestrictingInfo")
 public class GetRestrictingInfoSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
+            validateValueWith = AddressValidator.class)
     protected String address;
 
     @Override

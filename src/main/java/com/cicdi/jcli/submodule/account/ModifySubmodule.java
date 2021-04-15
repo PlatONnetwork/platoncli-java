@@ -7,6 +7,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.model.WalletFileX;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.*;
+import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.crypto.CipherException;
 import com.platon.crypto.Credentials;
 import com.platon.crypto.WalletFile;
@@ -27,7 +28,7 @@ import java.util.Scanner;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_modify", resourceBundle = "command", commandDescriptionKey = "account.modify")
 public class ModifySubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.modify.address", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.modify.address", required = true, validateValueWith = AddressValidator.class)
     protected String address;
 
     @Override

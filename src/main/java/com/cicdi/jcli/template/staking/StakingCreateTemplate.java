@@ -1,5 +1,6 @@
 package com.cicdi.jcli.template.staking;
 
+import com.platon.contracts.ppos.dto.enums.StakingAmountType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -21,7 +22,7 @@ import java.math.BigInteger;
  */
 @Data
 public class StakingCreateTemplate {
-    private BigInteger type;
+    private StakingAmountType type;
     private String benefitAddress;
     private String nodeId;
     private String externalId;

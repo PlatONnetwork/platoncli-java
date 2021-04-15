@@ -9,6 +9,7 @@ import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.AddressUtil;
 import com.cicdi.jcli.util.CallResponseUtil;
 import com.cicdi.jcli.util.ConfigUtil;
+import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.contracts.ppos.dto.CallResponse;
 import com.platon.contracts.ppos.dto.resp.DelegationIdInfo;
 import com.platon.protocol.Web3j;
@@ -22,9 +23,10 @@ import java.util.List;
  * @date 2021/1/8
  */
 @SuppressWarnings("unused")
-@Parameters(commandNames = "delegate_getRelatedListByDelAddr", resourceBundle = "command", commandDescription = "查询当前账户地址所委托的节点的NodeId和质押Id")
+@Parameters(commandNames = "delegate_getRelatedListByDelAddr", resourceBundle = "command", commandDescriptionKey = "delegate.getRelatedListByDelAddr")
 public class GetRelatedListByDelAddrSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, description = "委托人账户地址", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
+            validateValueWith = AddressValidator.class)
     protected String address;
 
     @Override

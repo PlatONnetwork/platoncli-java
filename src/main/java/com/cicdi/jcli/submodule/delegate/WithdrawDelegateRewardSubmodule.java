@@ -10,6 +10,7 @@ import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
+import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.contracts.ppos.utils.EncoderUtils;
 import com.platon.crypto.Credentials;
 import com.platon.protocol.Web3j;
@@ -28,17 +29,17 @@ import java.util.Collections;
  */
 @SuppressWarnings("unused")
 @Slf4j
-@Parameters(commandNames = "delegate_withdrawDelegateReward", resourceBundle = "command", commandDescription = "提取委托奖励")
+@Parameters(commandNames = "delegate_withdrawDelegateReward", resourceBundle = "command", commandDescriptionKey = "delegate.withdrawDelegateReward")
 public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--offline", "-o"}, description = "在线交易或者离线交易. 不输入默认为在线交易, 并生成二维码图片放置在桌面上，提供ATON离线扫码签名")
+    @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")
     protected boolean offline;
-    @Parameter(names = {"--gasLimit", "-gasLimit"}, description = "gas用量限制", converter = BigIntegerConverter.class)
+    @Parameter(names = {"--gasLimit", "-gasLimit"}, descriptionKey = "gasLimit", converter = BigIntegerConverter.class)
     protected BigInteger gasLimit = Common.MID_GAS_LIMIT;
-    @Parameter(names = {"--gasPrice", "-gasPrice"}, description = "gas价格", converter = BigIntegerConverter.class)
+    @Parameter(names = {"--gasPrice", "-gasPrice"}, descriptionKey = "gasPrice", converter = BigIntegerConverter.class)
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
-    @Parameter(names = {"--address", "-address", "-d"}, description = "发送交易地址或者名称.json", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true, validateValueWith = AddressValidator.class)
     protected String address;
-    @Parameter(names = {"--fast", "-fast", "-f"}, description = "是否使用快速发送功能，默认不使用")
+    @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;
 
     public boolean isOnline() {

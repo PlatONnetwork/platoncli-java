@@ -8,6 +8,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
+import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.crypto.Credentials;
 import com.platon.crypto.RawTransaction;
 import com.platon.crypto.WalletUtils;
@@ -30,7 +31,8 @@ import java.util.Locale;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_sign", resourceBundle = "command", commandDescriptionKey = "account.sign")
 public class SignSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
+            validateValueWith = AddressValidator.class)
     protected String address;
     @Parameter(names = {"--data", "-data"}, descriptionKey = "account.sign.data", required = true)
     protected String data;

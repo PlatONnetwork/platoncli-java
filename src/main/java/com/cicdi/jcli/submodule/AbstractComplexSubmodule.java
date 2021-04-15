@@ -8,6 +8,7 @@ import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.util.contract.BaseContractUtil;
+import com.cicdi.jcli.validator.AddressValidator;
 import com.cicdi.jcli.validator.PositiveBigIntegerValidator;
 import com.platon.contracts.ppos.utils.EncoderUtils;
 import com.platon.protocol.Web3j;
@@ -29,15 +30,18 @@ import java.util.Collections;
 public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>> extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")
     protected boolean offline;
-    @Parameter(names = {"--gasLimit", "-gasLimit"}, descriptionKey = "gasLimit", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
+    @Parameter(names = {"--gasLimit", "-gasLimit"}, descriptionKey = "gasLimit", converter = BigIntegerConverter.class,
+            validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasLimit = Common.MID_GAS_LIMIT;
-    @Parameter(names = {"--gasPrice", "-gasPrice"}, descriptionKey = "AbstractComplexSubmodule.gasPrice", converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
+    @Parameter(names = {"--gasPrice", "-gasPrice"}, descriptionKey = "gasPrice", converter = BigIntegerConverter.class,
+            validateValueWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
     @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;
     @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
     protected String param;
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
+            validateValueWith = AddressValidator.class)
     protected String address;
     @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;
