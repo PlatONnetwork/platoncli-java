@@ -52,7 +52,15 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
     }
 
     public String getTemplateInfo() {
-        return '\n' + ResourceBundleUtil.getTemplateString("SubmitProposalSubmodule");
+        System.out.println("TextProposalTemplate:");
+        ResourceBundleUtil.printTemplate("TextProposalTemplate");
+        System.out.println("CancelProposalTemplate:");
+        ResourceBundleUtil.printTemplate("CancelProposalTemplate");
+        System.out.println("ParamProposalTemplate:");
+        ResourceBundleUtil.printTemplate("ParamProposalTemplate");
+        System.out.println("VersionProposalTemplate:");
+        ResourceBundleUtil.printTemplate("VersionProposalTemplate");
+        return Common.SUCCESS_STR;
     }
 
     public Proposal getProposalByModule(String module) throws IOException {

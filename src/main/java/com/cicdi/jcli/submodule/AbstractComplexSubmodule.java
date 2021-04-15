@@ -105,8 +105,7 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
     public String run(JCommander jc, String... argv) throws Exception {
         if (template && argv.length == Common.TWO) {
             //打印参数模板
-            return '\n' +
-                    generateTemplate();
+            return generateTemplate();
         }
 
         //校验gasPrice

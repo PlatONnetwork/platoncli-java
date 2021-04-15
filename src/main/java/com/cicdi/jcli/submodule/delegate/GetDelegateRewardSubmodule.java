@@ -1,11 +1,14 @@
 package com.cicdi.jcli.submodule.delegate;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.contractx.NodeContractX;
 import com.cicdi.jcli.contractx.RewardContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
+import com.cicdi.jcli.model.TemplateModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.delegate.GetDelegateRewardTemplate;
 import com.cicdi.jcli.util.*;
@@ -14,6 +17,7 @@ import com.platon.contracts.ppos.dto.resp.Node;
 import com.platon.contracts.ppos.dto.resp.Reward;
 import com.platon.protocol.Web3j;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +39,8 @@ public class GetDelegateRewardSubmodule extends AbstractSimpleSubmodule {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         Web3j web3j = createWeb3j(nodeConfigModel);
         if (template && argv.length == Common.TWO) {
-            return ResourceBundleUtil.getTemplateString("GetDelegateRewardSubmodule");
+            ResourceBundleUtil.printTemplate("GetDelegateRewardSubmodule");
+            return Common.SUCCESS_STR;
         }
         //校验json
         GetDelegateRewardTemplate getDelegateRewardTemplate = ParamUtil.readParam(param, GetDelegateRewardTemplate.class,

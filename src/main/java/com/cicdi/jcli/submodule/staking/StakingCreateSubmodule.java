@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.staking.StakingCreateTemplate;
+import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.contract.staking.StakingCreateUtil;
 
@@ -23,6 +24,7 @@ public class StakingCreateSubmodule extends AbstractComplexSubmodule<StakingCrea
 
     @Override
     public String generateTemplate() {
-        return ResourceBundleUtil.getTemplateString("StakingCreateSubmodule");
+        ResourceBundleUtil.printTemplate("StakingCreateSubmodule");
+        return Common.SUCCESS_STR;
     }
 }

@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.hedge.CreateRestrictingPlanTemplate;
+import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.contract.hedge.CreateRestrictingPlanUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,10 @@ public class CreateRestrictingPlanSubmodule extends AbstractComplexSubmodule<Cre
 
     @Override
     public String generateTemplate() {
-        return ResourceBundleUtil.getTemplateString("CreateRestrictingPlanSubmodule");
+        ResourceBundleUtil.printTemplate("CreateRestrictingPlanSubmodule");
+        System.out.println("plans:");
+        ResourceBundleUtil.printTemplate("plans");
+        return Common.SUCCESS_STR;
     }
 
 }

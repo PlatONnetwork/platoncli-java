@@ -28,7 +28,8 @@ public class GetGovernParamValueSubmodule extends AbstractSimpleSubmodule {
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
         if (template && argv.length == Common.TWO) {
-            return ResourceBundleUtil.getTemplateString("GetGovernParamValueSubmodule");
+            ResourceBundleUtil.printTemplate("GetGovernParamValueSubmodule");
+            return Common.SUCCESS_STR;
         }
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         Web3j web3j = createWeb3j(nodeConfigModel);

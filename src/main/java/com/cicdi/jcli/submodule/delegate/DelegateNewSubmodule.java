@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.delegate.DelegateNewTemplate;
+import com.cicdi.jcli.util.Common;
 import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.contract.delegate.DelegateNewUtil;
 
@@ -24,6 +25,7 @@ public class DelegateNewSubmodule extends AbstractComplexSubmodule<DelegateNewTe
 
     @Override
     public String generateTemplate() {
-        return ResourceBundleUtil.getTemplateString("DelegateNewSubmodule");
+        ResourceBundleUtil.printTemplate("DelegateNewSubmodule");
+        return Common.SUCCESS_STR;
     }
 }

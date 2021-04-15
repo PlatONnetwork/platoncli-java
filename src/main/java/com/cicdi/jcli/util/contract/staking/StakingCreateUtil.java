@@ -28,10 +28,10 @@ public class StakingCreateUtil extends BaseContractUtil<StakingCreateTemplate> {
     public Function createFunction() throws IOException {
         String blsProof = web3j.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve();
         HttpService httpService = new HttpService(nodeConfigModel.getRpcAddress());
-        StakingAmountType sta = t.getType().longValue() == 0 ? StakingAmountType.FREE_AMOUNT_TYPE : StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+
         StakingParam stakingParam = new StakingParam.Builder()
                 .setWebSite(String.valueOf(t.getWebsite()))
-                .setStakingAmountType(sta)
+                .setStakingAmountType(t.getType())
                 .setNodeName(t.getNodeName())
                 .setProcessVersion(web3j.getProgramVersion().send().getAdminProgramVersion())
                 .setNodeId(t.getNodeId())
