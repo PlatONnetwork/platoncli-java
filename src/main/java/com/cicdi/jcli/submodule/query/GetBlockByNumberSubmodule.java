@@ -28,7 +28,7 @@ import java.math.BigInteger;
 @Parameters(commandNames = "query_getBlockByNumber", resourceBundle = "command", commandDescriptionKey = "query.getBlockByNumber")
 public class GetBlockByNumberSubmodule extends AbstractSimpleSubmodule implements ISubmodule {
     @Parameter(names = {"-number", "number", "-n"}, descriptionKey = "query.getBlockByNumber.number",
-            required = true, validateValueWith = PositiveBigIntegerValidator.class,
+            required = true, validateWith = PositiveBigIntegerValidator.class,
             converter = BigIntegerConverter.class
     )
     protected BigInteger number;

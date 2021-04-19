@@ -32,7 +32,7 @@ public class CheckDoubleSignSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--nodeId", "-nodeId"}, descriptionKey = "government.checkDoubleSign.nodeId", required = true)
     protected String nodeId;
     @Parameter(names = {"--number", "-number", "-n"}, descriptionKey = "government.checkDoubleSign.number", required = true,
-            converter = BigIntegerConverter.class, validateValueWith = PositiveBigIntegerValidator.class)
+            converter = BigIntegerConverter.class, validateWith = PositiveBigIntegerValidator.class)
     protected BigInteger number;
 
     @Override

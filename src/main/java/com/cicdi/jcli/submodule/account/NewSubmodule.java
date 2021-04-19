@@ -4,10 +4,10 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
+import com.beust.jcommander.validators.PositiveInteger;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.*;
-import com.cicdi.jcli.validator.PositiveIntegerValidator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -29,7 +29,7 @@ public class NewSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--hrp", "-hrp", "-h"}, descriptionKey = "account.new.hrp")
     protected String hrp;
     @Parameter(names = {"--batch", "-batch", "-b"}, descriptionKey = "account.new.batch",
-            validateValueWith = PositiveIntegerValidator.class)
+            validateWith = PositiveInteger.class)
     protected int batch;
 
     @Override

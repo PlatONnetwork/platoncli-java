@@ -31,10 +31,10 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
     @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")
     protected boolean offline;
     @Parameter(names = {"--gasLimit", "-gasLimit"}, descriptionKey = "gasLimit", converter = BigIntegerConverter.class,
-            validateValueWith = PositiveBigIntegerValidator.class)
+            validateWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasLimit = Common.MID_GAS_LIMIT;
     @Parameter(names = {"--gasPrice", "-gasPrice"}, descriptionKey = "gasPrice", converter = BigIntegerConverter.class,
-            validateValueWith = PositiveBigIntegerValidator.class)
+            validateWith = PositiveBigIntegerValidator.class)
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
     @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;

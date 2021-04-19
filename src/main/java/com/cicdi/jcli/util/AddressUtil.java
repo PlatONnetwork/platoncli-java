@@ -132,10 +132,6 @@ public class AddressUtil {
         return addressList;
     }
 
-    public static boolean isJsonFile(String address) {
-        return address.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX) || address.contains(".") || new File(address).isFile();
-    }
-
     /**
      * 根据address读取地址
      *
@@ -146,7 +142,7 @@ public class AddressUtil {
      */
     public static String readAddress(String address, String hrp) throws IOException {
         //判断address是否是地址还是json
-        if (isJsonFile(address)
+        if (JsonUtil.isJsonFile(address)
         ) {
             File file = new File(address);
             if (!file.isFile() || !file.exists()) {

@@ -9,6 +9,7 @@ import lombok.Cleanup;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 /**
  * @author haypo
@@ -125,6 +126,16 @@ public class JsonUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 是否是json文件
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isJsonFile(String str) {
+        return str.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX) || str.contains(".") || new File(str).isFile();
     }
 
     /**

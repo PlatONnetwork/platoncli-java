@@ -5,6 +5,7 @@ import com.beust.jcommander.IValueValidator;
 import com.beust.jcommander.ParameterException;
 import com.cicdi.jcli.util.AddressUtil;
 import com.cicdi.jcli.util.Common;
+import com.cicdi.jcli.util.JsonUtil;
 
 /**
  * 地址校验器
@@ -15,7 +16,7 @@ import com.cicdi.jcli.util.Common;
 public class AddressValidator implements IParameterValidator {
     @Override
     public void validate(String name, String value) throws ParameterException {
-        if (AddressUtil.isJsonFile(value)) {
+        if (JsonUtil.isJsonFile(value)) {
             return;
         }
         //地址长度需要等于42

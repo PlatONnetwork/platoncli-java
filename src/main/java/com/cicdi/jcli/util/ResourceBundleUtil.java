@@ -9,6 +9,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
+ * ResourceBundle的工具类，用于获取各种字符串
+ *
  * @author haypo
  * @date 2021/4/8
  */
@@ -22,16 +24,6 @@ public class ResourceBundleUtil {
      */
     public static String getTextString(String key) {
         return ResourceBundle.getBundle("text").getString(key);
-    }
-
-    /**
-     * 获取template资源包下的字符资源
-     *
-     * @param key 字符key
-     * @return 字符value
-     */
-    public static String getTemplateString(String key) {
-        return ResourceBundle.getBundle("template").getString(key);
     }
 
     private static String getTemplateString(String key, Locale locale) {
@@ -54,9 +46,8 @@ public class ResourceBundleUtil {
             String data = getTemplateString(key, locale);
             InputStream inputStream = new ByteArrayInputStream(data.getBytes());
             CSVParser csvParser = new CSVParser(inputStream, ';');
+
             String[][] values = csvParser.getAllValues();
-
-
             format = genFormat(values, locale);
             for (String[] row : values) {
                 System.out.printf(format, row[0], row[1], row[2], row[3]);
@@ -68,11 +59,11 @@ public class ResourceBundleUtil {
 
 
     /**
-     * s
+     * 按照原始字符串和地区生成字符串格式
      *
-     * @param values
-     * @param locale
-     * @return
+     * @param values 原始字符串
+     * @param locale 地区
+     * @return 字符串格式
      */
     private static String genFormat(String[][] values, Locale locale) {
         String[] head = ResourceBundleUtil.getTemplateString("head", locale).split(";");
@@ -89,13 +80,12 @@ public class ResourceBundleUtil {
             }
         }
         if (locale.getLanguage().equals(Locale.SIMPLIFIED_CHINESE.getLanguage())) {
+            //打印中文模板标题
             System.out.printf("%-" + (a1) + "s%-" + (a2) + "s%-" + (a3) + "s%s\n", head[0], head[1], head[2], head[3]);
         } else {
+            //打印非中文模板标题
             System.out.printf("%-" + (a1 + 2) + "s%-" + (a2 + 3) + "s%-" + (a3 + 4) + "s%s\n", head[0], head[1], head[2], head[3]);
         }
         return "%-" + (a1 + 2) + "s%-" + (a2 + 3) + "s%-" + (a3 + 4) + "s%s\n";
     }
-
-    private final static String chnFormat = "%-12s \t%-8s \t%-15s \t%s\n";
-    private final static String engFormat = "%-12s \t%-8s \t%-9s \t%s\n";
 }

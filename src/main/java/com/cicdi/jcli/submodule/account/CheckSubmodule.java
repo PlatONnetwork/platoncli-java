@@ -6,9 +6,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.model.Tuple;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
-import com.cicdi.jcli.util.AddressUtil;
-import com.cicdi.jcli.util.ConfigUtil;
-import com.cicdi.jcli.util.StringUtil;
+import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.validator.AddressValidator;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,15 +34,18 @@ public class CheckSubmodule extends AbstractSimpleSubmodule {
         if (StringUtil.isBlank(address)) {
             List<Tuple<String, String>> tuples = AddressUtil.readAddressFromDir(nodeConfigModel.getHrp());
             for (Tuple<String, String> tuple : tuples) {
-                stringBuilder.append("File name: ").append(tuple.getB()).append(", address: ").append(tuple.getA()).append(".\n");
+                stringBuilder.append(ResourceBundleUtil.getTextString("Filename")).append(": ")
+                        .append(tuple.getB()).append(", address: ").append(tuple.getA()).append(".\n");
             }
         } else {
-            if (AddressUtil.isJsonFile(address)) {
+            if (JsonUtil.isJsonFile(address)) {
                 String newAddress = AddressUtil.readAddressFromFile(new File(address), nodeConfigModel.getHrp());
-                stringBuilder.append("File name: ").append(address).append(", address: ").append(newAddress).append(".\n");
+                stringBuilder.append(ResourceBundleUtil.getTextString("Filename"))
+                        .append(": ").append(address).append(", address: ").append(newAddress).append(".\n");
             } else {
                 String filename = AddressUtil.getFilenameFromAddress(nodeConfigModel.getHrp(), address);
-                stringBuilder.append("File name: ").append(filename).append(", address: ").append(address).append(".\n");
+                stringBuilder.append(ResourceBundleUtil.getTextString("Filename"))
+                        .append(": ").append(filename).append(", address: ").append(address).append(".\n");
             }
         }
         return stringBuilder.toString();
