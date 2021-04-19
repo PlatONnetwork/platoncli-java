@@ -25,7 +25,7 @@ import static com.cicdi.jcli.util.StringUtil.readPassword;
 @Parameters(commandNames = "account_delete", resourceBundle = "command", commandDescriptionKey = "account.delete")
 public class DeleteSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, required = true,
-            descriptionKey = "account.delete.address", validateValueWith = AddressValidator.class)
+            descriptionKey = "account.delete.address", validateWith = AddressValidator.class)
     protected String address;
 
     @Override

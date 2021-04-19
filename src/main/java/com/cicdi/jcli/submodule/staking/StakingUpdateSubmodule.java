@@ -4,6 +4,8 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.staking.StakingUpdateTemplate;
+import com.cicdi.jcli.util.Common;
+import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.contract.staking.StakingUpdateUtil;
 
 /**
@@ -22,14 +24,8 @@ public class StakingUpdateSubmodule extends AbstractComplexSubmodule<StakingUpda
 
     @Override
     public String generateTemplate() {
-        return "类型             必填性         参数名称             参数解释\n" +
-                "String          must          benefitAddress     收益账户\n" +
-                "String          optional      nodeId             节点ID，若为空则使用config配置的节点id\n" +
-                "String          optional      externalId         外部ID\n" +
-                "String          optional      nodeName           节点名字\n" +
-                "String          optional      website            节点的第三方主页\n" +
-                "String          optional      details            节点的描述\n" +
-                "BigInteger      must          delegateRewardPer  从佣金中获得的奖励份额的比例\n";
+        ResourceBundleUtil.printTemplate("StakingUpdateSubmodule");
+        return Common.SUCCESS_STR;
     }
 
 }

@@ -41,7 +41,7 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
     @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
     protected String param;
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
-            validateValueWith = AddressValidator.class)
+            validateWith = AddressValidator.class)
     protected String address;
     @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;

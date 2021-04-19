@@ -1,5 +1,6 @@
 package com.cicdi.jcli.validator;
 
+import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.IValueValidator;
 import com.beust.jcommander.ParameterException;
 import com.cicdi.jcli.util.AddressUtil;
@@ -11,7 +12,7 @@ import com.cicdi.jcli.util.Common;
  * @author haypo
  * @date 2021/4/6
  */
-public class AddressValidator implements IValueValidator<String> {
+public class AddressValidator implements IParameterValidator {
     @Override
     public void validate(String name, String value) throws ParameterException {
         if (AddressUtil.isJsonFile(value)) {

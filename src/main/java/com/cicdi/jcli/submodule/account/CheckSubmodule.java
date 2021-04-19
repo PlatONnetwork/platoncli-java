@@ -26,7 +26,7 @@ import java.util.List;
 @Parameters(commandNames = "account_check", resourceBundle = "command", commandDescriptionKey = "account.check")
 public class CheckSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.check.address",
-            validateValueWith = AddressValidator.class)
+            validateWith = AddressValidator.class)
     protected String address;
 
     @Override

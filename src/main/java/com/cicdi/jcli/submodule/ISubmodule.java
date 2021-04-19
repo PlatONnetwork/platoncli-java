@@ -1,6 +1,7 @@
 package com.cicdi.jcli.submodule;
 
 import com.beust.jcommander.JCommander;
+import com.cicdi.jcli.util.InternationalizedUsageFormatter;
 import com.cicdi.jcli.util.ResourceBundleUtil;
 
 /**
@@ -42,10 +43,11 @@ public interface ISubmodule {
         JCommander thisJc = jc.getCommands().get(jc.getParsedCommand());
         StringBuilder sb = new StringBuilder();
         if (thisJc != null) {
-            sb.append(ResourceBundleUtil.getTextString("ISubmodule.text1"))
+            sb.append(ResourceBundleUtil.getTextString("cmdDescription"))
                     .append(jc.getUsageFormatter().getCommandDescription(thisJc.getProgramName())).append('\n');
             thisJc.setProgramName(jc.getProgramName() + " " + thisJc.getProgramName());
-            thisJc.getUsageFormatter().usage(sb);
+            InternationalizedUsageFormatter internationalizedUsageFormatter = new InternationalizedUsageFormatter(thisJc);
+            internationalizedUsageFormatter.usage(sb);
         } else {
             jc.getUsageFormatter().usage(sb);
         }

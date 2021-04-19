@@ -37,7 +37,7 @@ public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
     protected BigInteger gasLimit = Common.MID_GAS_LIMIT;
     @Parameter(names = {"--gasPrice", "-gasPrice"}, descriptionKey = "gasPrice", converter = BigIntegerConverter.class)
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true, validateValueWith = AddressValidator.class)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true, validateWith = AddressValidator.class)
     protected String address;
     @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;

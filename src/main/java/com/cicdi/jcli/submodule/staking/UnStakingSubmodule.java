@@ -4,6 +4,8 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractComplexSubmodule;
 import com.cicdi.jcli.submodule.FunctionUtil;
 import com.cicdi.jcli.template.staking.StakingUnStakingTemplate;
+import com.cicdi.jcli.util.Common;
+import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.cicdi.jcli.util.contract.staking.StakingUnStakingUtil;
 
 /**
@@ -22,7 +24,7 @@ public class UnStakingSubmodule extends AbstractComplexSubmodule<StakingUnStakin
 
     @Override
     public String generateTemplate() {
-        return "类型         必填性         参数名称          参数解释\n" +
-                "String       must         nodeId           节点id，若为空则默认使用config配置的节点id\n";
+        ResourceBundleUtil.printTemplate("UnStakingSubmodule");
+        return Common.SUCCESS_STR;
     }
 }

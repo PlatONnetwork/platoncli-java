@@ -26,7 +26,7 @@ import java.math.BigInteger;
 @Parameters(commandNames = "account_getBalance", resourceBundle = "command", commandDescriptionKey = "account.getBalance")
 public class BalanceSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.getBalance.address", required = true,
-            validateValueWith = AddressValidator.class)
+            validateWith = AddressValidator.class)
     protected String address;
 
     @Override

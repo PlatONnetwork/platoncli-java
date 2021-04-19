@@ -37,20 +37,14 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
     protected String param;
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
-            validateValueWith = AddressValidator.class)
+            validateWith = AddressValidator.class)
     protected String address;
     @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;
 
     public String getTemplate() {
-        return '\n' +
-                "类型             必填性         参数名称             参数解释\n" +
-                "String          must          from               发送方地址\n" +
-                "List<String>    must          to                 接收方地址\n" +
-                "BigDecimal      must          value              交易金额，单位为atp/lat\n" +
-                "String          optional      data               交易数据\n" +
-                "BigInteger      optional      gasPrice           gas价格\n" +
-                "BigInteger      optional      gasLimit           gas用量限制\n";
+        ResourceBundleUtil.printTemplate("TransferSubmodule");
+        return Common.SUCCESS_STR;
     }
 
     /**

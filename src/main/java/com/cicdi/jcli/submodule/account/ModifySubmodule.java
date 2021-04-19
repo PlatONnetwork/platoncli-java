@@ -28,7 +28,8 @@ import java.util.Scanner;
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_modify", resourceBundle = "command", commandDescriptionKey = "account.modify")
 public class ModifySubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.modify.address", required = true, validateValueWith = AddressValidator.class)
+    @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.modify.address", required = true,
+            validateWith = AddressValidator.class)
     protected String address;
 
     @Override

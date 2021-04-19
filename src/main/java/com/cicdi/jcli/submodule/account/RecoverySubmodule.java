@@ -25,35 +25,40 @@ import java.io.File;
 @Parameters(commandNames = "account_recovery", resourceBundle = "command", commandDescriptionKey = "account.recovery")
 public class RecoverySubmodule extends AbstractSimpleSubmodule {
     private static final File RECOVERY_DIR = new File("recovery");
-    @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.recovery.type", required = true,
-            validateValueWith = AccountOperationTypeValidator.class)
-    protected String type;
+    @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.recovery.type", required = true)
+    protected Type type;
+
+    enum Type {
+        /**
+         *
+         */
+        m, mnemonic, pk, p, privateKey;
+
+        public String process()
+                throws Exception {
+            switch (this) {
+                case m:
+                case mnemonic:
+                    String mnemonic = StringUtil.readMnemonic();
+                    String password = StringUtil.readPasswordTwice();
+                    WalletFile walletFile = WalletUtil.genWalletByMnemonic(mnemonic, password);
+                    String recoveryFilename = walletFile.getAddress() + ".mnemonic.recovery";
+                    recoveryFilename = JsonUtil.writeJsonFileWithNoConflict(RECOVERY_DIR, recoveryFilename, walletFile);
+                    return recoveryFilename;
+                default:
+                    String pk = StringUtil.readPrivateKey();
+                    password = StringUtil.readPasswordTwice();
+                    walletFile = WalletUtil.genWalletByPrivateKey(pk, password);
+                    recoveryFilename = walletFile.getAddress() + ".privateKey.recovery";
+                    recoveryFilename = JsonUtil.writeJsonFileWithNoConflict(RECOVERY_DIR, recoveryFilename, walletFile);
+                    return recoveryFilename;
+            }
+        }
+    }
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        String password;
-        WalletFile walletFile;
-        String recoveryFilename;
-        switch (type) {
-            case "m":
-            case "mnemonic":
-                String mnemonic = StringUtil.readMnemonic();
-                password = StringUtil.readPasswordTwice();
-                walletFile = WalletUtil.genWalletByMnemonic(mnemonic, password);
-                recoveryFilename = walletFile.getAddress() + ".mnemonic.recovery";
-                recoveryFilename = JsonUtil.writeJsonFileWithNoConflict(RECOVERY_DIR, recoveryFilename, walletFile);
-                break;
-            case "p":
-            case "privateKey":
-                String pk = StringUtil.readPrivateKey();
-                password = StringUtil.readPasswordTwice();
-                walletFile = WalletUtil.genWalletByPrivateKey(pk, password);
-                recoveryFilename = walletFile.getAddress() + ".privateKey.recovery";
-                recoveryFilename = JsonUtil.writeJsonFileWithNoConflict(RECOVERY_DIR, recoveryFilename, walletFile);
-                break;
-            default:
-                throw new IllegalArgumentException("type");
-        }
+        String recoveryFilename = type.process();
         return ResourceBundleUtil.getTextString("RecoverySubmodule.text1") + ": " + recoveryFilename;
     }
 }

@@ -26,7 +26,7 @@ import java.util.List;
 @Parameters(commandNames = "delegate_getRelatedListByDelAddr", resourceBundle = "command", commandDescriptionKey = "delegate.getRelatedListByDelAddr")
 public class GetRelatedListByDelAddrSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
-            validateValueWith = AddressValidator.class)
+            validateWith = AddressValidator.class)
     protected String address;
 
     @Override

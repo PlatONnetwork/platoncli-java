@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Parameters(commandNames = "hedge_getRestrictingInfo", resourceBundle = "command", commandDescriptionKey = "hedge.getRestrictingInfo")
 public class GetRestrictingInfoSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
-            validateValueWith = AddressValidator.class)
+            validateWith = AddressValidator.class)
     protected String address;
 
     @Override

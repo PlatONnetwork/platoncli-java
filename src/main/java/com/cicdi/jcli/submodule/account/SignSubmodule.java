@@ -32,7 +32,7 @@ import java.util.Locale;
 @Parameters(commandNames = "account_sign", resourceBundle = "command", commandDescriptionKey = "account.sign")
 public class SignSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
-            validateValueWith = AddressValidator.class)
+            validateWith = AddressValidator.class)
     protected String address;
     @Parameter(names = {"--data", "-data"}, descriptionKey = "account.sign.data", required = true)
     protected String data;
