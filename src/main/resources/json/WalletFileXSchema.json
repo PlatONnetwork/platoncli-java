@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "WalletFileX",
+  "description": "该对象实例化存储在wallet文件夹下，用于备份私钥和助记词",
+  "type": "object",
+  "properties": {
+    "address": {
+      "description": "地址",
+      "type": "string",
+      "maxLength": 42,
+      "minLength": 42
+    },
+    "filename": {
+      "description": "助记词备份文件名",
+      "type": "string"
+    },
+    "mnemonic": {
+      "description": "助记词",
+      "type": "string"
+    },
+    "hrp": {
+      "description": "hrp值",
+      "type": "string"
+    }
+  },
+  "required": [
+    "address",
+    "filename",
+    "mnemonic",
+    "hrp"
+  ]
+}

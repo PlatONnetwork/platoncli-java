@@ -31,6 +31,8 @@ public class Common {
      * 合法地址的长度
      */
     public static final int ADDRESS_LENGTH = 42;
+    public static final int MAX_NODE_ID_LENGTH = 130;
+    public static final int MIN_NODE_ID_LENGTH = 128;
     public static final int DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH = 40;
     public static final long DEFAULT_POLLING_FREQUENCY = DEFAULT_BLOCK_TIME;
     /**

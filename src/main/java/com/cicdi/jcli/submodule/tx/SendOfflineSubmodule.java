@@ -50,9 +50,7 @@ public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         File addressFile = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
 
-        System.out.println("需要用户输入密码:");
-        Scanner scanner = new Scanner(System.in);
-        String password = scanner.nextLine();
+        String password = StringUtil.readPassword();
         Credentials credentials = WalletUtil.loadCredentials(password, addressFile, nodeConfigModel.getHrp());
         BaseTemplate4Serialize fastTransferTemplate;
         File file = new File(data);

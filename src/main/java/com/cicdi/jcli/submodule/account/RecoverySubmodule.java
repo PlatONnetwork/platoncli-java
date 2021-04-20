@@ -29,7 +29,8 @@ public class RecoverySubmodule extends AbstractSimpleSubmodule {
 
     enum Type {
         /**
-         *
+         * m, mnemonic: 助记词
+         * pk, p, privateKey: 私钥
          */
         m, mnemonic, pk, p, privateKey;
 

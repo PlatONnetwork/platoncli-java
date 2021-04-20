@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -65,15 +66,25 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
         BaseTemplate4Deserialize template = ParamUtil.readParam(param, BaseTemplate4Deserialize.class, schema);
 
         if (!StringUtil.isBlank(template.getData())) {
-            System.out.println("The data is not null and this may cause more gas used, continue? Y/N");
+            System.out.println(ResourceBundleUtil.getTextString("dataNotNullWarn"));
             if (!StringUtil.readYesOrNo()) {
                 return Common.CANCEL_STR;
             }
         }
-
+        BigDecimal balance = ConvertUtil.von2Hrp(WalletUtil.getBalance(createWeb3j(), AddressUtil.readAddress(address, nodeConfigModel.getHrp())));
+        if (template.getValue().compareTo(balance) > 0) {
+            System.out.printf(
+                    ResourceBundleUtil.getTextString("txGreaterThanBalance"),
+                    template.getValue().toPlainString(), nodeConfigModel.getHrp(), balance.toPlainString(), nodeConfigModel.getHrp()
+            );
+            if (!StringUtil.readYesOrNo()) {
+                log.info(Common.CANCEL_STR);
+                System.exit(0);
+            }
+        }
         BigInteger vonValue = ConvertUtil.hrp2Von(template.getValue());
         if (vonValue.compareTo(BigInteger.ZERO) == 0) {
-            System.out.println("transfer value is zero, continue? Y/N");
+            System.out.println(ResourceBundleUtil.getTextString("zeroTransfer"));
             if (!StringUtil.readYesOrNo()) {
                 return Common.CANCEL_STR;
             }
@@ -89,7 +100,7 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
         if (template.getChainId() != null) {
             //校验chainId设置
             if (!nodeConfigModel.getChainId().equals(template.getChainId())) {
-                System.out.println("The chainId in param is not equal as node_config, so the transfer may failed, continue? Y/N");
+                System.out.println(ResourceBundleUtil.getTextString("chainIdMismatchWarn"));
                 if (!StringUtil.readYesOrNo()) {
                     return Common.CANCEL_STR;
                 }

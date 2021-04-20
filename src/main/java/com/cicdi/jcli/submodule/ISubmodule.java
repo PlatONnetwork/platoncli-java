@@ -43,13 +43,14 @@ public interface ISubmodule {
         JCommander thisJc = jc.getCommands().get(jc.getParsedCommand());
         StringBuilder sb = new StringBuilder();
         if (thisJc != null) {
-            sb.append(ResourceBundleUtil.getTextString("cmdDescription"))
+            sb.append(ResourceBundleUtil.getTextString("cmdDescription")).append(": ")
                     .append(jc.getUsageFormatter().getCommandDescription(thisJc.getProgramName())).append('\n');
             thisJc.setProgramName(jc.getProgramName() + " " + thisJc.getProgramName());
             InternationalizedUsageFormatter internationalizedUsageFormatter = new InternationalizedUsageFormatter(thisJc);
             internationalizedUsageFormatter.usage(sb);
         } else {
-            jc.getUsageFormatter().usage(sb);
+            InternationalizedUsageFormatter internationalizedUsageFormatter = new InternationalizedUsageFormatter(jc);
+            internationalizedUsageFormatter.usage(sb);
         }
         return sb.toString();
     }

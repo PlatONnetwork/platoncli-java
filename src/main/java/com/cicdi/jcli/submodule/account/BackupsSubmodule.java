@@ -68,7 +68,8 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
         File bip39WalletFile = new File("wallet/" + bip39WalletName);
         if (bip39WalletFile.isFile()) {
             log.info("{}: {}", ResourceBundleUtil.getTextString("BackupsSubmodule.text1"), bip39WalletFile.getName());
-            WalletFileX walletFileX = JsonUtil.readFile(bip39WalletFile, WalletFileX.class, null);
+            WalletFileX walletFileX = JsonUtil.readFile(bip39WalletFile, WalletFileX.class,
+                    JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
             //解密助记词
             String mnemonic = AesUtil.getAesUtil().decrypt(walletFileX.getMnemonic(), password);
             System.out.println("Address: " + credentials.getAddress() + " Mnemonic: " + mnemonic);

@@ -39,7 +39,6 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
 
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
-        File datafile = new File(data);
         File addressFile = new File(address);
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         if (!addressFile.isFile()) {
@@ -48,9 +47,11 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
         String passwd = StringUtil.readPassword();
         Credentials credentials = WalletUtils.loadCredentials(passwd, addressFile);
         BaseTemplate4Serialize transferTemplate;
-        if (datafile.isFile()) {
+        if (JsonUtil.isJsonFile(data)) {
+            File datafile = new File(data);
             if (datafile.getName().toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX)) {
-                transferTemplate = JsonUtil.readFile(datafile, BaseTemplate4Serialize.class, null);
+                transferTemplate = JsonUtil.readFile(datafile, BaseTemplate4Serialize.class,
+                        JsonUtil.readJsonSchemaFromResource("/json/BaseTemplate4DeserializeSchema.json"));
             } else {
                 transferTemplate = QrUtil.readQrCodeImage(datafile);
             }

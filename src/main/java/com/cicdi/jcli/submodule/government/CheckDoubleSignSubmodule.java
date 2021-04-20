@@ -10,6 +10,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.JsonUtil;
+import com.cicdi.jcli.validator.NodeIdValidator;
 import com.cicdi.jcli.validator.PositiveBigIntegerValidator;
 import com.platon.contracts.ppos.dto.CallResponse;
 import com.platon.contracts.ppos.dto.common.DuplicateSignType;
@@ -29,7 +30,8 @@ public class CheckDoubleSignSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "government.checkDoubleSign.type", required = true,
             converter = CheckDoubleSignTypeConverter.class)
     protected DuplicateSignType type;
-    @Parameter(names = {"--nodeId", "-nodeId"}, descriptionKey = "government.checkDoubleSign.nodeId", required = true)
+    @Parameter(names = {"--nodeId", "-nodeId"}, descriptionKey = "government.checkDoubleSign.nodeId", required = true,
+            validateWith = NodeIdValidator.class)
     protected String nodeId;
     @Parameter(names = {"--number", "-number", "-n"}, descriptionKey = "government.checkDoubleSign.number", required = true,
             converter = BigIntegerConverter.class, validateWith = PositiveBigIntegerValidator.class)

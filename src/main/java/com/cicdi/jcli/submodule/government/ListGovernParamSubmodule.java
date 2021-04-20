@@ -6,6 +6,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.contractx.ProposalContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
+import com.cicdi.jcli.util.CallResponseUtil;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.JsonUtil;
 import com.platon.contracts.ppos.dto.CallResponse;
@@ -39,10 +40,6 @@ public class ListGovernParamSubmodule extends AbstractSimpleSubmodule {
         Web3j web3j = createWeb3j(nodeConfigModel);
         ProposalContractX pcx = ProposalContractX.load(web3j, nodeConfigModel.getHrp());
         CallResponse<List<GovernParam>> response = pcx.getParamList(module == null ? "" : module.name()).send();
-        if (response.isStatusOk()) {
-            return JsonUtil.toPrettyJsonString(response.getData());
-        } else {
-            return genFailString(response);
-        }
+        return CallResponseUtil.handleCallResponse(response);
     }
 }

@@ -130,13 +130,13 @@ public class JsonUtil {
     }
 
     /**
-     * 是否是json文件
+     * 判断str是否是json文件
      *
-     * @param str
-     * @return
+     * @param str 待判断字符串
+     * @return 判断结果
      */
     public static boolean isJsonFile(String str) {
-        return str.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX) || str.contains(".") || new File(str).isFile();
+        return str.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX) || new File(str).isFile();
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.cicdi.jcli.submodule.government;
 
+import com.cicdi.jcli.util.CallResponseUtil;
 import com.platon.contracts.ppos.dto.CallResponse;
 import com.platon.contracts.ppos.dto.resp.Proposal;
 import com.platon.protocol.Web3j;
@@ -27,10 +28,7 @@ public class ListProposalSubmodule extends AbstractSimpleSubmodule {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         Web3j web3j = createWeb3j(nodeConfigModel);
         ProposalContractX pcx = ProposalContractX.load(web3j, nodeConfigModel.getHrp());
-        CallResponse<List<Proposal>> callResponse = pcx.getProposalList().send();
-        if (callResponse.isStatusOk()) {
-            return JsonUtil.toPrettyJsonString(callResponse.getData());
-        }
-        return Common.FAIL_STR;
+        CallResponse<List<Proposal>> response = pcx.getProposalList().send();
+        return CallResponseUtil.handleCallResponse(response);
     }
 }

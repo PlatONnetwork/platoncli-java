@@ -42,10 +42,6 @@ public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;
 
-    public boolean isOnline() {
-        return !offline && new File(address).isFile();
-    }
-
     @Override
     public String run(JCommander jc, String... argv) throws Exception {
         GasPriceUtil.verifyGasPrice(gasPrice);
@@ -62,7 +58,7 @@ public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
             }
         }
 
-        if (isOnline()) {
+        if (!offline && new File(address).isFile()) {
             File addressFile = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
             Credentials credentials = WalletUtil.loadCredentials(StringUtil.readPassword(), addressFile, nodeConfigModel.getHrp());
             RewardContractX rc = RewardContractX.load(web3j, credentials, nodeConfigModel.getHrp());

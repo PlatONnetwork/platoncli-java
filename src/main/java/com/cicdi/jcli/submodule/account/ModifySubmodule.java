@@ -58,7 +58,8 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
         String oldBipWalletName = "Bip39-" + file.getName();
         File oldBipWalletFile = new File("wallet/" + oldBipWalletName);
         if (oldBipWalletFile.isFile() && oldBipWalletFile.exists()) {
-            WalletFileX walletFileX = JsonUtil.readFile(oldBipWalletFile, WalletFileX.class, null);
+            WalletFileX walletFileX = JsonUtil.readFile(oldBipWalletFile, WalletFileX.class,
+                    JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
             walletFileX.setFilename(newWalletFilename);
             String finalFilename = JsonUtil.writeJsonFileWithNoConflict("wallet/Bip39-" + newWalletFilename, walletFileX);
             log.info("{}:{}", ResourceBundleUtil.getTextString("createMnemonicBackupFile"), finalFilename);

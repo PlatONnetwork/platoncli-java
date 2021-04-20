@@ -97,7 +97,7 @@ public class QrUtil {
             }
             return new String(os.toByteArray(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            log.error("解压文本失败:{}", compressedStr, e);
+            log.error("uncompress failed: " + compressedStr, e);
         }
         return EMPTY;
     }
@@ -118,7 +118,7 @@ public class QrUtil {
             }
             return Base64.getEncoder().encodeToString(out.toByteArray());
         } catch (IOException e) {
-            log.error("压缩文本失败:{}", text, e);
+            log.error("compress failed: " + text, e);
         }
         return EMPTY;
     }
@@ -136,15 +136,11 @@ public class QrUtil {
 
     public static String save2QrCodeImage(String prefix, BaseTemplate4Serialize obj) throws IOException, WriterException {
         String qrCodeImageName = prefix + "@" + TimeUtil.getNanoTime() + ".jpg";
-        log.info("二维码原始数据：" + JsonUtil.toPrettyJsonString(obj));
+        log.info(ResourceBundleUtil.getTextString("qrCodeOriginData") + ": " + JsonUtil.toPrettyJsonString(obj));
         obj.setData(compress(obj.getData()));
         QrUtil.genQrCodeImageToDeskTop(JSONUtil.toJSONString(obj), 2000, 2000, qrCodeImageName);
-        return "已在桌面生成二维码！文件名为：" + qrCodeImageName;
+        return String.format("%s %s %s", ResourceBundleUtil.getTextString("qrCodeGened"),
+                ResourceBundleUtil.getTextString("Filename"), qrCodeImageName);
     }
 
-    public static <T> String save2QrCodeImage(String prefix, T obj) throws IOException, WriterException {
-        String qrCodeImageName = prefix + "@" + TimeUtil.getNanoTime() + ".png";
-        QrUtil.genQrCodeImageToDeskTop(JSONUtil.toJSONString(obj), 1600, 1600, qrCodeImageName);
-        return "已在桌面生成二维码！文件名为:" + qrCodeImageName;
-    }
 }

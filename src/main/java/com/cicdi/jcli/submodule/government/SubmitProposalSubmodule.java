@@ -31,54 +31,7 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2021/1/14
  */
-enum Module {
-    /**
-     *
-     */
-    cancel_proposal,
-    cancelProposal,
-    CancelProposal,
-    param_proposal,
-    paramProposal,
-    ParamProposal,
-    version_proposal,
-    versionProposal,
-    VersionProposal,
-    TextProposal,
-    text_proposal,
-    textProposal;
 
-    Proposal genProposal(String param) throws IOException {
-        switch (this) {
-            case cancel_proposal:
-            case cancelProposal:
-            case CancelProposal:
-                CancelProposalTemplate cancelProposalTemplate = ParamUtil.readParam(param, CancelProposalTemplate.class,
-                        JsonUtil.readJsonSchemaFromResource("/json/CancelProposalTemplateSchema.json"));
-                return Proposal.createSubmitCancelProposalParam(cancelProposalTemplate.getVerifier(), cancelProposalTemplate.getPiPid(), cancelProposalTemplate.getEndVotingRound(), cancelProposalTemplate.getCanceledProposalId());
-            case param_proposal:
-            case paramProposal:
-            case ParamProposal:
-                ParamProposalTemplate paramProposalTemplate = ParamUtil.readParam(param, ParamProposalTemplate.class,
-                        JsonUtil.readJsonSchemaFromResource("/json/ParamProposalTemplateSchema.json"));
-                return Proposal.createSubmitParamProposalParam(paramProposalTemplate.getVerifier(), paramProposalTemplate.getPiPid(), paramProposalTemplate.getModule(), paramProposalTemplate.getName(), paramProposalTemplate.getNewValue());
-            case version_proposal:
-            case versionProposal:
-            case VersionProposal:
-                VersionProposalTemplate versionProposalTemplate = ParamUtil.readParam(param, VersionProposalTemplate.class,
-                        JsonUtil.readJsonSchemaFromResource("/json/VersionProposalTemplateSchema.json"));
-                return Proposal.createSubmitVersionProposalParam(versionProposalTemplate.getVerifier(), versionProposalTemplate.getPiPid(), versionProposalTemplate.getNewVersion(), versionProposalTemplate.getEndVotingRound());
-            case TextProposal:
-            case text_proposal:
-            case textProposal:
-                TextProposalTemplate textProposalTemplate = ParamUtil.readParam(param, TextProposalTemplate.class,
-                        JsonUtil.readJsonSchemaFromResource("/json/TextProposalTemplateSchema.json"));
-                return Proposal.createSubmitTextProposalParam(textProposalTemplate.getVerifier(), textProposalTemplate.getPiPid());
-            default:
-                throw new RuntimeException("unhandled module");
-        }
-    }
-}
 
 @Slf4j
 @Parameters(commandNames = "government_submitProposal", resourceBundle = "command", commandDescriptionKey = "government.submitProposal")
@@ -95,6 +48,55 @@ public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
     protected Module module;
     @Parameter(names = {"--fast", "-fast", "-f"}, descriptionKey = "fast")
     protected boolean fast;
+
+    private enum Module {
+        /**
+         *
+         */
+        cancel_proposal,
+        cancelProposal,
+        CancelProposal,
+        param_proposal,
+        paramProposal,
+        ParamProposal,
+        version_proposal,
+        versionProposal,
+        VersionProposal,
+        TextProposal,
+        text_proposal,
+        textProposal;
+
+        Proposal genProposal(String param) throws IOException {
+            switch (this) {
+                case cancel_proposal:
+                case cancelProposal:
+                case CancelProposal:
+                    CancelProposalTemplate cancelProposalTemplate = ParamUtil.readParam(param, CancelProposalTemplate.class,
+                            JsonUtil.readJsonSchemaFromResource("/json/CancelProposalTemplateSchema.json"));
+                    return Proposal.createSubmitCancelProposalParam(cancelProposalTemplate.getVerifier(), cancelProposalTemplate.getPiPid(), cancelProposalTemplate.getEndVotingRound(), cancelProposalTemplate.getCanceledProposalId());
+                case param_proposal:
+                case paramProposal:
+                case ParamProposal:
+                    ParamProposalTemplate paramProposalTemplate = ParamUtil.readParam(param, ParamProposalTemplate.class,
+                            JsonUtil.readJsonSchemaFromResource("/json/ParamProposalTemplateSchema.json"));
+                    return Proposal.createSubmitParamProposalParam(paramProposalTemplate.getVerifier(), paramProposalTemplate.getPiPid(), paramProposalTemplate.getModule(), paramProposalTemplate.getName(), paramProposalTemplate.getNewValue());
+                case version_proposal:
+                case versionProposal:
+                case VersionProposal:
+                    VersionProposalTemplate versionProposalTemplate = ParamUtil.readParam(param, VersionProposalTemplate.class,
+                            JsonUtil.readJsonSchemaFromResource("/json/VersionProposalTemplateSchema.json"));
+                    return Proposal.createSubmitVersionProposalParam(versionProposalTemplate.getVerifier(), versionProposalTemplate.getPiPid(), versionProposalTemplate.getNewVersion(), versionProposalTemplate.getEndVotingRound());
+                case TextProposal:
+                case text_proposal:
+                case textProposal:
+                    TextProposalTemplate textProposalTemplate = ParamUtil.readParam(param, TextProposalTemplate.class,
+                            JsonUtil.readJsonSchemaFromResource("/json/TextProposalTemplateSchema.json"));
+                    return Proposal.createSubmitTextProposalParam(textProposalTemplate.getVerifier(), textProposalTemplate.getPiPid());
+                default:
+                    throw new RuntimeException("unhandled module");
+            }
+        }
+    }
 
     public boolean isOnline() {
         return !offline && new File(address).isFile();

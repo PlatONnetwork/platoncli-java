@@ -5,8 +5,10 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.contractx.StakingContractX;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
+import com.cicdi.jcli.util.CallResponseUtil;
 import com.cicdi.jcli.util.ConfigUtil;
 import com.cicdi.jcli.util.ConvertUtil;
+import com.cicdi.jcli.util.ResourceBundleUtil;
 import com.platon.contracts.ppos.dto.CallResponse;
 import com.platon.protocol.Web3j;
 
@@ -25,10 +27,6 @@ public class GetPackageRewardSubmodule extends AbstractSimpleSubmodule {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         Web3j web3j = createWeb3j(nodeConfigModel);
         CallResponse<BigInteger> callResponse = StakingContractX.load(web3j, nodeConfigModel.getHrp()).getPackageReward().send();
-        if (callResponse.isStatusOk()) {
-            return "Reward:" + ConvertUtil.von2Hrp(callResponse.getData()) + nodeConfigModel.getHrp();
-        } else {
-            return genFailString(callResponse);
-        }
+        return CallResponseUtil.handleCallResponse(callResponse);
     }
 }

@@ -22,7 +22,10 @@ public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
         //委托大于余额
         BigDecimal balance = ConvertUtil.von2Hrp(WalletUtil.getBalance(web3j, AddressUtil.readAddress(address, nodeConfigModel.getHrp())));
         if (t.getAmount().compareTo(balance) > 0) {
-            System.out.println("Amount: " + t.getAmount() + " is greater than balance: " + balance + nodeConfigModel.getHrp() + ", so delegation has no sense, continue? Y/N");
+            System.out.printf(
+                    ResourceBundleUtil.getTextString("delegateGreaterThanBalance"),
+                    t.getAmount().toPlainString(), nodeConfigModel.getHrp(), balance.toPlainString(), nodeConfigModel.getHrp()
+            );
             if (!StringUtil.readYesOrNo()) {
                 log.info(Common.CANCEL_STR);
                 System.exit(0);
@@ -32,7 +35,10 @@ public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
         //委托小于阈值
         BigDecimal threshold = ConvertUtil.von2Hrp(Web3jUtil.getStakingOperatingThreshold(web3j, nodeConfigModel.getHrp()));
         if (t.getAmount().compareTo(threshold) < 0) {
-            System.out.println("Amount: " + t.getAmount() + " is less than threshold:" + threshold + ", so delegation has no sense, continue? Y/N");
+            System.out.printf(
+                    ResourceBundleUtil.getTextString("delegateLessThanThreshold"),
+                    t.getAmount().toPlainString(), nodeConfigModel.getHrp(), threshold.toPlainString(), nodeConfigModel.getHrp()
+            );
             if (!StringUtil.readYesOrNo()) {
                 log.info(Common.CANCEL_STR);
                 System.exit(0);

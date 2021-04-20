@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
+ * 减持/撤销委托
+ *
  * @author haypo
  * @date 2021/1/8
  */
@@ -29,9 +31,9 @@ public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateT
         BigDecimal thresholdHrp = ConvertUtil.von2Hrp(thresholdVon);
         if (this.t.getAmount().compareTo(thresholdHrp) < 0 ||
                 this.t.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-            System.out.println("Amount: " + t.getAmount() + nodeConfigModel.getHrp() +
-                    " is less than threshold: " + thresholdHrp + nodeConfigModel.getHrp() +
-                    ", so un-delegation has no sense, continue? Y/N");
+            System.out.printf(ResourceBundleUtil.getTextString("UnDelegateLessThanThreshold"),
+                    t.getAmount().toPlainString(), nodeConfigModel.getHrp(), thresholdHrp.toPlainString(), nodeConfigModel.getHrp()
+            );
             if (!StringUtil.readYesOrNo()) {
                 log.info(Common.CANCEL_STR);
                 System.exit(0);
@@ -42,9 +44,9 @@ public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateT
                 AddressUtil.readAddress(address, nodeConfigModel.getHrp()));
         BigDecimal delegatedHrp = ConvertUtil.von2Hrp(delegatedVon);
         if (this.t.getAmount().compareTo(delegatedHrp) > 0) {
-            System.out.println("Amount: " + t.getAmount() + nodeConfigModel.getHrp() +
-                    " is greater than delegated: " + delegatedHrp + nodeConfigModel.getHrp() +
-                    ", so un-delegation has no sense, continue? Y/N");
+            System.out.printf(ResourceBundleUtil.getTextString("UnDelegateLessThanDelegated"),
+                    t.getAmount().toPlainString(), nodeConfigModel.getHrp(), delegatedHrp.toPlainString(), nodeConfigModel.getHrp()
+            );
             if (!StringUtil.readYesOrNo()) {
                 log.info(Common.CANCEL_STR);
                 System.exit(0);

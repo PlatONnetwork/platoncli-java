@@ -35,10 +35,12 @@ public class AddressUtil {
      */
     public static String formatHrpAddress(String address, String hrp) {
         if (address.startsWith(hrp)) {
-            log.info("钱包文件地址：{}，匹配hrp：{}", address, hrp);
+            log.info(ResourceBundleUtil.getTextString("addressInWalletFile") + ": {} " +
+                    ResourceBundleUtil.getTextString("matches") + "hrp: {}", address, hrp);
             return address;
         }
-        log.warn("钱包文件地址：{}，不匹配hrp：{}，将自动进行转换！", address, hrp);
+        log.warn(ResourceBundleUtil.getTextString("addressInWalletFile") + ": {} " +
+                ResourceBundleUtil.getTextString("notMatches") + "hrp: {} " + ResourceBundleUtil.getTextString("autoConvert"), address, hrp);
         try {
             String hexAddress = Bech32.addressDecodeHex(address);
             return Bech32.addressEncode(hrp, hexAddress);

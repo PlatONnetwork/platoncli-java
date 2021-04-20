@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author haypo
@@ -19,6 +20,31 @@ public class InternationalizedUsageFormatter extends DefaultUsageFormatter {
     }
 
     public final JCommander commander;
+
+    @Override
+    public void appendCommands(StringBuilder out, int indentCount, int descriptionIndent, String indent) {
+        out.append(indent).append("  ").append(ResourceBundleUtil.getTextString("commands")).append(":\n");
+
+        // The magic value 3 is the number of spaces between the name of the option and its description
+        for (Map.Entry<JCommander.ProgramName, JCommander> commands : commander.getRawCommands().entrySet()) {
+            Object arg = commands.getValue().getObjects().get(0);
+            Parameters p = arg.getClass().getAnnotation(Parameters.class);
+
+            if (p == null || !p.hidden()) {
+                JCommander.ProgramName progName = commands.getKey();
+                String dispName = progName.getDisplayName();
+                String description = indent + s(4) + dispName + s(6) + getCommandDescription(progName.getName());
+                wrapDescription(out, indentCount + descriptionIndent, description);
+                out.append("\n");
+
+                // Options for this command
+                JCommander jc = commander.findCommandByAlias(progName.getName());
+                InternationalizedUsageFormatter internationalizedUsageFormatter = new InternationalizedUsageFormatter(jc);
+                internationalizedUsageFormatter.usage(out, indent + s(6));
+                out.append("\n");
+            }
+        }
+    }
 
     @Override
     public void appendMainLine(StringBuilder out, boolean hasOptions, boolean hasCommands, int indentCount,
