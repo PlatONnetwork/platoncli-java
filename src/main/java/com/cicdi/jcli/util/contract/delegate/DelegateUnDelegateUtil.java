@@ -18,7 +18,7 @@ import java.math.BigInteger;
 @Slf4j
 public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateTemplate> {
     @Override
-    protected String getTemplateSchemaPath() {
+    public String getTemplateSchemaPath() {
         return "/json/DelegateUnDelegateTemplateSchema.json";
     }
 

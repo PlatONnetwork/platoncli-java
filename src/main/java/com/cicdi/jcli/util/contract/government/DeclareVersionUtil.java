@@ -18,7 +18,7 @@ import java.io.IOException;
 public class DeclareVersionUtil extends BaseContractUtil<DeclareVersionTemplate> {
 
     @Override
-    protected String getTemplateSchemaPath() {
+    public String getTemplateSchemaPath() {
         return "/json/DeclareVersionTemplateSchema.json";
     }
 

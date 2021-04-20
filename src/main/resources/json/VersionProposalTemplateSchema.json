@@ -6,7 +6,9 @@
   "properties": {
     "verifier": {
       "description": "提交提案的验证人，nodeId",
-      "type": "string"
+      "type": "string",
+      "minLength": 128,
+      "maxLength": 130
     },
     "piPid": {
       "description": "PIPID",

@@ -20,7 +20,7 @@ public class ReportDoubleSignUtil extends BaseContractUtil<ReportDoubleSignTempl
     }
 
     @Override
-    protected String getTemplateSchemaPath() {
+    public String getTemplateSchemaPath() {
         return "/json/ReportDoubleSignTemplateSchema.json";
     }
 

@@ -7,8 +7,8 @@
     "verifier": {
       "description": "声明的节点，只能是验证人/候选人",
       "type": "string",
-      "maxLength": 130,
-      "minLength": 128
+      "minLength": 128,
+      "maxLength": 130
     },
     "proposalId": {
       "description": "提案ID，所投的提案交易的hash",

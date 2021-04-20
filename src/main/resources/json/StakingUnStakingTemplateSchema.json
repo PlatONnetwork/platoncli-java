@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "StakingUnStakingTemplate",
+  "description": "退出验证人",
+  "type": "object",
+  "properties": {
+    "nodeId": {
+      "type": "string",
+      "minLength": 128,
+      "maxLength": 130
+    }
+  }
+}

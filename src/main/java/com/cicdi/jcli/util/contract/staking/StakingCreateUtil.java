@@ -25,9 +25,17 @@ public class StakingCreateUtil extends BaseContractUtil<StakingCreateTemplate> {
     }
 
     @Override
+    public String getTemplateSchemaPath() {
+        return "/json/StakingCreateTemplateSchema.json";
+    }
+
+    @Override
     public Function createFunction() throws IOException {
         String blsProof = web3j.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve();
         HttpService httpService = new HttpService(nodeConfigModel.getRpcAddress());
+        if (t.getNodeId() == null) {
+            t.setNodeId(Web3jUtil.getNodeId(nodeConfigModel.getRpcAddress()));
+        }
 
         StakingParam stakingParam = new StakingParam.Builder()
                 .setWebSite(String.valueOf(t.getWebsite()))

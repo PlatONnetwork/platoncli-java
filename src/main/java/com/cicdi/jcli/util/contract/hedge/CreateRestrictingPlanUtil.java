@@ -20,7 +20,7 @@ public class CreateRestrictingPlanUtil extends BaseContractUtil<CreateRestrictin
     }
 
     @Override
-    protected String getTemplateSchemaPath() {
+    public String getTemplateSchemaPath() {
         return "/json/CreateRestrictingPlanTemplateSchema.json";
     }
 

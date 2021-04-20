@@ -1,10 +1,9 @@
 package com.cicdi.jcli.template.staking;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.platon.contracts.ppos.dto.enums.StakingAmountType;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  * "type": 0,
@@ -16,10 +15,7 @@ import java.math.BigInteger;
  */
 @Data
 public class StakingIncreaseTemplate {
-    @JsonProperty(required = true)
-    private BigInteger type;
-    @JsonProperty(required = true)
+    private StakingAmountType type;
     private String nodeId;
-    @JsonProperty(required = true)
     private BigDecimal amount;
 }

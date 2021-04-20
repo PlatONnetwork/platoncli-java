@@ -22,7 +22,7 @@ public class VoteUtil extends BaseContractUtil<VoteTemplate> {
     }
 
     @Override
-    protected String getTemplateSchemaPath() {
+    public String getTemplateSchemaPath() {
         return "/json/VoteTemplateSchema.json";
     }
 

@@ -58,7 +58,7 @@ public abstract class BaseContractUtil<T> {
     /**
      * @return 获取模板schema路径，可被子类覆写
      */
-    protected String getTemplateSchemaPath() {
+    public String getTemplateSchemaPath() {
         return null;
     }
 

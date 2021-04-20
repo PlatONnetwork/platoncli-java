@@ -17,6 +17,10 @@ import java.io.IOException;
  */
 public class StakingUnStakingUtil extends BaseContractUtil<StakingUnStakingTemplate> {
 
+    @Override
+    public String getTemplateSchemaPath() {
+        return "/json/StakingUnStakingTemplateSchema.json";
+    }
 
     public StakingUnStakingUtil(boolean isOnline, String jsonPath, String config, String param, Class<StakingUnStakingTemplate> clazz) throws IOException, CipherException {
         super(isOnline, jsonPath, config, param, clazz);

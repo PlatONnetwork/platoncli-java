@@ -16,8 +16,8 @@
       "items": [
         {
           "type": "string",
-          "maxLength": 42,
-          "minLength": 42
+          "minLength": 128,
+          "maxLength": 130
         }
       ]
     }

@@ -23,8 +23,14 @@ public class StakingIncreaseUtil extends BaseContractUtil<StakingIncreaseTemplat
     }
 
     @Override
+    public String getTemplateSchemaPath() {
+        return "/json/StakingIncreaseTemplateSchema.json";
+    }
+
+    @Override
     public Function createFunction() throws IOException {
-        StakingAmountType sta = t.getType().longValue() == 0 ? StakingAmountType.FREE_AMOUNT_TYPE : StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+        StakingAmountType sta = t.getType();
+        //如果nodeId为空，则从节点配置获取
         if (StringUtil.isBlank(t.getNodeId())) {
             t.setNodeId(Web3jUtil.getNodeId(nodeConfigModel.getRpcAddress()));
         }

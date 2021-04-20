@@ -10,6 +10,7 @@ import lombok.Cleanup;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author haypo
@@ -111,7 +112,7 @@ public class JsonUtil {
         try {
             //打包成jar之后读取resource下的json
             @Cleanup Reader reader = new InputStreamReader(
-                    JsonUtil.class.getResourceAsStream(filePath),
+                    Objects.requireNonNull(JsonUtil.class.getResourceAsStream(filePath)),
                     StandardCharsets.UTF_8
             );
             int ch;
