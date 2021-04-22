@@ -15,11 +15,15 @@ import java.security.spec.InvalidParameterSpecException;
 import static com.platon.crypto.Hash.sha256;
 
 /**
+ * aes加密类
+ *
  * @author haypo
  * @date 2021/3/11
  */
 public class AesUtil {
-    //算法名
+    /**
+     * 算法名
+     */
     public static final String KEY_ALGORITHM = "AES";
 
     /**

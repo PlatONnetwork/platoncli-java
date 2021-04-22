@@ -27,10 +27,6 @@ public class Common {
     public static final int TWO = 2;
     public static final String JSON_SUFFIX = ".json";
     public static final String LETTER_Y = "y";
-    /**
-     * 合法地址的长度
-     */
-    public static final int ADDRESS_LENGTH = 42;
     public static final int MAX_NODE_ID_LENGTH = 130;
     public static final int MIN_NODE_ID_LENGTH = 128;
     public static final int DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH = 40;
@@ -143,28 +139,6 @@ public class Common {
                 break;
         }
         return new ContractGasProvider(gasPrice, gasLimit);
-    }
-
-    /**
-     * 获得默认的gasPrice
-     *
-     * @param type 方法类型
-     * @return gasPrice
-     * @throws IOException io异常
-     */
-    public static BigInteger getDefaultGasPrice(int type, Web3j web3j) throws IOException {
-        switch (type) {
-            case FunctionType.SUBMIT_TEXT_FUNC_TYPE:
-                return BigInteger.valueOf(1500000).multiply(BigInteger.valueOf(1000000000));
-            case FunctionType.SUBMIT_VERSION_FUNC_TYPE:
-                return BigInteger.valueOf(2100000).multiply(BigInteger.valueOf(1000000000));
-            case FunctionType.SUBMIR_PARAM_FUNCTION_TYPE:
-                return BigInteger.valueOf(2000000).multiply(BigInteger.valueOf(1000000000));
-            case FunctionType.SUBMIT_CANCEL_FUNC_TYPE:
-                return BigInteger.valueOf(3000000).multiply(BigInteger.valueOf(1000000000));
-            default:
-                return web3j.platonGasPrice().send().getGasPrice();
-        }
     }
 
 

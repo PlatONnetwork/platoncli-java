@@ -16,16 +16,13 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
+ * 处理地址的工具类
+ *
  * @author haypo
  * @date 2021/3/1
  */
 @Slf4j
 public class AddressUtil {
-    /**
-     * 旧地址格式的正则表达式
-     */
-    private static final Pattern OLD_ADDRESS_PATTERN = Pattern.compile(".*address\":[\\s]*\".*");
-
     /**
      * 格式化地址，例如将lax开头的地址转换为atp开头的，方便对多种钱包文件实现兼容
      *
@@ -80,32 +77,6 @@ public class AddressUtil {
             }
         }
         throw new FileNotFoundException("can not find wallet file matches address: " + address);
-    }
-
-    /**
-     * 从dir中读取钱包文件
-     *
-     * @param hrp hrp值
-     * @param dir 钱包路径
-     * @return Tuple<String, File>列表，地址-钱包文件
-     */
-    public static List<Tuple<String, File>> readAddressFileFromDir(String hrp, String dir) {
-        File root = new File(dir);
-        List<Tuple<String, File>> addressFileTuple = new ArrayList<>();
-        File[] files = root.listFiles(file -> file.isFile() && file.getName().endsWith(".json") ||
-                file.getName().endsWith(".json"));
-        if (files != null) {
-            for (File file : files) {
-                try {
-                    addressFileTuple.add(Tuple.create(
-                            readAddressFromFile(file, hrp),
-                            file));
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
-        }
-        return addressFileTuple;
     }
 
     /**

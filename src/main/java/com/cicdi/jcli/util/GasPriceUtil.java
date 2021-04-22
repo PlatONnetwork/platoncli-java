@@ -17,7 +17,7 @@ public class GasPriceUtil {
      */
     public static void verifyGasPrice(BigInteger gasPrice) {
         if (gasPrice.compareTo(BigInteger.ZERO) == 0) {
-            log.warn("gas price is zero, tx transfer may still failed with timeout exception even if you are a verifier, continue? Y/N");
+            System.out.println(ResourceBundleUtil.getTextString("zeroGasPrice"));
             if (!StringUtil.readYesOrNo()) {
                 log.warn(Common.CANCEL_STR);
                 System.exit(0);

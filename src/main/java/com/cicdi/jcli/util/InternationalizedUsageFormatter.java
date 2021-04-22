@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 采用java国际化的JCommander帮助格式器
+ *
  * @author haypo
  * @date 2021/4/19
  */

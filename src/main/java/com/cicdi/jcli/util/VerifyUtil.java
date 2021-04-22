@@ -15,12 +15,14 @@ import java.util.stream.Collectors;
  * @date 2021/3/23
  */
 public class VerifyUtil {
-    public static List<Node> getNodeList(Web3j web3j, String hrp) throws Exception {
+    /**
+     * @param web3j web3对象
+     * @param hrp   hrp值
+     * @return 节点列表
+     * @throws Exception 交易异常
+     */
+    private static List<Node> getNodeList(Web3j web3j, String hrp) throws Exception {
         return NodeContractX.load(web3j, hrp).getCandidateList().send().getData();
-    }
-
-    public static List<String> getNodeIdList(Web3j web3j, String hrp) throws Exception {
-        return getNodeList(web3j, hrp).stream().map(Node::getNodeId).collect(Collectors.toList());
     }
 
     /**
@@ -64,7 +66,7 @@ public class VerifyUtil {
     }
 
     public static void verifyNodeId(Web3j web3j, String hrp, String nodeId) throws Exception {
-        List<String> nodeIdList = getNodeIdList(web3j, hrp);
+        List<String> nodeIdList = getNodeList(web3j, hrp).stream().map(Node::getNodeId).collect(Collectors.toList());
         if (!nodeIdList.contains(nodeId) && !nodeIdList.contains(nodeId.substring(2))) {
             throw new RuntimeException("NodeId is invalid");
         }

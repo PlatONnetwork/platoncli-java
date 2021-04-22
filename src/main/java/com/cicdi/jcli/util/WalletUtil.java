@@ -66,7 +66,7 @@ public class WalletUtil {
         if (!file.exists()) {
             throw new FileNotFoundException("file not found at path: " + filePath);
         }
-        return loadCredentials(password, new File(filePath), hrp);
+        return loadCredentials(password, file, hrp);
     }
 
     public static Credentials loadCredentials(String password, File source, String hrp) throws IOException, CipherException {
@@ -79,7 +79,7 @@ public class WalletUtil {
     }
 
     /**
-     * 创建钱包文件
+     * 创建钱包文件和助记词密文备份文件
      *
      * @param password 密码
      * @param file     钱包路径
@@ -88,14 +88,19 @@ public class WalletUtil {
     public static boolean createWalletFile(String password, File file, String hrp) {
         try {
             WalletFileX wfx = generateBip39Wallet(password, file, hrp);
-            log.info("已创建钱包文件：{} 地址：{}", wfx.getFilename(), wfx.getAddress());
-            File dir = new File("wallet");
-            if (dir.mkdirs()) {
-                System.out.println("已创建wallet文件夹");
+            log.info("{}: {} {}:{}",
+                    ResourceBundleUtil.getTextString("createWalletFile"),
+                    wfx.getFilename(),
+                    ResourceBundleUtil.getTextString("address"),
+                    wfx.getAddress()
+            );
+            File walletDir = new File("wallet");
+            if (walletDir.mkdirs()) {
+                System.out.println(ResourceBundleUtil.getTextString("createWalletDir"));
             }
-            String wfxFilename = dir.getName() + "/Bip39-" + wfx.getFilename();
+            String wfxFilename = walletDir.getName() + "/Bip39-" + wfx.getFilename();
             String finalFilename = JsonUtil.writeJsonFileWithNoConflict(wfxFilename, wfx);
-            log.info("已创建助记词密文文件：{}", finalFilename);
+            log.info("{}: {}", ResourceBundleUtil.getTextString("createMnemonicBackupFile"), finalFilename);
             return true;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -106,7 +111,7 @@ public class WalletUtil {
     /**
      * 获得委托总量
      *
-     * @param web3j   web3
+     * @param web3j   web3对象
      * @param hrp     hrp
      * @param address 查询地址
      * @return 委托总量
@@ -160,17 +165,16 @@ public class WalletUtil {
         return Wallet.createStandard(password, ecKeyPair);
     }
 
-    public static WalletFile genWalletFile(String password, String hrp) throws CipherException {
-        byte[] initialEntropy = new byte[16];
-        secureRandom.nextBytes(initialEntropy);
-
-        String mnemonic = MnemonicUtils.generateMnemonic(initialEntropy);
-        byte[] seed = MnemonicUtils.generateSeed(mnemonic, password);
-        ECKeyPair ecKeyPair = ECKeyPair.create(sha256(seed));
-
-        return Wallet.createStandard(password, ecKeyPair);
-    }
-
+    /**
+     * 通过创建助记词创建钱包
+     *
+     * @param password 密码
+     * @param file     钱包文件名称
+     * @param hrp      hrp值
+     * @return 助记词备份文件
+     * @throws Exception 创建异常
+     *                   {@link WalletUtils#generateBip39Wallet(String, File)}
+     */
     private static WalletFileX generateBip39Wallet(String password, File file, String hrp) throws Exception {
         byte[] initialEntropy = new byte[16];
         secureRandom.nextBytes(initialEntropy);

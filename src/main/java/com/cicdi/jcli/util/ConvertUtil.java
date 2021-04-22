@@ -1,11 +1,9 @@
 package com.cicdi.jcli.util;
 
-import com.platon.bech32.Bech32;
-import com.platon.crypto.Credentials;
-import com.platon.tx.gas.GasProvider;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.template.BaseTemplate4Deserialize;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
+import com.platon.tx.gas.GasProvider;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -37,17 +35,6 @@ public class ConvertUtil {
      */
     public static BigInteger hrp2Von(String hrpValue) {
         return new BigDecimal(hrpValue).multiply(BigDecimal.TEN.pow(18)).toBigInteger();
-    }
-
-    /**
-     * 计算交易手续费
-     *
-     * @param gas      gas用量
-     * @param gasPrice gas价格
-     * @return 交易手续费
-     */
-    public static BigDecimal getTxFee(BigInteger gas, BigInteger gasPrice) {
-        return von2Hrp(gasPrice.multiply(gas));
     }
 
     public static GasProvider createGasProvider(BigInteger gasLimit, BigInteger gasPrice) {

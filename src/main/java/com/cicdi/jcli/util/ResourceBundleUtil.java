@@ -26,18 +26,31 @@ public class ResourceBundleUtil {
         return ResourceBundle.getBundle("text").getString(key);
     }
 
+    /**
+     * 获取template资源包下的字符资源
+     *
+     * @param key    字符key
+     * @param locale 地区
+     * @return 字符资源
+     */
     private static String getTemplateString(String key, Locale locale) {
         return ResourceBundle.getBundle("template", locale).getString(key);
     }
 
+    /**
+     * 读取资源包下的csv模板文件并打印
+     *
+     * @param key 模板名关键字
+     */
     public static void printTemplate(String key) {
         printTemplate(key, Locale.getDefault());
     }
 
     /**
-     * 读取资源包下的json字符串并打印
+     * 读取资源包下的csv模板文件并打印
      *
-     * @param key 字符key
+     * @param key    模板名关键字
+     * @param locale 地区
      */
     public static void printTemplate(String key, Locale locale) {
         try {

@@ -14,6 +14,8 @@ import com.platon.utils.Numeric;
 import java.util.List;
 
 /**
+ * 交易回执处理
+ *
  * @author haypo
  * @date 2021/3/23
  */
@@ -27,7 +29,7 @@ public class TransactionReceiptUtil {
      */
     public static String handleTxReceipt(TransactionReceipt transactionReceipt) throws TransactionException {
         if (transactionReceipt.isStatusOK()) {
-            return Common.SUCCESS_STR + ":\n" + transactionReceipt.toString();
+            return Common.SUCCESS_STR + ":\n" + transactionReceipt;
         } else {
             TransactionResponse transactionResponse = getResponseFromTransactionReceipt(transactionReceipt);
             String errMsg = ErrorCode.getErrorMsg(transactionResponse.getCode());

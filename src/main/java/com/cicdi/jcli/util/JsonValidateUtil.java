@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 /**
+ * json schema校验器
+ *
  * @author haypo
  * @date 2021/3/30
  */
