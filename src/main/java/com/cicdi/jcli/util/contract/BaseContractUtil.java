@@ -2,6 +2,7 @@ package com.cicdi.jcli.util.contract;
 
 
 import com.cicdi.jcli.model.NodeConfigModel;
+import com.cicdi.jcli.model.Tuple;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.util.*;
 import com.platon.contracts.ppos.abi.Function;
@@ -22,6 +23,7 @@ import java.math.BigInteger;
  */
 @Slf4j
 public abstract class BaseContractUtil<T> {
+    protected static Tuple<Boolean, String> passVerifyParam = Tuple.create(true, null);
     protected Web3j web3j;
     protected Credentials credentials;
     protected RawTransactionManager rawTransactionManager;
@@ -39,7 +41,7 @@ public abstract class BaseContractUtil<T> {
      * @throws IOException     param读取失败
      * @throws CipherException 钱包解锁失败
      */
-    public BaseContractUtil(boolean isOnline, String address, String config, String param, Class<T> clazz) throws IOException, CipherException {
+    public BaseContractUtil(boolean isOnline, String address, String config, String param, Class<T> clazz) throws CipherException, IOException {
         this.nodeConfigModel = ConfigUtil.readConfig(config);
         String jsonSchemaPath = JsonUtil.readJsonSchemaFromResource(getTemplateSchemaPath());
         if (StringUtil.isBlank(jsonSchemaPath)) {
@@ -48,11 +50,30 @@ public abstract class BaseContractUtil<T> {
             this.t = ParamUtil.readParam(param, clazz, jsonSchemaPath);
         }
         web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
+
+        Tuple<Boolean, String> verifyParamResult = verifyParam();
+        if (verifyParamResult != null && !verifyParamResult.getA()) {
+            System.out.println(verifyParamResult.getB());
+            if (!StringUtil.readYesOrNo()) {
+                System.out.println(Common.CANCEL_STR);
+                System.exit(0);
+            }
+        }
+
         if (isOnline) {
             String password = StringUtil.readPassword();
             credentials = WalletUtil.loadCredentials(password, address, nodeConfigModel.getHrp());
             rawTransactionManager = new RawTransactionManager(web3j, credentials);
         }
+    }
+
+    /**
+     * 验证param参数
+     *
+     * @return 是否通过验证
+     */
+    public Tuple<Boolean, String> verifyParam()  {
+        return passVerifyParam;
     }
 
     /**

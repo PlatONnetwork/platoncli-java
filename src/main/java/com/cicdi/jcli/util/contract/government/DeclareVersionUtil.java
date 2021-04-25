@@ -1,13 +1,13 @@
 package com.cicdi.jcli.util.contract.government;
 
-import com.platon.contracts.ppos.abi.Function;
-import com.platon.crypto.CipherException;
 import com.cicdi.jcli.contractx.ProposalContractX;
+import com.cicdi.jcli.model.Tuple;
 import com.cicdi.jcli.template.government.DeclareVersionTemplate;
 import com.cicdi.jcli.util.NetworkParametersUtil;
 import com.cicdi.jcli.util.StringUtil;
 import com.cicdi.jcli.util.Web3jUtil;
 import com.cicdi.jcli.util.contract.BaseContractUtil;
+import com.platon.contracts.ppos.abi.Function;
 
 import java.io.IOException;
 
@@ -17,13 +17,18 @@ import java.io.IOException;
  */
 public class DeclareVersionUtil extends BaseContractUtil<DeclareVersionTemplate> {
 
+    public DeclareVersionUtil(boolean isOnline, String jsonPath, String config, String param, Class<DeclareVersionTemplate> clazz) throws Exception {
+        super(isOnline, jsonPath, config, param, clazz);
+    }
+
     @Override
     public String getTemplateSchemaPath() {
         return "/json/DeclareVersionTemplateSchema.json";
     }
 
-    public DeclareVersionUtil(boolean isOnline, String jsonPath, String config, String param, Class<DeclareVersionTemplate> clazz) throws IOException, CipherException {
-        super(isOnline, jsonPath, config, param, clazz);
+    @Override
+    public Tuple<Boolean, String> verifyParam() {
+        return passVerifyParam;
     }
 
     @Override

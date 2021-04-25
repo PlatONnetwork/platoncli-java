@@ -4,10 +4,9 @@ import com.platon.contracts.ppos.abi.CustomType;
 import com.platon.rlp.solidity.RlpList;
 import com.platon.rlp.solidity.RlpString;
 import com.platon.rlp.solidity.RlpType;
-import com.cicdi.jcli.util.ConvertUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.cicdi.jcli.util.ConvertUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -26,11 +25,11 @@ public class CreateRestrictingPlanTemplate {
     @Data
     public static class Plan extends CustomType {
         private BigInteger epoch;
-        private BigInteger amount;
+        private BigDecimal amount;
 
         @Override
         public RlpType getRlpEncodeData() {
-            return new RlpList(RlpString.create(epoch), RlpString.create(amount));
+            return new RlpList(RlpString.create(epoch), RlpString.create(ConvertUtil.hrp2Von(amount)));
         }
     }
 }
