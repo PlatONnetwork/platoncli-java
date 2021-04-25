@@ -29,6 +29,7 @@ public abstract class BaseContractUtil<T> {
     protected RawTransactionManager rawTransactionManager;
     protected NodeConfigModel nodeConfigModel;
     protected T t;
+    protected String address;
 
     /**
      * 合约工具的初始化，对参数进行解析得到实例化对象
@@ -50,7 +51,8 @@ public abstract class BaseContractUtil<T> {
             this.t = ParamUtil.readParam(param, clazz, jsonSchemaPath);
         }
         web3j = Web3j.build(new FastHttpService(nodeConfigModel.getRpcAddress()));
-
+        this.address = AddressUtil.readAddress(address, nodeConfigModel.getHrp());
+        //校验param
         Tuple<Boolean, String> verifyParamResult = verifyParam();
         if (verifyParamResult != null && !verifyParamResult.getA()) {
             System.out.println(verifyParamResult.getB());
@@ -72,7 +74,7 @@ public abstract class BaseContractUtil<T> {
      *
      * @return 是否通过验证
      */
-    public Tuple<Boolean, String> verifyParam()  {
+    public Tuple<Boolean, String> verifyParam() {
         return passVerifyParam;
     }
 
