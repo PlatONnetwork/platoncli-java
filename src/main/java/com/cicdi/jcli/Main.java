@@ -14,6 +14,7 @@ import com.cicdi.jcli.util.TimeUtil;
 import com.platon.crypto.CipherException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +55,9 @@ public class Main extends AbstractSimpleSubmodule {
             for (String s : argv) {
                 argStr.append(" ").append(s);
             }
-            log.info("{}: java -jar platoncli-java-jar-with-dependencies.jar{}", ResourceBundleUtil.getTextString("command"), argStr);
+            String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+            jarName = new File(jarName).getName();
+            log.info("{}: java -jar {}{}", ResourceBundleUtil.getTextString("command"), jarName, argStr);
             jc = parseArgs(argv);
             result = main.parse(jc, argv);
             log.info("{}: {}", ResourceBundleUtil.getTextString("result"), result);
