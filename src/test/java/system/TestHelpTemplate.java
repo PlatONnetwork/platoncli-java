@@ -4,6 +4,7 @@ import com.cicdi.jcli.Main;
 import org.junit.Test;
 
 /**
+ * 测试所有模块的帮助信息
  * @author haypo
  * @date 2021/4/20
  */
