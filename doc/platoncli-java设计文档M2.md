@@ -133,62 +133,50 @@ java -jar platoncli-java-jar-with-dependencies.jar staking_getStakingReward
 
 > 该命令的功能是查询当前结算周期的质押奖励。其余的命令可以通过help查询得到。
 
-命令清单如下：  
-**委托模块**
+命令清单如下：
 
-命令名称| 功能描述
-:---:|:---:
-delegate_new|委托
-delegate_getDelegateReward|查询账户在各节点未提取委托奖励
-delegate_getRelatedListByDelAddr|查询当前账户地址所委托的节点的NodeId和质押Id
-delegate_unDelegate|减持/撤销委托
-delegate_withdrawDelegateReward|提取委托奖励
+#### **钱包管理模块**
 
-**治理模块**
-
-命令名称| 功能描述
-:---:|:---:
-government_checkDoubleSign|查询节点是否已被举报过多签
-government_declareVersion|版本声明
-government_getAccuVerifiersCount|查询提案的累计可投票人数
-government_getActiveVersion|查询节点的链生效版本
-government_getGovernParamValue|查询最新的治理参数值
-government_getProposal|根据提案id查询提案信息
-government_getTallyResult|查询提案结果
-government_listGovernParam|查询治理参数列表
-government_listProposal|查询提案列表
-government_reportDoubleSign|举报双签
-government_submitProposal|提交参数/升级/取消提案
-government_vote|提案投票
-
-**质押模块**
 命令名称| 功能描述
 ---|---
-staking_create|创建验证人
-staking_update|修改质押信息
-staking_increase|增持质押
-staking_unStaking|退出验证人
-staking_getValidatorList|查询当前共识周期的验证人列表
-staking_getVerifierList|查询当前结算周期的验证人列表
-staking_getCandidateList|查询所有实时候选人列表
-staking_getCandidateInfo|根据nodeId查询节点质押信息
-staking_getStakingReward|查询当前结算周期的质押奖励
+account_new|创建钱包
+account_check|查看本地钱包
+account_delete|删除钱包
+account_backups|钱包备份
+account_recovery|恢复私钥
+account_modify|修改钱包密码
+account_sign|离线签名
+account_getBalance|查询钱包余额
 
-
-**交易模块**
+#### **锁仓模块**
 
 命令名称| 功能描述
-:---:|:---:
-tx_getTransactionReceipt|根据交易hash查询交易信息
-tx_getTransaction|根据交易hash查询交易
-tx_sendOffline|发送已签名交易数据
-tx_transfer|发送交易
+---|---
+hedge_createRestrictingPlan|创建锁仓计划
+hedge_GetRestrictingInfo|获取锁仓计划
+
+#### **链基本信息模块**
+
+命令名称| 功能描述
+---|---
+query_blockNumber|查询当前最高块高查询当前最高块高
+query_getAvgPackTime|查询打包区块的平均时间
+query_getBlockByHash|根据区块hash查询区块信息
+query_getBlockByNumber|根据区块块高查询区块信息
+query_getPackageReward|查询当前结算周期的区块奖励
+
+#### **帮助**
+
+在上述命令之后添加`--help`或者`-help`，可以查询得到命令的帮助信息。
+
+
 
 > 可通过如下命令查看命令的帮助信息。
 > ```shell
 > java -jar platoncli-java-jar-with-dependencies.jar [command] --help
 > ```
 例如：
+
 ```log
 2021-02-26 16:01:37 INFO  
 Command: java -jar platoncli-java-jar-with-dependencies.jar delegate_new -help
@@ -221,28 +209,28 @@ Result: Usage: java -jar platon-jcli-jar-with-dependencies.jar delegate_new [opt
 
 ### 框架设计
 
-**为了方便扩展和维护，采用每个子模块对应src/submodule目录下的一个子目录，每个命令对应一个java文件的方式，模块名和对应的子目录名称相同，命令名和应的文件名相同，子模块之间和命令之间相互独立，可自由的增加和删除**  
+**为了方便扩展和维护，采用每个子模块对应src/submodule目录下的一个子目录，每个命令对应一个java文件的方式，模块名和对应的子目录名称相同，命令名和应的文件名相同，子模块之间和命令之间相互独立，可自由的增加和删除**
 
 代码结构设计如下：
 
 > pom.xml: maven构建配置文件
-> 
-> src/main/java/.../Main.java：主程序入口  
-> 
+>
+> src/main/java/.../Main.java：主程序入口
+>
 > src/main/java/.../contractx：存放了重构的合约类
-> 
+>
 > src/main/java/.../converter：存放命令参数的转换器
-> 
+>
 > src/main/java/.../model：存放一些POJO用于正反序列化
-> 
+>
 > src/main/java/.../service：存放重构的HttpService，可用于快速发送交易
-> 
+>
 > src/main/java/.../template：存放命令的参数模板
-> 
+>
 > src/main/java/.../util：存放常用工具类以及合约交易工具
-> 
+>
 > src/main/java/.../validator：存放命令参数的格式校验器
-> 
+>
 > src/main/resources：保存了打印日志的配置文件
 >
 >  src/main/java/.../submodule： 命令代码存放路径
@@ -262,7 +250,7 @@ Result: Usage: java -jar platon-jcli-jar-with-dependencies.jar delegate_new [opt
 > ​ |-------- query：链相关的基本信息查询模块，此目录下存放所有此模块的命令
 >
 > ​ |-------- hedge：锁仓模块，此目录下存放所有此模块的命令
-> 
+>
 > src/main/test：存放测试代码
 
 为了能让程序自动加载命令和模块，后续只需要以打补丁的方式进行发版。
