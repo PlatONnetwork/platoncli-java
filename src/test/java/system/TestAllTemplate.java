@@ -3,6 +3,9 @@ package system;
 import com.cicdi.jcli.Main;
 import org.junit.Test;
 
+/**
+ * 测试具备模板的模块的模板打印
+ */
 public class TestAllTemplate {
     private static final String[] cmdWithTemplate = {
             "government_vote", "government_submitProposal", "government_declareVersion", "government_getGovernParamValue", "government_reportDoubleSign",

@@ -8,7 +8,7 @@ import org.junit.Test;
  * @author haypo
  * @date 2021/4/20
  */
-public class TestHelpTemplate {
+public class testAllHelp {
     private static final String[] cmdArray = {
             "account_modify", "staking_getCandidateList", "account_sign", "staking_getVerifierList", "account_check", "government_submitProposal",
             "staking_increase", "government_getProposal", "tx_transfer", "staking_getStakingReward", "government_checkDoubleSign",
