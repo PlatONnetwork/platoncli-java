@@ -184,6 +184,40 @@ tx_getTransaction|根据交易hash查询交易
 tx_sendOffline|发送已签名交易数据
 tx_transfer|发送交易
 
+#### **钱包管理模块**
+
+命令名称| 功能描述
+:---:|:---:
+account_new|创建钱包
+account_check|查看本地钱包
+account_delete|删除钱包
+account_backups|钱包备份
+account_recovery|恢复私钥
+account_modify|修改钱包密码
+account_sign|离线签名
+account_getBalance|查询钱包余额
+
+#### **锁仓模块**
+
+命令名称| 功能描述
+:---:|:---:
+hedge_createRestrictingPlan|创建锁仓计划
+hedge_GetRestrictingInfo|获取锁仓计划
+
+#### **链基本信息模块**
+
+命令名称| 功能描述
+:---:|:---:
+query_blockNumber|查询当前最高块高查询当前最高块高
+query_getAvgPackTime|查询打包区块的平均时间
+query_getBlockByHash|根据区块hash查询区块信息
+query_getBlockByNumber|根据区块块高查询区块信息
+query_getPackageReward|查询当前结算周期的区块奖励
+
+#### **帮助**
+
+在命令之后添加`--help`或者`-help`，可以查询得到命令的帮助信息。
+
 > 可通过如下命令查看命令的帮助信息。
 > ```shell
 > java -jar platoncli-java-jar-with-dependencies.jar [command] --help
