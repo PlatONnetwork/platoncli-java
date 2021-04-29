@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * sign
+ * 离线签名
  *
  * @author haypo
  * @date 2021/3/13
