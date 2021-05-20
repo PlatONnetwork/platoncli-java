@@ -1,4 +1,4 @@
-命令,命令描述离线签名
+命令,命令描述
 account_backups,备份钱包
 account_check,查看本地钱包
 account_delete,删除钱包，同时删除wallet文件夹下的钱包的助记词密文备份文件
@@ -6,7 +6,7 @@ account_getBalance,钱包余额
 account_modify,修改钱包密码
 account_new,创建钱包，同时在wallet文件夹下创建助记词的密文文件，请勿删除，否则无法备份
 account_recovery,钱包恢复
-account_sign,命令描述离线签名
+account_sign,离线签名
 delegate_getDelegateReward,查询当前账号可提取奖励明细
 delegate_getRelatedListByDelAddr,查询当前账户地址所委托的节点的nodeId和质押Id
 delegate_new,发起委托，委托已质押节点，委托给某个节点增加节点权重来获取收入
