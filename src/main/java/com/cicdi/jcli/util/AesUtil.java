@@ -31,7 +31,7 @@ public class AesUtil {
      * 可以任意选择，为了方便后面与iOS端的加密解密，采用与其相同的模式与填充方式
      * ECB模式只用密钥即可对数据进行加密解密，CBC模式需要添加一个参数iv
      */
-    public static final String CIPHER_ALGORITHM = "AES/CBC/PKCS7Padding";
+    public static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
 
 
     private final static String ivVal = "!platoncli-java!";
