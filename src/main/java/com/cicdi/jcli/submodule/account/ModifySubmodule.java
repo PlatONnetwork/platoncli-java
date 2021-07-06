@@ -75,7 +75,7 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
                 select = new Scanner(System.in).nextLine().toLowerCase(Locale.ROOT);
                 switch (select) {
                     case "m":
-                        return BackupsSubmodule.backupMnemonic(newPassword, credentials, newWalletFilename);
+                        return BackupsSubmodule.backupMnemonic(password, credentials, newWalletFilename);
                     case "p":
                         return BackupsSubmodule.backupPrivateKey(WalletUtils.loadCredentials(newPassword, newWalletFilename), newWalletFilename);
                     default:
