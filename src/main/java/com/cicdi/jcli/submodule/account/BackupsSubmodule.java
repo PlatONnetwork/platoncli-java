@@ -33,28 +33,6 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.backups.type", required = true)
     protected Type type;
 
-    enum Type {
-        /**
-         *
-         */
-        m, mnemonic, pk, p, privateKey;
-
-        public String process(String password, Credentials credentials, String filename)
-                throws Exception {
-            switch (this) {
-                case m:
-                case mnemonic:
-                    return backupMnemonic(password, credentials, filename);
-                case p:
-                case pk:
-                case privateKey:
-                    return backupPrivateKey(credentials, filename);
-                default:
-                    throw new IllegalArgumentException("type");
-            }
-        }
-    }
-
     /**
      * 备份助记词
      *
@@ -72,7 +50,7 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
                     JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
             //解密助记词
             String mnemonic = AesUtil.getAesUtil().decrypt(walletFileX.getMnemonic(), password);
-            System.out.println("Address: " + credentials.getAddress() + " Mnemonic: " + mnemonic);
+            System.out.println(ResourceBundleUtil.getTextString("address") + ": " + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("mnemonic") + ": " + mnemonic);
             //创建助记词备份文件
             Bip39Wallet bip39Wallet = new Bip39Wallet(filename, mnemonic);
             String backupFileName = credentials.getAddress() + ".mnemonic.backup";
@@ -120,5 +98,27 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
             return type.process(password, credentials, filename);
         }
         return type.process(password, credentials, filename);
+    }
+
+    enum Type {
+        /**
+         *
+         */
+        m, mnemonic, pk, p, privateKey;
+
+        public String process(String password, Credentials credentials, String filename)
+                throws Exception {
+            switch (this) {
+                case m:
+                case mnemonic:
+                    return backupMnemonic(password, credentials, filename);
+                case p:
+                case pk:
+                case privateKey:
+                    return backupPrivateKey(credentials, filename);
+                default:
+                    throw new IllegalArgumentException("type");
+            }
+        }
     }
 }
