@@ -8,6 +8,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.government.GetGovernParamValueTemplate;
 import com.cicdi.jcli.util.*;
+import com.cicdi.jcli.validator.ParamValidator;
 import com.platon.contracts.ppos.dto.CallResponse;
 import com.platon.protocol.Web3j;
 
@@ -22,7 +23,7 @@ import com.platon.protocol.Web3j;
 public class GetGovernParamValueSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;
-    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true, validateWith = ParamValidator.class)
     protected String param;
 
     @Override

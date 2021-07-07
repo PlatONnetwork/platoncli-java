@@ -9,6 +9,7 @@ import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.template.delegate.GetDelegateRewardTemplate;
 import com.cicdi.jcli.util.*;
+import com.cicdi.jcli.validator.ParamValidator;
 import com.platon.contracts.ppos.dto.CallResponse;
 import com.platon.contracts.ppos.dto.resp.Node;
 import com.platon.contracts.ppos.dto.resp.Reward;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @Parameters(commandNames = "delegate_getDelegateReward", resourceBundle = "command", commandDescriptionKey = "delegate.getDelegateReward")
 public class GetDelegateRewardSubmodule extends AbstractSimpleSubmodule {
-    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true, validateWith = ParamValidator.class)
     protected String param;
     @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;

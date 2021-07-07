@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONReader;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.beust.jcommander.ParameterException;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import lombok.Cleanup;
 
@@ -138,7 +139,14 @@ public class JsonUtil {
      * @return 判断结果
      */
     public static boolean isJsonFile(String str) {
-        return str.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX) || new File(str).isFile();
+        if (str.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX)) {
+            if (!new File(str).exists()) {
+                throw new ParameterException(str + " not found");
+            } else {
+                return new File(str).isFile();
+            }
+        }
+        return false;
     }
 
     /**

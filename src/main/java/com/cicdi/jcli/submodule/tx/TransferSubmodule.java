@@ -9,6 +9,7 @@ import com.cicdi.jcli.template.BaseTemplate4Deserialize;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.validator.AddressValidator;
+import com.cicdi.jcli.validator.ParamValidator;
 import com.google.zxing.WriterException;
 import com.platon.crypto.CipherException;
 import com.platon.crypto.Credentials;
@@ -35,7 +36,7 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
     protected boolean offline;
     @Parameter(names = {"--template", "-template", "-t"}, descriptionKey = "template", help = true)
     protected boolean template;
-    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true, validateWith = ParamValidator.class)
     protected String param;
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
             validateWith = AddressValidator.class)

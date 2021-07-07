@@ -9,6 +9,7 @@ import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.util.contract.BaseContractUtil;
 import com.cicdi.jcli.validator.AddressValidator;
+import com.cicdi.jcli.validator.ParamValidator;
 import com.cicdi.jcli.validator.PositiveBigIntegerValidator;
 import com.platon.contracts.ppos.utils.EncoderUtils;
 import com.platon.protocol.Web3j;
@@ -38,7 +39,7 @@ public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>>
     protected BigInteger gasPrice = Common.MID_GAS_PRICE;
     @Parameter(names = {"--template", "-template", "-t"}, help = true, descriptionKey = "template")
     protected boolean template;
-    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true)
+    @Parameter(names = {"--param", "-param", "-p"}, descriptionKey = "param", required = true, validateWith = ParamValidator.class)
     protected String param;
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "address", required = true,
             validateWith = AddressValidator.class)
