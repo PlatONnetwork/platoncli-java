@@ -1,9 +1,8 @@
 package com.cicdi.jcli.util;
 
+import java.io.Console;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 字符串工具类
@@ -12,6 +11,8 @@ import java.util.regex.Pattern;
  * @date 2021/1/6
  */
 public class StringUtil {
+    private static final RuntimeException PASSWORDS_MISMATCH_EXCEPTION = new RuntimeException("passwords mismatch");
+
     /**
      * 判断字符串是否为空
      *
@@ -26,9 +27,11 @@ public class StringUtil {
      * @return 从键盘读取密码
      */
     public static String readPassword() {
-        System.out.println(ResourceBundleUtil.getTextString("readPassword") + ": ");
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        Console console = System.console();
+        if (console == null) {
+            throw new RuntimeException("Couldn't get Console instance, maybe you're running this from within an IDE?");
+        }
+        return new String(console.readPassword(ResourceBundleUtil.getTextString("readPassword") + ":"));
     }
 
     /**
@@ -62,8 +65,6 @@ public class StringUtil {
         }
         return password;
     }
-
-    private static final RuntimeException PASSWORDS_MISMATCH_EXCEPTION = new RuntimeException("passwords mismatch");
 
     /**
      * @return 从键盘读取y或n
