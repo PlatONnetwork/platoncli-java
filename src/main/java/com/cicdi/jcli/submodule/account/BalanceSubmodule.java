@@ -34,14 +34,20 @@ public class BalanceSubmodule extends AbstractSimpleSubmodule {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         String addressFile = AddressUtil.readAddress(address, nodeConfigModel.getHrp());
         Web3j web3j = createWeb3j();
-        BigInteger vonBalance = web3j.platonGetBalance(address, DefaultBlockParameterName.LATEST).send().getBalance();
+        BigInteger vonBalance = web3j.platonGetBalance(addressFile, DefaultBlockParameterName.LATEST).send().getBalance();
         log.info("{}: {} {}", ResourceBundleUtil.getTextString("walletBalance"),
                 ConvertUtil.von2Hrp(vonBalance), nodeConfigModel.getHrp());
 
-        RestrictingItem restrictingItem = RestrictPlanContractX.load(web3j, nodeConfigModel.getHrp()).getRestrictingInfo(address).send().getData();
-        BigInteger vonRestrictBalance = restrictingItem.getBalance();
-        log.info("{}: {} {}", ResourceBundleUtil.getTextString("restrictingBalance"),
-                ConvertUtil.von2Hrp(vonRestrictBalance), nodeConfigModel.getHrp());
+        RestrictingItem restrictingItem = RestrictPlanContractX.load(web3j, nodeConfigModel.getHrp()).getRestrictingInfo(addressFile).send().getData();
+        if (restrictingItem != null) {
+            BigInteger vonRestrictBalance = restrictingItem.getBalance();
+            log.info("{}: {} {}", ResourceBundleUtil.getTextString("restrictingBalance"),
+                    ConvertUtil.von2Hrp(vonRestrictBalance), nodeConfigModel.getHrp());
+        } else {
+            log.info("{}: {} {}", ResourceBundleUtil.getTextString("restrictingBalance"),
+                    0, nodeConfigModel.getHrp());
+        }
+
 
         return Common.SUCCESS_STR;
     }
