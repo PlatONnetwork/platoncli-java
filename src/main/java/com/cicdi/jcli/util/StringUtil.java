@@ -27,24 +27,18 @@ public class StringUtil {
      * @return 从键盘读取密码
      */
     public static String readPassword() {
-        Console console = System.console();
-        if (console == null) {
-            throw new RuntimeException("Couldn't get Console instance, maybe you're running this from within an IDE?");
-        }
-        char[] passwd = console.readPassword(ResourceBundleUtil.getTextString("readPassword") + ":");
-        if (passwd.length < 6) {
-            System.out.println(ResourceBundleUtil.getTextString("passwordLengthError"));
-            return readPassword();
-        } else {
-            return new String(passwd);
-        }
+        String fmt = ResourceBundleUtil.getTextString("readPassword") + ":";
+        return readPassword(fmt);
     }
 
     public static String readPassword(String fmt) {
+        char[] passwd;
         if (console == null) {
-            throw new RuntimeException("Couldn't get Console instance, maybe you're running this from within an IDE?");
+            System.out.println(fmt);
+            passwd = new Scanner(System.in).nextLine().toCharArray();
+        } else {
+            passwd = console.readPassword(fmt);
         }
-        char[] passwd = console.readPassword(fmt);
         if (passwd.length < 6) {
             System.out.println(ResourceBundleUtil.getTextString("passwordLengthError"));
             return readPassword();
