@@ -11,7 +11,7 @@ import java.util.Scanner;
  * @date 2021/1/6
  */
 public class StringUtil {
-    private static final RuntimeException PASSWORDS_MISMATCH_EXCEPTION = new RuntimeException("passwords mismatch");
+    private final static Console console = System.console();
 
     /**
      * 判断字符串是否为空
@@ -31,21 +31,37 @@ public class StringUtil {
         if (console == null) {
             throw new RuntimeException("Couldn't get Console instance, maybe you're running this from within an IDE?");
         }
-        return new String(console.readPassword(ResourceBundleUtil.getTextString("readPassword") + ":"));
+        char[] passwd = console.readPassword(ResourceBundleUtil.getTextString("readPassword") + ":");
+        if (passwd.length < 6) {
+            System.out.println(ResourceBundleUtil.getTextString("passwordLengthError"));
+            return readPassword();
+        } else {
+            return new String(passwd);
+        }
+    }
+
+    public static String readPassword(String fmt) {
+        if (console == null) {
+            throw new RuntimeException("Couldn't get Console instance, maybe you're running this from within an IDE?");
+        }
+        char[] passwd = console.readPassword(fmt);
+        if (passwd.length < 6) {
+            System.out.println(ResourceBundleUtil.getTextString("passwordLengthError"));
+            return readPassword();
+        } else {
+            return new String(passwd);
+        }
     }
 
     /**
      * @return 从键盘读取新密码
      */
     public static String readNewPasswordTwice() {
-        System.out.println(ResourceBundleUtil.getTextString("readNewPassword") + ": ");
-        Scanner scanner = new Scanner(System.in);
-
-        String password = scanner.nextLine();
-        System.out.println(ResourceBundleUtil.getTextString("readNewPasswordAgain") + ": ");
-        String passwordAgain = scanner.nextLine();
+        String password = readPassword(ResourceBundleUtil.getTextString("readNewPassword") + ": ");
+        String passwordAgain = readPassword(ResourceBundleUtil.getTextString("readNewPasswordAgain") + ": ");
         if (!password.equals(passwordAgain)) {
-            throw PASSWORDS_MISMATCH_EXCEPTION;
+            System.out.println("passwords mismatch");
+            return readNewPasswordTwice();
         }
         return password;
     }
@@ -61,7 +77,8 @@ public class StringUtil {
         System.out.println(ResourceBundleUtil.getTextString("readPasswordAgain") + ": ");
         String passwordAgain = scanner.nextLine();
         if (!password.equals(passwordAgain)) {
-            throw PASSWORDS_MISMATCH_EXCEPTION;
+            System.out.println("passwords mismatch");
+            return readPasswordTwice();
         }
         return password;
     }
