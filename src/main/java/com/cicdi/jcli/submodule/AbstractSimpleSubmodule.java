@@ -111,6 +111,8 @@ public abstract class AbstractSimpleSubmodule implements ISubmodule {
      */
     @Override
     public final String parse(JCommander jc, String... argv) throws Exception {
+        //需要读取config配置
+        ConfigUtil.readConfig(config);
         String result;
         if (help) {
             result = getHelpStr(jc);
