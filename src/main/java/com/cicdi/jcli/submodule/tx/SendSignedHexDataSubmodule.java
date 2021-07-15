@@ -42,7 +42,7 @@ public class SendSignedHexDataSubmodule extends AbstractSimpleSubmodule {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         if (fast) {
             SendUtil.fastSendSingedData(hexData, new FastHttpService(nodeConfigModel.getRpcAddress()));
-            log.info("operation: sendSignedData, mode: fast, data: {}",
+            log.info("operation: tx_sendSignedHexData, mode: fast, data: {}",
                     hexData);
         } else {
             String hash = SendUtil.sendSingedData(hexData, new HttpService(nodeConfigModel.getRpcAddress()));
