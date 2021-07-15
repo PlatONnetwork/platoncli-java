@@ -191,7 +191,20 @@ public class SendUtil {
         byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, chainId, credentials);
         return Numeric.toHexString(signedMessage);
     }
-
+    /**
+     * 快速发送已签名数据列表
+     *
+     * @param hexValue 已签名数据
+     * @param web3jService web3j对象
+     */
+    public static void fastSendSingedData(String hexValue, FastHttpService web3jService) throws IOException {
+        Request<String, PlatonSendTransaction> request = new Request<>(
+                "platon_sendRawTransaction",
+                Collections.singletonList(hexValue),
+                web3jService,
+                PlatonSendTransaction.class);
+        web3jService.fastSend(request);
+    }
     /**
      * 快速发送已签名数据列表
      *

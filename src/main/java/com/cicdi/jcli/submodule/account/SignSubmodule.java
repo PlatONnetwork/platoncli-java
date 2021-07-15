@@ -45,7 +45,7 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
             addressFile = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
         }
         String passwd = StringUtil.readPassword();
-        Credentials credentials = WalletUtils.loadCredentials(passwd, addressFile);
+        Credentials credentials = WalletUtil.loadCredentials(passwd, addressFile, nodeConfigModel.getHrp());
         BaseTemplate4Serialize transferTemplate;
         if (JsonUtil.isJsonFile(data)) {
             File datafile = new File(data);
@@ -59,16 +59,27 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
             transferTemplate = JSON.parseObject(data, BaseTemplate4Serialize.class);
         }
         List<String> hexValueList = new ArrayList<>();
-        long flag = 0;
+        BigInteger nonce;
+        if (transferTemplate.getNonce() == null) {
+            transferTemplate.setNonce(NonceUtil.getNonce(createWeb3j(), credentials.getAddress(), nodeConfigModel.getHrp()));
+        }
+        if (transferTemplate.getGasPrice() == null) {
+            transferTemplate.setGasPrice(Common.MID_GAS_PRICE);
+        }
+        if (transferTemplate.getGasLimit() == null) {
+            transferTemplate.setGasLimit(Common.MID_GAS_LIMIT);
+        }
         for (String to : transferTemplate.getTo()) {
             RawTransaction rawTransaction = RawTransaction.createTransaction(
-                    transferTemplate.getNonce().add(BigInteger.valueOf(flag++)),
+                    transferTemplate.getNonce(),
                     transferTemplate.getGasPrice(),
                     transferTemplate.getGasLimit(),
                     to,
                     transferTemplate.getValue(),
                     Numeric.cleanHexPrefix(transferTemplate.getData()));
-            hexValueList.add(SendUtil.signData(rawTransaction, credentials, transferTemplate.getChainId()));
+
+            transferTemplate.setNonce(transferTemplate.getNonce().add(BigInteger.ONE));
+            hexValueList.add(SendUtil.signData(rawTransaction, credentials, transferTemplate.getChainId() == null ? nodeConfigModel.getChainId() : transferTemplate.getChainId()));
         }
 
         log.info("{}: {}", ResourceBundleUtil.getTextString("SignSubmodule.text1"),
