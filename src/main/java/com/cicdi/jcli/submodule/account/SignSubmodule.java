@@ -6,6 +6,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
+import com.cicdi.jcli.template.BaseTemplate4Deserialize;
 import com.cicdi.jcli.template.BaseTemplate4Serialize;
 import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.validator.AddressValidator;
@@ -46,17 +47,20 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
         }
         String passwd = StringUtil.readPassword();
         Credentials credentials = WalletUtil.loadCredentials(passwd, addressFile, nodeConfigModel.getHrp());
-        BaseTemplate4Serialize transferTemplate;
+        BaseTemplate4Deserialize transferTemplate;
         if (JsonUtil.isJsonFile(data)) {
             File datafile = new File(data);
             if (datafile.getName().toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX)) {
-                transferTemplate = JsonUtil.readFile(datafile, BaseTemplate4Serialize.class,
+                transferTemplate = JsonUtil.readFile(datafile, BaseTemplate4Deserialize.class,
                         JsonUtil.readJsonSchemaFromResource("/json/BaseTemplate4DeserializeSchema.json"));
             } else {
-                transferTemplate = QrUtil.readQrCodeImage(datafile);
+                BaseTemplate4Serialize b4s = QrUtil.readQrCodeImage(datafile);
+                transferTemplate = new BaseTemplate4Deserialize(b4s.getFrom(), b4s.getTo(), b4s.getData(), b4s.getNonce(),
+                        ConvertUtil.von2Hrp(b4s.getValue()), b4s.getChainId(), b4s.getGasLimit(), b4s.getGasPrice(), b4s.isFast()
+                );
             }
         } else {
-            transferTemplate = JSON.parseObject(data, BaseTemplate4Serialize.class);
+            transferTemplate = JSON.parseObject(data, BaseTemplate4Deserialize.class);
         }
         List<String> hexValueList = new ArrayList<>();
         BigInteger nonce;
@@ -75,7 +79,7 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
                     transferTemplate.getGasPrice(),
                     transferTemplate.getGasLimit(),
                     to,
-                    transferTemplate.getValue(),
+                    ConvertUtil.hrp2Von(transferTemplate.getValue()),
                     Numeric.cleanHexPrefix(transferTemplate.getData()));
 
             transferTemplate.setNonce(transferTemplate.getNonce().add(BigInteger.ONE));
