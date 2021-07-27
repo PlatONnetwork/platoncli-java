@@ -72,6 +72,7 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
                 return Common.CANCEL_STR;
             }
         }
+
         BigDecimal balance = ConvertUtil.von2Hrp(WalletUtil.getBalance(createWeb3j(), AddressUtil.readAddress(address, nodeConfigModel.getHrp())));
         if (template.getValue().compareTo(balance) > 0) {
             System.out.printf(
@@ -108,10 +109,12 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
             }
         }
 
-        if (!offline && new File(address).isFile()) {
+        File file = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
+
+        if (!offline) {
             //在线交易
             String password = StringUtil.readPassword();
-            Credentials credentials = WalletUtil.loadCredentials(password, address, nodeConfigModel.getHrp());
+            Credentials credentials = WalletUtil.loadCredentials(password, file, nodeConfigModel.getHrp());
             if (fast) {
                 SendUtil.fastSendBatch(nodeConfigModel.getRpcAddress(), credentials, vonValue,
                         template.getTo(), template.getData(), nodeConfigModel.getChainId(), gasLimit,

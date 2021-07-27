@@ -139,7 +139,7 @@ public class JsonUtil {
      * @return 判断结果
      */
     public static boolean isJsonFile(String str) {
-        if (str.toLowerCase(Locale.ROOT).endsWith(Common.JSON_SUFFIX)) {
+        if (str.toLowerCase(Locale.ROOT).contains(Common.JSON_SUFFIX)) {
             if (!new File(str).exists()) {
                 throw new ParameterException(str + " not found");
             } else {

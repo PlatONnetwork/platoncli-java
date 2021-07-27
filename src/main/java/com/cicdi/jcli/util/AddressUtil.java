@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 /**
  * 处理地址的工具类
@@ -73,10 +72,11 @@ public class AddressUtil {
         List<Tuple<String, String>> tuples = readAddressFromDir(hrp);
         for (Tuple<String, String> t : tuples) {
             if (t.getA().equals(address)) {
+                log.info("find file matches address");
                 return t.getB();
             }
         }
-        throw new FileNotFoundException("can not find wallet file matches address: " + address);
+        throw new FileNotFoundException("can not find json file matches address: " + address);
     }
 
     /**
@@ -89,8 +89,7 @@ public class AddressUtil {
     public static List<Tuple<String, String>> readAddressFromDir(String hrp) {
         File root = new File("./");
         List<Tuple<String, String>> addressList = new ArrayList<>();
-        File[] files = root.listFiles(file -> file.isFile() && file.getName().contains("json") ||
-                file.getName().contains("JSON"));
+        File[] files = root.listFiles(file -> file.isFile() && file.getName().toLowerCase(Locale.ROOT).contains("json"));
         if (files != null) {
             for (File file : files) {
                 try {
@@ -115,8 +114,7 @@ public class AddressUtil {
      */
     public static String readAddress(String address, String hrp) throws IOException {
         //判断address是否是地址还是json
-        if (JsonUtil.isJsonFile(address)
-        ) {
+        if (JsonUtil.isJsonFile(address)) {
             File file = new File(address);
             if (!file.isFile() || !file.exists()) {
                 throw new FileNotFoundException(file.getName() + " not exist");
