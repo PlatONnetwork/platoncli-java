@@ -16,6 +16,7 @@ import com.platon.crypto.Credentials;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +48,42 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
     public String getTemplate() {
         ResourceBundleUtil.printTemplate("TransferSubmodule");
         return Common.SUCCESS_STR;
+    }
+
+    public String onlineTransfer(NodeConfigModel nodeConfigModel, BaseTemplate4Deserialize template, BigInteger gasLimit, BigInteger gasPrice, BigInteger vonValue) throws IOException, CipherException {
+        //在线交易
+        File file = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
+        String password = StringUtil.readPassword();
+        Credentials credentials = WalletUtil.loadCredentials(password, file, nodeConfigModel.getHrp());
+        Assert.assertEquals(credentials.getAddress(), template.getFrom());
+        if (fast) {
+            SendUtil.fastSendBatch(nodeConfigModel.getRpcAddress(), credentials, vonValue,
+                    template.getTo(), template.getData(), nodeConfigModel.getChainId(), gasLimit,
+                    gasPrice, nodeConfigModel.getHrp()
+            );
+            return Common.SUCCESS_STR;
+        } else {
+            Web3j web3j = createWeb3j();
+            boolean flag = true;
+            for (String to : template.getTo()) {
+                try {
+                    String platonSendTransaction = SendUtil.send(nodeConfigModel.getHrp(),
+                            to, template.getData(), vonValue,
+                            gasPrice, gasLimit,
+                            web3j, credentials, nodeConfigModel.getChainId()
+                    );
+                    TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, platonSendTransaction);
+                    log.info(TransactionReceiptUtil.handleTxReceipt(receipt));
+                    if (!receipt.isStatusOK()) {
+                        flag = false;
+                    }
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    throw new RuntimeException("The transaction send failed");
+                }
+            }
+            return flag ? Common.SUCCESS_STR : Common.FAIL_STR;
+        }
     }
 
     /**
@@ -109,40 +146,8 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
             }
         }
 
-        File file = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
-
         if (!offline) {
-            //在线交易
-            String password = StringUtil.readPassword();
-            Credentials credentials = WalletUtil.loadCredentials(password, file, nodeConfigModel.getHrp());
-            if (fast) {
-                SendUtil.fastSendBatch(nodeConfigModel.getRpcAddress(), credentials, vonValue,
-                        template.getTo(), template.getData(), nodeConfigModel.getChainId(), gasLimit,
-                        gasPrice, nodeConfigModel.getHrp()
-                );
-                return Common.SUCCESS_STR;
-            } else {
-                Web3j web3j = createWeb3j();
-                boolean flag = true;
-                for (String to : template.getTo()) {
-                    try {
-                        String platonSendTransaction = SendUtil.send(nodeConfigModel.getHrp(),
-                                to, template.getData(), vonValue,
-                                gasPrice, gasLimit,
-                                web3j, credentials, nodeConfigModel.getChainId()
-                        );
-                        TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, platonSendTransaction);
-                        log.info(TransactionReceiptUtil.handleTxReceipt(receipt));
-                        if (!receipt.isStatusOK()) {
-                            flag = false;
-                        }
-                    } catch (Exception e) {
-                        log.error(e.getMessage(), e);
-                        throw new RuntimeException("The transaction send failed");
-                    }
-                }
-                return flag ? Common.SUCCESS_STR : Common.FAIL_STR;
-            }
+            return onlineTransfer(nodeConfigModel, template, gasLimit, gasPrice, vonValue);
         } else {
             BaseTemplate4Serialize serialize = ConvertUtil.deserialize2Serialize(template, nodeConfigModel);
             serialize.setChainId(nodeConfigModel.getChainId());
