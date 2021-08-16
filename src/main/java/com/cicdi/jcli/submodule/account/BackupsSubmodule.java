@@ -11,7 +11,6 @@ import com.platon.crypto.Credentials;
 import com.platon.crypto.WalletUtils;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * 备份钱包
@@ -45,8 +44,12 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
             WalletFileX walletFileX = JsonUtil.readFile(bip39WalletFile, WalletFileX.class,
                     JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
             //解密助记词
-            String mnemonic = AesUtil.getAesUtil().decrypt(walletFileX.getMnemonic(), password);
-            return ResourceBundleUtil.getTextString("address") + ": " + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("mnemonic") + ": " + mnemonic;
+            if (walletFileX.getAddress().equals(credentials.getAddress())) {
+                String mnemonic = AesUtil.getAesUtil().decrypt(walletFileX.getMnemonic(), password);
+                return ResourceBundleUtil.getTextString("address") + ": " + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("mnemonic") + ": " + mnemonic;
+            } else {
+                throw new RuntimeException("Address mismatch");
+            }
         }
         throw new RuntimeException(ResourceBundleUtil.getTextString("BackupsSubmodule.text3") + ": " + filename);
     }
