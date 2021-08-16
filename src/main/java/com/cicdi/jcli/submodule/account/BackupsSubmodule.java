@@ -3,12 +3,10 @@ package com.cicdi.jcli.submodule.account;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import com.cicdi.jcli.model.Bip39WalletWithPrivateKey;
 import com.cicdi.jcli.model.WalletFileX;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.validator.AddressValidator;
-import com.platon.crypto.Bip39Wallet;
 import com.platon.crypto.Credentials;
 import com.platon.crypto.WalletUtils;
 
@@ -43,18 +41,12 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
         String bip39WalletName = "Bip39-" + filename;
         File bip39WalletFile = new File("wallet/" + bip39WalletName);
         if (bip39WalletFile.isFile()) {
-            System.out.printf("%s: %s", ResourceBundleUtil.getTextString("BackupsSubmodule.text1"), bip39WalletFile.getName());
+            StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("BackupsSubmodule.text1"), bip39WalletFile.getName());
             WalletFileX walletFileX = JsonUtil.readFile(bip39WalletFile, WalletFileX.class,
                     JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
             //解密助记词
             String mnemonic = AesUtil.getAesUtil().decrypt(walletFileX.getMnemonic(), password);
-            System.out.println(ResourceBundleUtil.getTextString("address") + ": " + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("mnemonic") + ": " + mnemonic);
-            //创建助记词备份文件
-            Bip39Wallet bip39Wallet = new Bip39Wallet(filename, mnemonic);
-            String backupFileName = credentials.getAddress() + ".mnemonic.backup";
-
-            String finalFilename = JsonUtil.writeJsonFileWithNoConflict(BACKUP_DIR, backupFileName, bip39Wallet);
-            return Common.SUCCESS_STR + " " + ResourceBundleUtil.getTextString("BackupsSubmodule.text2") + ":" + finalFilename;
+            return ResourceBundleUtil.getTextString("address") + ": " + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("mnemonic") + ": " + mnemonic;
         }
         throw new RuntimeException(ResourceBundleUtil.getTextString("BackupsSubmodule.text3") + ": " + filename);
     }
@@ -68,13 +60,8 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
      */
     public static String backupPrivateKey(Credentials credentials, String filename) throws IOException {
         String privateKeyHex = credentials.getEcKeyPair().getPrivateKey().toString(16);
-        System.out.println(ResourceBundleUtil.getTextString("address") + ": "
-                + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("privatKey") + ": " + privateKeyHex);
-        Bip39WalletWithPrivateKey bip39WalletWithPrivateKey = new Bip39WalletWithPrivateKey(filename, privateKeyHex);
-        String backupFileName = credentials.getAddress() + ".privateKey.backup";
-
-        String finalFilename = JsonUtil.writeJsonFileWithNoConflict(BACKUP_DIR, backupFileName, bip39WalletWithPrivateKey);
-        return Common.SUCCESS_STR + " " + ResourceBundleUtil.getTextString("BackupsSubmodule.text4") + ": " + finalFilename;
+        return ResourceBundleUtil.getTextString("address") + ": "
+                + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("privatKey") + ": " + privateKeyHex;
     }
 
     @Override
