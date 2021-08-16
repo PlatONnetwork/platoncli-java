@@ -56,9 +56,8 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
      *
      * @param credentials 已经解锁的钱包
      * @return 备份结果
-     * @throws IOException io异常
      */
-    public static String backupPrivateKey(Credentials credentials, String filename) throws IOException {
+    public static String backupPrivateKey(Credentials credentials, String filename) {
         String privateKeyHex = credentials.getEcKeyPair().getPrivateKey().toString(16);
         return ResourceBundleUtil.getTextString("address") + ": "
                 + credentials.getAddress() + " " + ResourceBundleUtil.getTextString("privatKey") + ": " + privateKeyHex;
