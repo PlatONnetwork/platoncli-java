@@ -14,7 +14,6 @@ import java.util.ResourceBundle;
  * @author haypo
  * @date 2021/4/8
  */
-@Slf4j
 public class ResourceBundleUtil {
     /**
      * 获取text资源包下的字符资源
@@ -66,7 +65,7 @@ public class ResourceBundleUtil {
                 System.out.printf(format, row[0], row[1], row[2], row[3]);
             }
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 

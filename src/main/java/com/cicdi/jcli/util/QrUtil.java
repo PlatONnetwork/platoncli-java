@@ -9,7 +9,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.platon.utils.JSONUtil;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileSystemView;
@@ -35,7 +34,6 @@ import static joptsimple.internal.Strings.EMPTY;
  * @author haypo
  * @date 2020/12/25
  */
-@Slf4j
 public class QrUtil {
     /**
      * 读取二维码
@@ -97,7 +95,7 @@ public class QrUtil {
             }
             return new String(os.toByteArray(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            log.error("uncompress failed: " + compressedStr, e);
+            e.printStackTrace();
         }
         return EMPTY;
     }
@@ -118,7 +116,7 @@ public class QrUtil {
             }
             return Base64.getEncoder().encodeToString(out.toByteArray());
         } catch (IOException e) {
-            log.error("compress failed: " + text, e);
+            e.printStackTrace();
         }
         return EMPTY;
     }
@@ -136,7 +134,7 @@ public class QrUtil {
 
     public static String save2QrCodeImage(String prefix, BaseTemplate4Serialize obj) throws IOException, WriterException {
         String qrCodeImageName = prefix + "@" + TimeUtil.getNanoTime() + ".jpg";
-        log.info(ResourceBundleUtil.getTextString("qrCodeOriginData") + ": " + JsonUtil.toPrettyJsonString(obj));
+        StringUtil.info(ResourceBundleUtil.getTextString("qrCodeOriginData") + ": " + JsonUtil.toPrettyJsonString(obj));
         obj.setData(compress(obj.getData()));
         QrUtil.genQrCodeImageToDeskTop(JSONUtil.toJSONString(obj), 2000, 2000, qrCodeImageName);
         return String.format("%s %s %s", ResourceBundleUtil.getTextString("qrCodeGened"),

@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Slf4j
 public class WalletFileX {
     private String address;
     private String filename;

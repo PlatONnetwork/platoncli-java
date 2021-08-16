@@ -29,7 +29,6 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2020/12/23
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "tx_transfer", resourceBundle = "command", commandDescription = "发送交易")
 public class TransferSubmodule extends AbstractSimpleSubmodule {
@@ -73,12 +72,12 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
                             web3j, credentials, nodeConfigModel.getChainId()
                     );
                     TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, platonSendTransaction);
-                    log.info(TransactionReceiptUtil.handleTxReceipt(receipt));
+                    StringUtil.info(TransactionReceiptUtil.handleTxReceipt(receipt));
                     if (!receipt.isStatusOK()) {
                         flag = false;
                     }
                 } catch (Exception e) {
-                    log.error(e.getMessage(), e);
+                    e.printStackTrace();
                     throw new RuntimeException("The transaction send failed");
                 }
             }
@@ -117,7 +116,7 @@ public class TransferSubmodule extends AbstractSimpleSubmodule {
                     template.getValue().toPlainString(), nodeConfigModel.getHrp(), balance.toPlainString(), nodeConfigModel.getHrp()
             );
             if (!StringUtil.readYesOrNo()) {
-                log.info(Common.CANCEL_STR);
+                StringUtil.info(Common.CANCEL_STR);
                 System.exit(0);
             }
         }

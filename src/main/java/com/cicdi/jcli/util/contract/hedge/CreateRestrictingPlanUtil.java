@@ -23,7 +23,6 @@ import java.util.Iterator;
  * @date 2021/3/15
  */
 @SuppressWarnings("unused")
-@Slf4j
 public class CreateRestrictingPlanUtil extends BaseContractUtil<CreateRestrictingPlanTemplate> {
     public CreateRestrictingPlanUtil(boolean isOnline, String address, String config, String param, Class<CreateRestrictingPlanTemplate> clazz) throws Exception {
         super(isOnline, address, config, param, clazz);
@@ -54,7 +53,7 @@ public class CreateRestrictingPlanUtil extends BaseContractUtil<CreateRestrictin
             }
             return passVerifyParam;
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            e.printStackTrace();
             return passVerifyParam;
         }
     }

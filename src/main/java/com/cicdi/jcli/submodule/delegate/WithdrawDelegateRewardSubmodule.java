@@ -28,7 +28,6 @@ import java.util.Collections;
  * @date 2021/1/8
  */
 @SuppressWarnings("unused")
-@Slf4j
 @Parameters(commandNames = "delegate_withdrawDelegateReward", resourceBundle = "command", commandDescriptionKey = "delegate.withdrawDelegateReward")
 public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")
@@ -52,7 +51,7 @@ public class WithdrawDelegateRewardSubmodule extends AbstractSimpleSubmodule {
 
         //若待领取收益为0则提醒
         if (WalletUtil.getDelegateReward(web3j, nodeConfigModel.getHrp(), hrpAddress).compareTo(BigInteger.ZERO) == 0) {
-            log.warn("Un-withdrew delegate reward is zero, continue? Y/N");
+            StringUtil.warn("Un-withdrew delegate reward is zero, continue? Y/N");
             if (!StringUtil.readYesOrNo()) {
                 return Common.CANCEL_STR;
             }

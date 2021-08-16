@@ -17,7 +17,6 @@ import java.util.ResourceBundle;
  * @author haypo
  * @date 2020/12/31
  */
-@Slf4j
 @Parameters(commandNames = "government_declareVersion", resourceBundle = "command", commandDescriptionKey = "government.declareVersion")
 public class DeclareVersionSubmodule extends AbstractComplexSubmodule<DeclareVersionTemplate, DeclareVersionUtil> {
     @Override

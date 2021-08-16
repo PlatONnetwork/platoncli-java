@@ -20,7 +20,6 @@ import java.util.Locale;
  * @author haypo
  * @date 2021/3/1
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_new", resourceBundle = "command", commandDescriptionKey = "account.new")
 public class NewSubmodule extends AbstractSimpleSubmodule {

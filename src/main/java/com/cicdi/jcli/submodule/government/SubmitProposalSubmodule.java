@@ -31,9 +31,6 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2021/1/14
  */
-
-
-@Slf4j
 @Parameters(commandNames = "government_submitProposal", resourceBundle = "command", commandDescriptionKey = "government.submitProposal")
 public class SubmitProposalSubmodule extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")

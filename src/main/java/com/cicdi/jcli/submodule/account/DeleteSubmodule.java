@@ -7,10 +7,8 @@ import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.crypto.Credentials;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.util.Scanner;
 
 import static com.cicdi.jcli.util.StringUtil.readPassword;
 
@@ -20,7 +18,6 @@ import static com.cicdi.jcli.util.StringUtil.readPassword;
  * @author haypo
  * @date 2021/3/1
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_delete", resourceBundle = "command", commandDescriptionKey = "account.delete")
 public class DeleteSubmodule extends AbstractSimpleSubmodule {
@@ -35,7 +32,7 @@ public class DeleteSubmodule extends AbstractSimpleSubmodule {
         String hrp = ConfigUtil.readConfig(config).getHrp();
         if (!f1.isFile()) {
             f1 = AddressUtil.getFileFromAddress(hrp, address);
-            log.info("{}: {}", ResourceBundleUtil.getTextString("foundWalletFile"), f1.getName());
+            StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("foundWalletFile"), f1.getName());
         }
         String passwd = readPassword();
         Credentials credentials = WalletUtil.loadCredentials(passwd, f1, hrp);
@@ -46,9 +43,9 @@ public class DeleteSubmodule extends AbstractSimpleSubmodule {
             if (StringUtil.readYesOrNo()) {
                 File mnemonicFile = new File("wallet/Bip39-" + f1.getName());
                 if (mnemonicFile.delete()) {
-                    log.info("{}: {}", f1.getName(), ResourceBundleUtil.getTextString("DeleteSubmodule.text2"));
+                    StringUtil.info("%s: %s", f1.getName(), ResourceBundleUtil.getTextString("DeleteSubmodule.text2"));
                 } else {
-                    log.warn("{}: {}", f1.getName(), ResourceBundleUtil.getTextString("DeleteSubmodule.text3"));
+                    StringUtil.warn("%s: %s", f1.getName(), ResourceBundleUtil.getTextString("DeleteSubmodule.text3"));
                     if (!StringUtil.readYesOrNo()) {
                         return Common.CANCEL_STR;
                     }

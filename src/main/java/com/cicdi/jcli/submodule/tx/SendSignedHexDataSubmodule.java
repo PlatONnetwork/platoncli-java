@@ -6,10 +6,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.model.NodeConfigModel;
 import com.cicdi.jcli.service.FastHttpService;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
-import com.cicdi.jcli.util.Common;
-import com.cicdi.jcli.util.ConfigUtil;
-import com.cicdi.jcli.util.SendUtil;
-import com.cicdi.jcli.util.TransactionReceiptUtil;
+import com.cicdi.jcli.util.*;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
 import com.platon.protocol.http.HttpService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author haypo
  * @date 2020/12/28
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "tx_sendSignedHexData", resourceBundle = "command", commandDescription = "直接发送已签名16进制交易数据")
 public class SendSignedHexDataSubmodule extends AbstractSimpleSubmodule {
@@ -42,12 +38,12 @@ public class SendSignedHexDataSubmodule extends AbstractSimpleSubmodule {
         NodeConfigModel nodeConfigModel = ConfigUtil.readConfig(config);
         if (fast) {
             SendUtil.fastSendSingedData(hexData, new FastHttpService(nodeConfigModel.getRpcAddress()));
-            log.info("operation: tx_sendSignedHexData, mode: fast, data: {}",
+            StringUtil.info("operation: tx_sendSignedHexData, mode: fast, data: %s",
                     hexData);
         } else {
             String hash = SendUtil.sendSingedData(hexData, new HttpService(nodeConfigModel.getRpcAddress()));
             TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, hash);
-            log.info(TransactionReceiptUtil.handleTxReceipt(receipt));
+            StringUtil.info(TransactionReceiptUtil.handleTxReceipt(receipt));
         }
         return Common.SUCCESS_STR;
     }

@@ -15,7 +15,6 @@ import com.platon.crypto.*;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.DefaultBlockParameterName;
 import com.platon.utils.Files;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,12 +32,10 @@ import static com.platon.crypto.Hash.sha256;
  * @author haypo
  * @date 2021/3/1
  */
-@Slf4j
 public class WalletUtil {
-    private static final SecureRandom secureRandom = SecureRandomUtils.secureRandom();
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
     public static final String MAIN_TEST_ADDRESS_REGEX = "\\\"address\\\"\\s*:\\s*\\{\\s*\\\"mainnet\\\"\\s*:\\s*\\\"([A-Za-z0-9]+)\\\"[^}]*\\}";
+    private static final SecureRandom secureRandom = SecureRandomUtils.secureRandom();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
@@ -88,7 +85,7 @@ public class WalletUtil {
     public static boolean createWalletFile(String password, File file, String hrp) {
         try {
             WalletFileX wfx = generateBip39Wallet(password, file, hrp);
-            log.info("{}: {} {}:{}",
+            StringUtil.info("%s: %s %s:%s",
                     ResourceBundleUtil.getTextString("createWalletFile"),
                     wfx.getFilename(),
                     ResourceBundleUtil.getTextString("address"),
@@ -100,10 +97,10 @@ public class WalletUtil {
             }
             String wfxFilename = walletDir.getName() + "/Bip39-" + wfx.getFilename();
             String finalFilename = JsonUtil.writeJsonFileWithNoConflict(wfxFilename, wfx);
-            log.info("{}: {}", ResourceBundleUtil.getTextString("createMnemonicBackupFile"), finalFilename);
+            StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("createMnemonicBackupFile"), finalFilename);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            e.printStackTrace();
             return false;
         }
     }

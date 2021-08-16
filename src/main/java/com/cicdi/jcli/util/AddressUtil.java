@@ -5,7 +5,6 @@ import com.cicdi.jcli.model.Tuple;
 import com.platon.bech32.Bech32;
 import com.platon.crypto.WalletFile;
 import com.platon.utils.Files;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,7 +19,6 @@ import java.util.Locale;
  * @author haypo
  * @date 2021/3/1
  */
-@Slf4j
 public class AddressUtil {
     /**
      * 格式化地址，例如将lax开头的地址转换为atp开头的，方便对多种钱包文件实现兼容
@@ -31,12 +29,12 @@ public class AddressUtil {
      */
     public static String formatHrpAddress(String address, String hrp) {
         if (address.startsWith(hrp)) {
-            log.info(ResourceBundleUtil.getTextString("addressInWalletFile") + ": {} " +
-                    ResourceBundleUtil.getTextString("matches") + "hrp: {}", address, hrp);
+            StringUtil.info(ResourceBundleUtil.getTextString("addressInWalletFile") + ": %s " +
+                    ResourceBundleUtil.getTextString("matches") + "hrp: %s", address, hrp);
             return address;
         }
-        log.warn(ResourceBundleUtil.getTextString("addressInWalletFile") + ": {} " +
-                ResourceBundleUtil.getTextString("notMatches") + "hrp: {} " + ResourceBundleUtil.getTextString("autoConvert"), address, hrp);
+        StringUtil.info(ResourceBundleUtil.getTextString("addressInWalletFile") + ": %s " +
+                ResourceBundleUtil.getTextString("notMatches") + "hrp: %s " + ResourceBundleUtil.getTextString("autoConvert"), address, hrp);
         try {
             String hexAddress = Bech32.addressDecodeHex(address);
             return Bech32.addressEncode(hrp, hexAddress);
@@ -72,7 +70,7 @@ public class AddressUtil {
         List<Tuple<String, String>> tuples = readAddressFromDir(hrp);
         for (Tuple<String, String> t : tuples) {
             if (t.getA().equals(address)) {
-                log.info("find file matches address");
+                StringUtil.info("find file matches address");
                 return t.getB();
             }
         }
@@ -97,7 +95,7 @@ public class AddressUtil {
                             readAddressFromFile(file, hrp),
                             file.getName()));
                 } catch (Exception e) {
-                    log.error(e.getMessage(), e);
+                    e.printStackTrace();
                 }
             }
         }

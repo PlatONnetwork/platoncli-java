@@ -19,7 +19,6 @@ import java.io.File;
  * @author haypo
  * @date 2021/3/13
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_recovery", resourceBundle = "command", commandDescriptionKey = "account.recovery")
 public class RecoverySubmodule extends AbstractSimpleSubmodule {

@@ -27,7 +27,6 @@ import java.util.Collections;
  * @author haypo
  * @date 2020/12/23
  */
-@Slf4j
 public abstract class AbstractComplexSubmodule<T, U extends BaseContractUtil<T>> extends AbstractSimpleSubmodule {
     @Parameter(names = {"--offline", "-o"}, descriptionKey = "offline")
     protected boolean offline;

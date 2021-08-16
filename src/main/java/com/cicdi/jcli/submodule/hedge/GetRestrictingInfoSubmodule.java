@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author haypo
  * @date 2021/3/15
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "hedge_getRestrictingInfo", resourceBundle = "command", commandDescriptionKey = "hedge.getRestrictingInfo")
 public class GetRestrictingInfoSubmodule extends AbstractSimpleSubmodule {

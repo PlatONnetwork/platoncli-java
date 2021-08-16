@@ -8,7 +8,6 @@ import com.cicdi.jcli.model.Tuple;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.util.*;
 import com.cicdi.jcli.validator.AddressValidator;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.List;
  * @author haypo
  * @date 2021/3/1
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_check", resourceBundle = "command", commandDescriptionKey = "account.check")
 public class CheckSubmodule extends AbstractSimpleSubmodule {

@@ -28,7 +28,6 @@ import java.util.Scanner;
  * @author haypo
  * @date 2020/12/28
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "tx_sendOffline", resourceBundle = "command", commandDescriptionKey = "tx.sendOffline")
 public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
@@ -75,14 +74,14 @@ public class SendOfflineSubmodule extends AbstractSimpleSubmodule {
         }
         if (fastTransferTemplate.isFast()) {
             SendUtil.fastSendSingedData(hexValueList, new FastHttpService(nodeConfigModel.getRpcAddress()));
-            log.info("operation: sendOffline, mode: fast, from: {}, toAddressesNumber: {} , transactionContent: {}, nodeRpcAddress:{}",
+            StringUtil.info("operation: sendOffline, mode: fast, from: %s, toAddressesNumber: %s , transactionContent: %s, nodeRpcAddress:%s",
                     credentials.getAddress(), hexValueList.size(), "", nodeConfigModel.getRpcAddress());
         } else {
             for (String signedData : hexValueList) {
                 String hash = SendUtil.sendSingedData(signedData, new HttpService(nodeConfigModel.getRpcAddress()));
 
                 TransactionReceipt receipt = waitForTransactionReceipt(nodeConfigModel, hash);
-                log.info(TransactionReceiptUtil.handleTxReceipt(receipt));
+                StringUtil.info(TransactionReceiptUtil.handleTxReceipt(receipt));
             }
         }
         return Common.SUCCESS_STR;

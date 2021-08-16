@@ -28,7 +28,6 @@ import java.util.Locale;
  * @author haypo
  * @date 2021/3/13
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_sign", resourceBundle = "command", commandDescriptionKey = "account.sign")
 public class SignSubmodule extends AbstractSimpleSubmodule {
@@ -86,7 +85,7 @@ public class SignSubmodule extends AbstractSimpleSubmodule {
             hexValueList.add(SendUtil.signData(rawTransaction, credentials, transferTemplate.getChainId() == null ? nodeConfigModel.getChainId() : transferTemplate.getChainId()));
         }
 
-        log.info("{}: {}", ResourceBundleUtil.getTextString("SignSubmodule.text1"),
+        StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("SignSubmodule.text1"),
                 JsonUtil.toPrettyJsonString(hexValueList));
 
         return Common.SUCCESS_STR;

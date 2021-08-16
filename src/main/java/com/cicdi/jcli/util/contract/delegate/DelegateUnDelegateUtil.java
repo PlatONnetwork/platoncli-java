@@ -17,7 +17,6 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2021/1/8
  */
-@Slf4j
 public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateTemplate> {
     @Override
     public String getTemplateSchemaPath() {
@@ -35,7 +34,7 @@ public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateT
                     t.getAmount().toPlainString(), nodeConfigModel.getHrp(), thresholdHrp.toPlainString(), nodeConfigModel.getHrp()
             );
             if (!StringUtil.readYesOrNo()) {
-                log.info(Common.CANCEL_STR);
+                StringUtil.info(Common.CANCEL_STR);
                 System.exit(0);
             }
         }
@@ -48,7 +47,7 @@ public class DelegateUnDelegateUtil extends BaseContractUtil<DelegateUnDelegateT
                     t.getAmount().toPlainString(), nodeConfigModel.getHrp(), delegatedHrp.toPlainString(), nodeConfigModel.getHrp()
             );
             if (!StringUtil.readYesOrNo()) {
-                log.info(Common.CANCEL_STR);
+                StringUtil.info(Common.CANCEL_STR);
                 System.exit(0);
             }
         }

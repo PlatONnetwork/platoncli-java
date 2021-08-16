@@ -5,7 +5,6 @@ import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
@@ -15,7 +14,6 @@ import java.io.IOException;
  * @author haypo
  * @date 2021/3/30
  */
-@Slf4j
 public class JsonValidateUtil {
     /**
      * 校验JSON
@@ -33,7 +31,7 @@ public class JsonValidateUtil {
         boolean success = processingReport.isSuccess();
         if (!success) {
             for (ProcessingMessage processingMessage : processingReport) {
-                log.error(String.valueOf(processingMessage));
+                StringUtil.warn(String.valueOf(processingMessage));
             }
         }
         return processingReport;

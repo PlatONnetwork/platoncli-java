@@ -11,7 +11,6 @@ import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.crypto.Bip39Wallet;
 import com.platon.crypto.Credentials;
 import com.platon.crypto.WalletUtils;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +21,6 @@ import java.io.IOException;
  * @author haypo
  * @date 2021/3/11
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_backups", resourceBundle = "command", commandDescriptionKey = "account.backups")
 public class BackupsSubmodule extends AbstractSimpleSubmodule {
@@ -45,7 +43,7 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
         String bip39WalletName = "Bip39-" + filename;
         File bip39WalletFile = new File("wallet/" + bip39WalletName);
         if (bip39WalletFile.isFile()) {
-            log.info("{}: {}", ResourceBundleUtil.getTextString("BackupsSubmodule.text1"), bip39WalletFile.getName());
+            System.out.printf("%s: %s", ResourceBundleUtil.getTextString("BackupsSubmodule.text1"), bip39WalletFile.getName());
             WalletFileX walletFileX = JsonUtil.readFile(bip39WalletFile, WalletFileX.class,
                     JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
             //解密助记词
@@ -92,7 +90,7 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
         } else {
             //如果是钱包地址
             filename = AddressUtil.getFilenameFromAddress(ConfigUtil.readConfig(config).getHrp(), address);
-            log.info("{}:{}", ResourceBundleUtil.getTextString("foundWalletFile"), filename);
+            System.out.printf("%s: %s", ResourceBundleUtil.getTextString("foundWalletFile"), filename);
             password = StringUtil.readPassword();
             credentials = WalletUtils.loadCredentials(password, filename);
             return type.process(password, credentials, filename);

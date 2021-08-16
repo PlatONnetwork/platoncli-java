@@ -7,12 +7,7 @@ import com.beust.jcommander.Parameters;
 import com.cicdi.jcli.submodule.AbstractSimpleSubmodule;
 import com.cicdi.jcli.submodule.ISubmodule;
 import com.cicdi.jcli.submodule.SubModuleScanner;
-import com.cicdi.jcli.util.Common;
-import com.cicdi.jcli.util.GitUtil;
-import com.cicdi.jcli.util.ResourceBundleUtil;
-import com.cicdi.jcli.util.TimeUtil;
-import com.platon.crypto.CipherException;
-import lombok.extern.slf4j.Slf4j;
+import com.cicdi.jcli.util.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -23,7 +18,6 @@ import java.util.Map;
  * @author haypo
  * @date 2020/12/22
  */
-@Slf4j
 @Parameters(resourceBundle = "command")
 public class Main extends AbstractSimpleSubmodule {
     private static final String CLI_VERSION = "0.1.0";
@@ -57,23 +51,17 @@ public class Main extends AbstractSimpleSubmodule {
             }
             String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
             jarName = new File(jarName).getName();
-            log.info("{}: java -jar {}{}", ResourceBundleUtil.getTextString("command"), jarName, argStr);
+            StringUtil.info("%s: java -jar %s%s", ResourceBundleUtil.getTextString("command"), jarName, argStr);
             jc = parseArgs(argv);
             result = main.parse(jc, argv);
-            log.info("{}: {}", ResourceBundleUtil.getTextString("result"), result);
+            StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("result"), result);
         } catch (Exception exception) {
+            exception.printStackTrace();
             if (exception instanceof MissingCommandException) {
-                log.error("command not found", exception);
                 if (jc != null) {
                     jc.usage();
                 }
-                return;
             }
-            if (exception instanceof CipherException) {
-                log.error(exception.getMessage(), exception);
-                return;
-            }
-            log.error(exception.getMessage(), exception);
         }
     }
 

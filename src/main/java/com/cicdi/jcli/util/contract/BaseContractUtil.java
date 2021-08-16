@@ -21,7 +21,6 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2020/3/20
  */
-@Slf4j
 public abstract class BaseContractUtil<T> {
     protected static Tuple<Boolean, String> passVerifyParam = Tuple.create(true, null);
     protected Web3j web3j;

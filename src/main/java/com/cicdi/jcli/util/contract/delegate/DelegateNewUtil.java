@@ -15,7 +15,6 @@ import java.math.BigDecimal;
  * @author haypo
  * @date 2021/1/4
  */
-@Slf4j
 public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
     public DelegateNewUtil(boolean isOnline, String address, String config, String param, Class<DelegateNewTemplate> clazz) throws Exception {
         super(isOnline, address, config, param, clazz);
@@ -27,7 +26,7 @@ public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
                     t.getAmount().toPlainString(), nodeConfigModel.getHrp(), balance.toPlainString(), nodeConfigModel.getHrp()
             );
             if (!StringUtil.readYesOrNo()) {
-                log.info(Common.CANCEL_STR);
+                StringUtil.info(Common.CANCEL_STR);
                 System.exit(0);
             }
         }
@@ -40,7 +39,7 @@ public class DelegateNewUtil extends BaseContractUtil<DelegateNewTemplate> {
                     t.getAmount().toPlainString(), nodeConfigModel.getHrp(), threshold.toPlainString(), nodeConfigModel.getHrp()
             );
             if (!StringUtil.readYesOrNo()) {
-                log.info(Common.CANCEL_STR);
+                StringUtil.info(Common.CANCEL_STR);
                 System.exit(0);
             }
         }

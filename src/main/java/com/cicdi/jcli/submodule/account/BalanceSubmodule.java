@@ -11,7 +11,6 @@ import com.cicdi.jcli.validator.AddressValidator;
 import com.platon.contracts.ppos.dto.resp.RestrictingItem;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.DefaultBlockParameterName;
-import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigInteger;
 
@@ -21,7 +20,6 @@ import java.math.BigInteger;
  * @author haypo
  * @date 2021/3/15
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_getBalance", resourceBundle = "command", commandDescriptionKey = "account.getBalance")
 public class BalanceSubmodule extends AbstractSimpleSubmodule {
@@ -35,19 +33,17 @@ public class BalanceSubmodule extends AbstractSimpleSubmodule {
         String addressFile = AddressUtil.readAddress(address, nodeConfigModel.getHrp());
         Web3j web3j = createWeb3j();
         BigInteger vonBalance = web3j.platonGetBalance(addressFile, DefaultBlockParameterName.LATEST).send().getBalance();
-        log.info("{}: {} {}", ResourceBundleUtil.getTextString("walletBalance"),
-                ConvertUtil.von2Hrp(vonBalance), nodeConfigModel.getHrp());
+        StringUtil.info("%s: %s %s", ResourceBundleUtil.getTextString("walletBalance"),
+                ConvertUtil.von2Hrp(vonBalance).toPlainString(), nodeConfigModel.getHrp());
 
         RestrictingItem restrictingItem = RestrictPlanContractX.load(web3j, nodeConfigModel.getHrp()).getRestrictingInfo(addressFile).send().getData();
         if (restrictingItem != null) {
             BigInteger vonRestrictBalance = restrictingItem.getBalance();
-            log.info("{}: {} {}", ResourceBundleUtil.getTextString("restrictingBalance"),
-                    ConvertUtil.von2Hrp(vonRestrictBalance), nodeConfigModel.getHrp());
+            StringUtil.info("%s: %s %s", ResourceBundleUtil.getTextString("restrictingBalance"),
+                    ConvertUtil.von2Hrp(vonRestrictBalance).toPlainString(), nodeConfigModel.getHrp());
         } else {
-            log.info("{}: {} {}", ResourceBundleUtil.getTextString("restrictingBalance"),
-                    0, nodeConfigModel.getHrp());
+            StringUtil.info("%s: 0 %s", ResourceBundleUtil.getTextString("restrictingBalance"), nodeConfigModel.getHrp());
         }
-
 
         return Common.SUCCESS_STR;
     }

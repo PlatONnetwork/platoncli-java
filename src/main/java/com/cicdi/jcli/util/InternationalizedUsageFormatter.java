@@ -1,7 +1,6 @@
 package com.cicdi.jcli.util;
 
 import com.beust.jcommander.*;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
 import java.util.EnumSet;
@@ -14,14 +13,17 @@ import java.util.Map;
  * @author haypo
  * @date 2021/4/19
  */
-@Slf4j
 public class InternationalizedUsageFormatter extends DefaultUsageFormatter {
+    public final JCommander commander;
+
     public InternationalizedUsageFormatter(JCommander commander) {
         super(commander);
         this.commander = commander;
     }
 
-    public final JCommander commander;
+    private static String newLineAndIndent(int indent) {
+        return "\n" + s(indent);
+    }
 
     @Override
     public void appendCommands(StringBuilder out, int indentCount, int descriptionIndent, String indent) {
@@ -74,14 +76,10 @@ public class InternationalizedUsageFormatter extends DefaultUsageFormatter {
                 }
             }
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            e.printStackTrace();
         }
         wrapDescription(out, indentCount, mainLine.toString());
         out.append("\n");
-    }
-
-    private static String newLineAndIndent(int indent) {
-        return "\n" + s(indent);
     }
 
     @Override

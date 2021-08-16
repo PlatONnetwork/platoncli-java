@@ -24,7 +24,6 @@ import java.util.Scanner;
  * @author haypo
  * @date 2021/3/13
  */
-@Slf4j
 @SuppressWarnings("unused")
 @Parameters(commandNames = "account_modify", resourceBundle = "command", commandDescriptionKey = "account.modify")
 public class ModifySubmodule extends AbstractSimpleSubmodule {
@@ -38,7 +37,7 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
         File file = new File(address);
         if (!file.isFile()) {
             file = AddressUtil.getFileFromAddress(nodeConfigModel.getHrp(), address);
-            log.info("{}:{}", ResourceBundleUtil.getTextString("foundWalletFile"), file.getName());
+            StringUtil.info("%s:%s", ResourceBundleUtil.getTextString("foundWalletFile"), file.getName());
         }
         String password = StringUtil.readPassword();
         Credentials credentials = WalletUtils.loadCredentials(password, file);
@@ -62,16 +61,16 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
                     JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
             walletFileX.setFilename(newWalletFilename);
             String finalFilename = JsonUtil.writeJsonFileWithNoConflict("wallet/Bip39-" + newWalletFilename, walletFileX);
-            log.info("{}:{}", ResourceBundleUtil.getTextString("createMnemonicBackupFile"), finalFilename);
+            StringUtil.info("%s:%s", ResourceBundleUtil.getTextString("createMnemonicBackupFile"), finalFilename);
         } else {
-            log.warn("{}", ResourceBundleUtil.getTextString("mnemonicBackupFileNotFound"));
+            StringUtil.warn("%s", ResourceBundleUtil.getTextString("mnemonicBackupFileNotFound"));
         }
 
-        log.info("{}: {}", newWalletFilename, ResourceBundleUtil.getTextString("ModifySubmodule.text1"));
+        StringUtil.info("%s: %s", newWalletFilename, ResourceBundleUtil.getTextString("ModifySubmodule.text1"));
         String select = new Scanner(System.in).nextLine().toLowerCase(Locale.ROOT);
         switch (select) {
             case "y":
-                log.info(ResourceBundleUtil.getTextString("ModifySubmodule.text2"));
+                StringUtil.info(ResourceBundleUtil.getTextString("ModifySubmodule.text2"));
                 select = new Scanner(System.in).nextLine().toLowerCase(Locale.ROOT);
                 switch (select) {
                     case "m":
@@ -79,7 +78,7 @@ public class ModifySubmodule extends AbstractSimpleSubmodule {
                     case "p":
                         return BackupsSubmodule.backupPrivateKey(WalletUtils.loadCredentials(newPassword, newWalletFilename), newWalletFilename);
                     default:
-                        log.info(ResourceBundleUtil.getTextString("ModifySubmodule.text3"));
+                        StringUtil.info(ResourceBundleUtil.getTextString("ModifySubmodule.text3"));
                         return BackupsSubmodule.backupMnemonic(newPassword, credentials, newWalletFilename);
                 }
             case "n":

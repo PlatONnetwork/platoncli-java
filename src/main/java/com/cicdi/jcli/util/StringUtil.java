@@ -11,7 +11,22 @@ import java.util.Scanner;
  * @date 2021/1/6
  */
 public class StringUtil {
-    private final static Console console = System.console();
+    private final static Console CONSOLE = System.console();
+
+    public static void printEfl(String format, Object... args) {
+        System.err.printf(format, args);
+        System.err.println();
+    }
+
+    public static void info(String format, Object... args) {
+        System.out.printf(format, args);
+        System.out.println();
+    }
+
+    public static void warn(String format, Object... args) {
+        System.err.printf(format, args);
+        System.err.println();
+    }
 
     /**
      * 判断字符串是否为空
@@ -33,11 +48,11 @@ public class StringUtil {
 
     public static String readPassword(String fmt) {
         char[] passwd;
-        if (console == null) {
+        if (CONSOLE == null) {
             System.out.println(fmt);
             passwd = new Scanner(System.in).nextLine().toCharArray();
         } else {
-            passwd = console.readPassword(fmt);
+            passwd = CONSOLE.readPassword(fmt);
         }
         if (passwd.length < 6) {
             System.out.println(ResourceBundleUtil.getTextString("passwordLengthError"));

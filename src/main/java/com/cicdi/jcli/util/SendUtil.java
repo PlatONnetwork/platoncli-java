@@ -14,7 +14,6 @@ import com.platon.protocol.http.HttpService;
 import com.platon.tx.exceptions.TxHashMismatchException;
 import com.platon.utils.Numeric;
 import com.platon.utils.TxHashVerifier;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -28,7 +27,6 @@ import java.util.concurrent.TimeUnit;
  * @author haypo
  * @date 2020/6/30
  */
-@Slf4j
 public class SendUtil {
     protected static TxHashVerifier txHashVerifier = new TxHashVerifier();
 
@@ -129,7 +127,7 @@ public class SendUtil {
                 System.out.println("Fast send transactions finished.");
             }
         } catch (InterruptedException e) {
-            log.warn("executor interrupted", e);
+            e.printStackTrace();
         }
     }
 
@@ -172,9 +170,9 @@ public class SendUtil {
                         web3jService,
                         PlatonSendTransaction.class);
                 web3jService.fastSend(request);
-                log.info("tx fast send to " + to + " succeed.");
+                StringUtil.info("tx fast send to " + to + " succeed.");
             } catch (Exception e) {
-                log.error("tx send to " + to + " failed: " + e.getMessage(), e);
+                e.printStackTrace();
             }
         });
     }
@@ -191,10 +189,11 @@ public class SendUtil {
         byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, chainId, credentials);
         return Numeric.toHexString(signedMessage);
     }
+
     /**
      * 快速发送已签名数据列表
      *
-     * @param hexValue 已签名数据
+     * @param hexValue     已签名数据
      * @param web3jService web3j对象
      */
     public static void fastSendSingedData(String hexValue, FastHttpService web3jService) throws IOException {
@@ -205,6 +204,7 @@ public class SendUtil {
                 PlatonSendTransaction.class);
         web3jService.fastSend(request);
     }
+
     /**
      * 快速发送已签名数据列表
      *
