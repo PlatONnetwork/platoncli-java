@@ -11,6 +11,7 @@ import com.platon.crypto.Credentials;
 import com.platon.crypto.WalletUtils;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * 备份钱包
@@ -22,11 +23,31 @@ import java.io.File;
 @Parameters(commandNames = "account_backups", resourceBundle = "command", commandDescriptionKey = "account.backups")
 public class BackupsSubmodule extends AbstractSimpleSubmodule {
     private static final File BACKUP_DIR = new File("backup");
+    private static final String MNEMONIC_DIR = "wallet";
     @Parameter(names = {"--address", "-address", "-d"}, descriptionKey = "account.backups.address", required = true,
             validateWith = AddressValidator.class)
     protected String address;
     @Parameter(names = {"--type", "-type", "-t"}, descriptionKey = "account.backups.type", required = true)
     protected Type type;
+
+    /**
+     * 通过地址查找得到对应的助记词备份文件
+     *
+     * @param dir     助记词备份文件路径
+     * @param address 钱包地址
+     * @return 助记词备份文件
+     * @throws IOException 可能文件读取格式不对
+     */
+    private static File findMnBackupFileByAddress(String dir, String address) throws IOException {
+        File[] files = new File(dir).listFiles();
+        for (int i = 0; i < (files == null ? 0 : files.length); i++) {
+            WalletFileX walletFileX = JsonUtil.readFile(files[i], WalletFileX.class, JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
+            if (walletFileX.getAddress().equals(address)) {
+                return files[i];
+            }
+        }
+        return null;
+    }
 
     /**
      * 备份助记词
@@ -38,8 +59,8 @@ public class BackupsSubmodule extends AbstractSimpleSubmodule {
      */
     public static String backupMnemonic(String password, Credentials credentials, String filename) throws Exception {
         String bip39WalletName = "Bip39-" + filename;
-        File bip39WalletFile = new File("wallet/" + bip39WalletName);
-        if (bip39WalletFile.isFile()) {
+        File bip39WalletFile = findMnBackupFileByAddress(MNEMONIC_DIR, credentials.getAddress());
+        if (bip39WalletFile != null && bip39WalletFile.isFile()) {
             StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("BackupsSubmodule.text1"), bip39WalletFile.getName());
             WalletFileX walletFileX = JsonUtil.readFile(bip39WalletFile, WalletFileX.class,
                     JsonUtil.readJsonSchemaFromResource("/json/WalletFileXSchema.json"));
