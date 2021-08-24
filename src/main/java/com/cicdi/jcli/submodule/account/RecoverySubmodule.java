@@ -43,14 +43,18 @@ public class RecoverySubmodule extends AbstractSimpleSubmodule {
                     String mnemonic = StringUtil.readMnemonic();
                     String password = StringUtil.readPasswordTwice();
                     WalletFile walletFile = WalletUtil.genWalletByMnemonic(mnemonic, password);
-                    StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("RecoverySubmodule.text1"), JsonUtil.toPrettyJsonString(walletFile));
+                    String recoveryFilename = walletFile.getAddress() + ".mnemonic.recovery";
+                    recoveryFilename = JsonUtil.writeJsonFileWithNoConflict(RECOVERY_DIR, recoveryFilename, walletFile);
+                    StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("RecoverySubmodule.text1"), recoveryFilename);
                     break;
                 }
                 default: {
                     String pk = StringUtil.readPrivateKey();
                     String password = StringUtil.readPasswordTwice();
                     WalletFile walletFile = WalletUtil.genWalletByPrivateKey(pk, password);
-                    StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("RecoverySubmodule.text1"), JsonUtil.toPrettyJsonString(walletFile));
+                    String recoveryFilename = walletFile.getAddress() + ".privateKey.recovery";
+                    recoveryFilename = JsonUtil.writeJsonFileWithNoConflict(RECOVERY_DIR, recoveryFilename, walletFile);
+                    StringUtil.info("%s: %s", ResourceBundleUtil.getTextString("RecoverySubmodule.text1"), recoveryFilename);
                     break;
                 }
             }
