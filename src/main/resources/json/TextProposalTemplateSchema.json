@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TextProposalTemplate",
+  "description": "文本提案",
+  "type": "object",
+  "properties": {
+    "verifier": {
+      "description": "提交提案的验证人，nodeId",
+      "type": "string",
+      "minLength": 128,
+      "maxLength": 130
+    },
+    "piPid": {
+      "description": "PIPID",
+      "type": "string"
+    }
+  },
+  "required": [
+    "verifier",
+    "piPid"
+  ]
+}

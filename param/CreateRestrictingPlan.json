@@ -1,0 +1,13 @@
+{
+  "account": "atp1jzxeyyntlypr5r44exzgdgkzdrgt7ccp9n3tc4",
+  "plans": [
+    {
+      "epoch": 2,
+      "amount": 80
+    },
+    {
+      "epoch": 2,
+      "amount": 80
+    }
+  ]
+}

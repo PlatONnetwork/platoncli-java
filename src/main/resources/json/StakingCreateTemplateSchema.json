@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "StakingCreateTemplate",
+  "description": "创建验证人",
+  "type": "object",
+  "properties": {
+    "type": {
+      "description": "表示使用账户自由金额还是账户的锁仓金额做质押，0（FREE_AMOUNT_TYPE）：自由金额，1：（RESTRICTING_AMOUNT_TYPE）：锁仓金额，2：（AUTO_AMOUNT_TYPE）：自动分配金额",
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2
+      ]
+    },
+    "benefitAddress": {
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 42
+    },
+    "nodeId": {
+      "type": "string",
+      "minLength": 128,
+      "maxLength": 130
+    },
+    "externalId": {
+      "type": "string"
+    },
+    "nodeName": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "details": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "delegateRewardPer": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10000
+    }
+  },
+  "required": [
+    "type",
+    "benefitAddress",
+    "amount",
+    "delegateRewardPer"
+  ]
+}

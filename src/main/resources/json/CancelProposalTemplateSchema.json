@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "CancelProposalTemplate",
+  "description": "取消提案",
+  "type": "object",
+  "properties": {
+    "verifier": {
+      "description": "提交提案的验证人，nodeId",
+      "type": "string",
+      "minLength": 128,
+      "maxLength": 130
+    },
+    "piPid": {
+      "description": "PIPID",
+      "type": "string"
+    },
+    "endVotingRound": {
+      "description": "投票共识轮数量",
+      "type": "integer",
+      "minimum": 0
+    },
+    "canceledProposalId": {
+      "description": "待取消的提案ID",
+      "type": "string"
+    }
+  },
+  "required": [
+    "verifier",
+    "piPid",
+    "endVotingRound",
+    "canceledProposalId"
+  ]
+}

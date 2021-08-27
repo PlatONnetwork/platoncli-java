@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "DeclareVersionTemplate",
+  "description": "版本声明",
+  "type": "object",
+  "properties": {
+    "activeNode": {
+      "description": "声明的节点id，只能是验证人/候选人。若为空，则默认使用config配置的节点的id",
+      "type": "string",
+      "maxLength": 130,
+      "minLength": 128
+    }
+  },
+  "required": [
+    "activeNode"
+  ]
+}

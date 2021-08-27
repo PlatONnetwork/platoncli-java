@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "GetGovernParamValueTemplate",
+  "description": "查询最新的治理参数值",
+  "type": "object",
+  "properties": {
+    "module": {
+      "description": "模块名称，可以通过government_listGovernParam查询得到",
+      "type": "string",
+      "enum": [
+        "staking",
+        "slashing",
+        "block",
+        "reward",
+        "restricting"
+      ]
+    },
+    "name": {
+      "description": "参数名称，可以通过government_listGovernParam查询得到",
+      "type": "string",
+      "enum": [
+        "stakeThreshold",
+        "operatingThreshold",
+        "maxValidators",
+        "unStakeFreezeDuration",
+        "slashFractionDuplicateSign",
+        "duplicateSignReportReward",
+        "maxEvidenceAge",
+        "slashBlocksReward",
+        "maxBlockGasLimit",
+        "zeroProduceCumulativeTime",
+        "zeroProduceNumberThreshold",
+        "rewardPerMaxChangeRange",
+        "rewardPerChangeInterval",
+        "increaseIssuanceRatio",
+        "zeroProduceFreezeDuration",
+        "minimumRelease"
+      ]
+    }
+  },
+  "required": [
+    "module",
+    "name"
+  ]
+}
