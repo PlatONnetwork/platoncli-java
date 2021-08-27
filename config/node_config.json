@@ -1,0 +1,5 @@
+{
+  "rpcAddress": "https://openapi.alaya.network/rpc",
+  "hrp": "atp",
+  "chainId": 201018
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "CreateRestrictingPlanTemplate",
+  "description": "创建锁仓计划",
+  "type": "object",
+  "properties": {
+    "account": {
+      "description": "锁仓计划释放到的仓库",
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 42
+    },
+    "plans": {
+      "description": "锁仓计划列表(数组)",
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "epoch": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "amount": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      ]
+    }
+  },
+  "required": [
+    "account",
+    "plans"
+  ]
+}

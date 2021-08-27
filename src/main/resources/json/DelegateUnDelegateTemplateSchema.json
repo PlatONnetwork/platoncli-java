@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "DelegateUnDelegateTemplate",
+  "description": "赎回委托",
+  "type": "object",
+  "properties": {
+    "stakingBlockNum": {
+      "description": "质押节点时的块高",
+      "type": "integer",
+      "minimum": 0
+    },
+    "nodeId": {
+      "description": "节点ID",
+      "type": "string",
+      "maxLength": 130,
+      "minLength": 128
+    },
+    "amount": {
+      "description": "委托金额",
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "stakingBlockNum",
+    "nodeId",
+    "amount"
+  ]
+}

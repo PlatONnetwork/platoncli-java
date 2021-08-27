@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "DelegateNewTemplate",
+  "description": "委托",
+  "type": "object",
+  "properties": {
+    "type": {
+      "description": "余额类型，0: 自由金额，1: 锁仓金额，2：自动分配金额，优先使用锁仓",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "nodeId": {
+      "description": "节点ID",
+      "type": "string",
+      "maxLength": 130,
+      "minLength": 128
+    },
+    "amount": {
+      "description": "委托金额",
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "type",
+    "nodeId",
+    "amount"
+  ]
+}

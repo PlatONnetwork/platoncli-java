@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "ReportDoubleSignTemplate",
+  "description": "举报双签",
+  "type": "object",
+  "properties": {
+    "type": {
+      "description": "双签类型，PREPARE_BLOCK，PREPARE_VOTE，VIEW_CHANGE",
+      "type": "string",
+      "enum": [
+        "PREPARE_BLOCK",
+        "PREPARE_VOTE",
+        "VIEW_CHANGE"
+      ]
+    },
+    "data": {
+      "description": "单个证据的json值，格式参照RPC接口Evidences",
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "data"
+  ]
+}

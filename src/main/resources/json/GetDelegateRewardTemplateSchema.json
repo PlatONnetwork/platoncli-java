@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "GetDelegateRewardTemplate",
+  "description": "查询委托奖励",
+  "type": "object",
+  "properties": {
+    "address": {
+      "description": "账户地址",
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 42
+    },
+    "nodeIds": {
+      "description": "节点ID列表，若为空则表示查询当前全网节点",
+      "type": "array",
+      "items": [
+        {
+          "type": "string",
+          "minLength": 128,
+          "maxLength": 130
+        }
+      ]
+    }
+  },
+  "required": [
+    "address"
+  ]
+}
